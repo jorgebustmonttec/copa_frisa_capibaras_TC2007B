@@ -8,7 +8,7 @@ const usuarioController = require('../controllers/usuarioController');
  * @swagger
  * tags:
  *   name: Usuarios
- *   description: Everything about Usuarios
+ *   description: Todo sobre Usuarios
  * 
  * components:
  *   schemas:
@@ -19,29 +19,29 @@ const usuarioController = require('../controllers/usuarioController');
  *       properties:
  *         id_usuario:
  *           type: integer
- *           description: The unique identifier for the usuario.
+ *           description: Identificador único del usuario.
  *         username:
  *           type: string
- *           description: The username of the usuario.
+ *           description: Nombre de usuario del usuario.
  *         display_name:
  *           type: string
- *           description: The display name of the usuario.
+ *           description: Nombre para mostrar del usuario.
  *         correo:
  *           type: string
- *           description: The email address of the usuario.
+ *           description: Dirección de correo electrónico del usuario.
  *         password:
  *           type: string
- *           description: The password of the usuario.
+ *           description: Contraseña del usuario.
  *         tipo_usuario:
  *           type: integer
- *           description: The type identifier for the usuario.
+ *           description: Identificador de tipo para el usuario.
  *         imagen:
  *           type: string
- *           description: The image URL of the usuario.
+ *           description: URL de la imagen del usuario.
  *         created_at:
  *           type: string
  *           format: date-time
- *           description: The timestamp the usuario was created at.
+ *           description: Marca de tiempo en la que se creó el usuario.
  *       example:
  *         id_usuario: 1
  *         username: johndoe
@@ -56,11 +56,11 @@ const usuarioController = require('../controllers/usuarioController');
  *   get:
  *     tags:
  *       - Usuarios
- *     summary: Retrieve a list of usuarios
- *     description: Returns a list of usuarios, you can divide this further by 'GET' methods or whatever else if you feel fancy.
+ *     summary: Obtener una lista de usuarios
+ *     description: Devuelve una lista de usuarios
  *     responses:
  *       200:
- *         description: A list of usuarios.
+ *         description: Una lista de usuarios.
  *         content:
  *           application/json:
  *             schema:
