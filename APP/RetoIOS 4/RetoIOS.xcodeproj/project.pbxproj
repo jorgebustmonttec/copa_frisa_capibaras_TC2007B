@@ -7,22 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8CBEBF132BE18B320074A3A4 /* CopaFrisaApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEBF122BE18B320074A3A4 /* CopaFrisaApp.swift */; };
-		8CBEBF152BE18B320074A3A4 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CBEBF142BE18B320074A3A4 /* ContentView.swift */; };
-		8CBEBF172BE18B350074A3A4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CBEBF162BE18B350074A3A4 /* Assets.xcassets */; };
-		8CBEBF1A2BE18B350074A3A4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8CBEBF192BE18B350074A3A4 /* Preview Assets.xcassets */; };
+		CCB66DC02BE5DFC9002AA2A2 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB66DBF2BE5DFC9002AA2A2 /* LoginView.swift */; };
+		CCB66DC22BE5E00A002AA2A2 /* ForgotPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB66DC12BE5E00A002AA2A2 /* ForgotPassword.swift */; };
+		CCB66DC42BE5E047002AA2A2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB66DC32BE5E047002AA2A2 /* SignupView.swift */; };
+		CCB66DC62BE5E0E0002AA2A2 /* GuestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCB66DC52BE5E0E0002AA2A2 /* GuestView.swift */; };
+		FBE115872BE591EB00E9572B /* RetoIOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE115862BE591EB00E9572B /* RetoIOSApp.swift */; };
+		FBE115892BE591EB00E9572B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBE115882BE591EB00E9572B /* ContentView.swift */; };
+		FBE1158B2BE591F800E9572B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE1158A2BE591F800E9572B /* Assets.xcassets */; };
+		FBE1158E2BE591F800E9572B /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FBE1158D2BE591F800E9572B /* Preview Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		8CBEBF0F2BE18B320074A3A4 /* CopaFrisa.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopaFrisa.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8CBEBF122BE18B320074A3A4 /* CopaFrisaApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopaFrisaApp.swift; sourceTree = "<group>"; };
-		8CBEBF142BE18B320074A3A4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		8CBEBF162BE18B350074A3A4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		8CBEBF192BE18B350074A3A4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		CCB66DBF2BE5DFC9002AA2A2 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		CCB66DC12BE5E00A002AA2A2 /* ForgotPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassword.swift; sourceTree = "<group>"; };
+		CCB66DC32BE5E047002AA2A2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		CCB66DC52BE5E0E0002AA2A2 /* GuestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestView.swift; sourceTree = "<group>"; };
+		FBE115832BE591EB00E9572B /* RetoIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RetoIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FBE115862BE591EB00E9572B /* RetoIOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RetoIOSApp.swift; sourceTree = "<group>"; };
+		FBE115882BE591EB00E9572B /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		FBE1158A2BE591F800E9572B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FBE1158D2BE591F800E9572B /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8CBEBF0C2BE18B320074A3A4 /* Frameworks */ = {
+		FBE115802BE591EB00E9572B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -32,37 +40,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		8CBEBF062BE18B320074A3A4 = {
+		FBE1157A2BE591EB00E9572B = {
 			isa = PBXGroup;
 			children = (
-				8CBEBF112BE18B320074A3A4 /* CopaFrisa */,
-				8CBEBF102BE18B320074A3A4 /* Products */,
+				FBE115852BE591EB00E9572B /* RetoIOS */,
+				FBE115842BE591EB00E9572B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		8CBEBF102BE18B320074A3A4 /* Products */ = {
+		FBE115842BE591EB00E9572B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8CBEBF0F2BE18B320074A3A4 /* CopaFrisa.app */,
+				FBE115832BE591EB00E9572B /* RetoIOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		8CBEBF112BE18B320074A3A4 /* CopaFrisa */ = {
+		FBE115852BE591EB00E9572B /* RetoIOS */ = {
 			isa = PBXGroup;
 			children = (
-				8CBEBF122BE18B320074A3A4 /* CopaFrisaApp.swift */,
-				8CBEBF142BE18B320074A3A4 /* ContentView.swift */,
-				8CBEBF162BE18B350074A3A4 /* Assets.xcassets */,
-				8CBEBF182BE18B350074A3A4 /* Preview Content */,
+				FBE115862BE591EB00E9572B /* RetoIOSApp.swift */,
+				FBE115882BE591EB00E9572B /* ContentView.swift */,
+				CCB66DBF2BE5DFC9002AA2A2 /* LoginView.swift */,
+				CCB66DC52BE5E0E0002AA2A2 /* GuestView.swift */,
+				CCB66DC32BE5E047002AA2A2 /* SignupView.swift */,
+				CCB66DC12BE5E00A002AA2A2 /* ForgotPassword.swift */,
+				FBE1158A2BE591F800E9572B /* Assets.xcassets */,
+				FBE1158C2BE591F800E9572B /* Preview Content */,
 			);
-			path = CopaFrisa;
+			path = RetoIOS;
 			sourceTree = "<group>";
 		};
-		8CBEBF182BE18B350074A3A4 /* Preview Content */ = {
+		FBE1158C2BE591F800E9572B /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
-				8CBEBF192BE18B350074A3A4 /* Preview Assets.xcassets */,
+				FBE1158D2BE591F800E9572B /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
 			sourceTree = "<group>";
@@ -70,39 +82,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8CBEBF0E2BE18B320074A3A4 /* CopaFrisa */ = {
+		FBE115822BE591EB00E9572B /* RetoIOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 8CBEBF1D2BE18B350074A3A4 /* Build configuration list for PBXNativeTarget "CopaFrisa" */;
+			buildConfigurationList = FBE115912BE591F800E9572B /* Build configuration list for PBXNativeTarget "RetoIOS" */;
 			buildPhases = (
-				8CBEBF0B2BE18B320074A3A4 /* Sources */,
-				8CBEBF0C2BE18B320074A3A4 /* Frameworks */,
-				8CBEBF0D2BE18B320074A3A4 /* Resources */,
+				FBE1157F2BE591EB00E9572B /* Sources */,
+				FBE115802BE591EB00E9572B /* Frameworks */,
+				FBE115812BE591EB00E9572B /* Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = CopaFrisa;
-			productName = CopaFrisa;
-			productReference = 8CBEBF0F2BE18B320074A3A4 /* CopaFrisa.app */;
+			name = RetoIOS;
+			productName = RetoIOS;
+			productReference = FBE115832BE591EB00E9572B /* RetoIOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		8CBEBF072BE18B320074A3A4 /* Project object */ = {
+		FBE1157B2BE591EB00E9572B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1530;
 				LastUpgradeCheck = 1530;
 				TargetAttributes = {
-					8CBEBF0E2BE18B320074A3A4 = {
+					FBE115822BE591EB00E9572B = {
 						CreatedOnToolsVersion = 15.3;
 					};
 				};
 			};
-			buildConfigurationList = 8CBEBF0A2BE18B320074A3A4 /* Build configuration list for PBXProject "CopaFrisa" */;
+			buildConfigurationList = FBE1157E2BE591EB00E9572B /* Build configuration list for PBXProject "RetoIOS" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -110,42 +122,46 @@
 				en,
 				Base,
 			);
-			mainGroup = 8CBEBF062BE18B320074A3A4;
-			productRefGroup = 8CBEBF102BE18B320074A3A4 /* Products */;
+			mainGroup = FBE1157A2BE591EB00E9572B;
+			productRefGroup = FBE115842BE591EB00E9572B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8CBEBF0E2BE18B320074A3A4 /* CopaFrisa */,
+				FBE115822BE591EB00E9572B /* RetoIOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		8CBEBF0D2BE18B320074A3A4 /* Resources */ = {
+		FBE115812BE591EB00E9572B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CBEBF1A2BE18B350074A3A4 /* Preview Assets.xcassets in Resources */,
-				8CBEBF172BE18B350074A3A4 /* Assets.xcassets in Resources */,
+				FBE1158E2BE591F800E9572B /* Preview Assets.xcassets in Resources */,
+				FBE1158B2BE591F800E9572B /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		8CBEBF0B2BE18B320074A3A4 /* Sources */ = {
+		FBE1157F2BE591EB00E9572B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8CBEBF152BE18B320074A3A4 /* ContentView.swift in Sources */,
-				8CBEBF132BE18B320074A3A4 /* CopaFrisaApp.swift in Sources */,
+				CCB66DC02BE5DFC9002AA2A2 /* LoginView.swift in Sources */,
+				FBE115892BE591EB00E9572B /* ContentView.swift in Sources */,
+				FBE115872BE591EB00E9572B /* RetoIOSApp.swift in Sources */,
+				CCB66DC62BE5E0E0002AA2A2 /* GuestView.swift in Sources */,
+				CCB66DC22BE5E00A002AA2A2 /* ForgotPassword.swift in Sources */,
+				CCB66DC42BE5E047002AA2A2 /* SignupView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		8CBEBF1B2BE18B350074A3A4 /* Debug */ = {
+		FBE1158F2BE591F800E9572B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -208,7 +224,7 @@
 			};
 			name = Debug;
 		};
-		8CBEBF1C2BE18B350074A3A4 /* Release */ = {
+		FBE115902BE591F800E9572B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -264,14 +280,15 @@
 			};
 			name = Release;
 		};
-		8CBEBF1E2BE18B350074A3A4 /* Debug */ = {
+		FBE115922BE591F800E9572B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"CopaFrisa/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"RetoIOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 9MQSX62K58;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -284,7 +301,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = CapibarasCroquette.CopaFrisa;
+				PRODUCT_BUNDLE_IDENTIFIER = itesm.mx.RetoIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -292,14 +309,15 @@
 			};
 			name = Debug;
 		};
-		8CBEBF1F2BE18B350074A3A4 /* Release */ = {
+		FBE115932BE591F800E9572B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"CopaFrisa/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"RetoIOS/Preview Content\"";
+				DEVELOPMENT_TEAM = 9MQSX62K58;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -312,7 +330,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = CapibarasCroquette.CopaFrisa;
+				PRODUCT_BUNDLE_IDENTIFIER = itesm.mx.RetoIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -323,25 +341,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		8CBEBF0A2BE18B320074A3A4 /* Build configuration list for PBXProject "CopaFrisa" */ = {
+		FBE1157E2BE591EB00E9572B /* Build configuration list for PBXProject "RetoIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8CBEBF1B2BE18B350074A3A4 /* Debug */,
-				8CBEBF1C2BE18B350074A3A4 /* Release */,
+				FBE1158F2BE591F800E9572B /* Debug */,
+				FBE115902BE591F800E9572B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8CBEBF1D2BE18B350074A3A4 /* Build configuration list for PBXNativeTarget "CopaFrisa" */ = {
+		FBE115912BE591F800E9572B /* Build configuration list for PBXNativeTarget "RetoIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				8CBEBF1E2BE18B350074A3A4 /* Debug */,
-				8CBEBF1F2BE18B350074A3A4 /* Release */,
+				FBE115922BE591F800E9572B /* Debug */,
+				FBE115932BE591F800E9572B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 8CBEBF072BE18B320074A3A4 /* Project object */;
+	rootObject = FBE1157B2BE591EB00E9572B /* Project object */;
 }

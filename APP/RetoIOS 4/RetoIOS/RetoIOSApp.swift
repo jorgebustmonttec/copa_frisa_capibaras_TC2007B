@@ -1,14 +1,14 @@
 //
-//  CopaFrisaApp.swift
-//  CopaFrisa
+//  RetoIOSApp.swift
+//  RetoIOS
 //
-//  Created by Jorge Bustamante on 30/04/24.
+//  Created by Alumno on 03/05/24.
 //
 
 import SwiftUI
 
 @main
-struct CopaFrisaApp: App {
+struct RetoIOSApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
