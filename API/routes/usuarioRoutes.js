@@ -70,4 +70,7 @@ const usuarioController = require('../controllers/usuarioController');
  */
 router.get('/', usuarioController.getAllUsuarios);
 
+
+
+
 module.exports = router;
