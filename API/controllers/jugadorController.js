@@ -1,0 +1,107 @@
+//jugadorController.js
+
+const db = require('../utils/db');
+const path = require('path');
+
+const fs = require('fs');
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
+exports.createJugador = async (req, res) => {
+  const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
+  
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Insert into usuarios table
+    const userResult = await new Promise((resolve, reject) => {
+      db.query(
+        'INSERT INTO usuarios (username, display_name, correo, password, tipo_usuario, imagen, created_at) VALUES (?, ?, ?, ?, 2, "NA", NOW())',
+        [username, display_name, correo, hashedPassword],
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+
+    const userId = userResult.insertId;
+
+    // Insert into jugadores table
+    await new Promise((resolve, reject) => {
+      db.query(
+        'INSERT INTO jugadores (fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_usuario, id_equipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, userId, id_equipo],
+        (err, result) => {
+          if (err) reject(err);
+          else resolve(result);
+        }
+      );
+    });
+
+    res.status(201).json({ message: 'Jugador account created successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.getAllJugadoresSmall = (req, res) => {
+  db.query(
+    'SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, equipos.nombre_equipo, usuarios.username, usuarios.display_name FROM jugadores JOIN equipos ON jugadores.id_equipo = equipos.id_equipo JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario',
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.json(results);
+      }
+    }
+  );
+};
+
+exports.getJugadorSmallById = (req, res) => {
+  const { id } = req.params;
+  db.query(
+    'SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, equipos.nombre_equipo, usuarios.username, usuarios.display_name FROM jugadores JOIN equipos ON jugadores.id_equipo = equipos.id_equipo JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario WHERE jugadores.id_jugador = ?',
+    [id],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else if (result.length === 0) {
+        res.status(404).json({ error: 'Jugador not found' });
+      } else {
+        res.json(result[0]);
+      }
+    }
+  );
+};
+
+
+
+exports.getProfilePicture = (req, res) => {
+    const userId = req.params.id;
+    const imagePath = path.join(__dirname, '..', 'storage', 'img', 'perfil', `${userId}.jpg`);
+    const defaultImagePath = path.join(__dirname, '..', 'storage', 'img', 'perfil', 'generic.jpg');
+
+    fs.access(imagePath, fs.constants.F_OK, (err) => {
+        if (err) {
+            // If the image does not exist, send the default profile picture
+            res.sendFile(defaultImagePath, err => {
+                if (err) {
+                    console.error("Error sending default profile picture:", err);
+                    res.status(500).send("Error sending file");
+                }
+            });
+        } else {
+            // If the image exists, send the user's profile picture
+            res.sendFile(imagePath, err => {
+                if (err) {
+                    console.error("Error sending profile picture:", err);
+                    res.status(500).send("Error sending file");
+                }
+            });
+        }
+    });
+};
+
+
