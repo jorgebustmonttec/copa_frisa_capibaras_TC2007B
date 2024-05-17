@@ -71,6 +71,34 @@ const usuarioController = require('../controllers/usuarioController');
 router.get('/', usuarioController.getAllUsuarios);
 
 
+/**
+ * @swagger
+ * /usuarios/perfil/{id}:
+ *   get:
+ *     tags:
+ *       - Usuarios
+ *     summary: Get the profile picture of a usuario
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the usuario
+ *     responses:
+ *       200:
+ *         description: Profile picture of the usuario
+ *         content:
+ *           image/jpeg:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       404:
+ *         description: usuario not found
+ */
+router.get('/perfil/:id', usuarioController.getProfilePicture);
+
+
 
 
 module.exports = router;
