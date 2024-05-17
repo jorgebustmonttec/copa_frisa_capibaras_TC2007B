@@ -1,7 +1,7 @@
-//equipoRoutes.js
 const express = require('express');
 const router = express.Router();
 const equipoController = require('../controllers/equipoController');
+const upload = require('../utils/upload'); // Import multer configuration
 
 /**
  * @swagger
@@ -28,7 +28,7 @@ const equipoController = require('../controllers/equipoController');
  *       example:
  *         id_equipo: 1
  *         nombre_equipo: Equipo A
- *         escudo: storage/img/escudos/logo1.png
+ *         escudo: storage/escudos/logo1.png
  *
  * /equipos:
  *   post:
@@ -38,16 +38,24 @@ const equipoController = require('../controllers/equipoController');
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/Equipo'
+ *             type: object
+ *             properties:
+ *               nombre_equipo:
+ *                 type: string
+ *               escudo:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Equipo created successfully
  *       500:
  *         description: Server error
  */
-router.post('/', equipoController.createEquipo);
+router.post('/', upload.single('escudo'), equipoController.createEquipo);
+
+
 
 /**
  * @swagger
