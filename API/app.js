@@ -5,6 +5,7 @@ const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const jugadorRoutes = require('./routes/jugadorRoutes');
+const equipoRoutes = require('./routes/equipoRoutes');
 
 
 const app = express();
@@ -39,6 +40,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/usuarios', usuarioRoutes);
 app.use('/jugadores', jugadorRoutes);
+app.use('/equipos', equipoRoutes);
 
 
 
