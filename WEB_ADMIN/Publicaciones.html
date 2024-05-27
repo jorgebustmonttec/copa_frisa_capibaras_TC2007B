@@ -34,8 +34,37 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="lib/css/getmdl-select.min.css">
     <link rel="stylesheet" href="lib/css/nv.d3.min.css">
-    <link rel="stylesheet" href="lib/css/application.min.css">
+    <link rel="stylesheet" href="lib/application.min.css">
     <!-- endinject -->
+
+     <style>
+        .create-post-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 150px; /* Adjusted height for better button placement */
+            border: 2px dashed #ccc;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        .create-post-button {
+            margin-bottom: 10px;
+        }
+        .create-post-text {
+            font-size: 16px;
+            color: #757575;
+        }
+        .center-button {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+    </style>
+    
 
 </head>
 <body>
@@ -291,46 +320,60 @@
         </div>
     </div>
 
-    <main class="mdl-layout__content">
+    
+       <main class="mdl-layout__content">
+            <div class="mdl-grid mdl-grid--no-spacing dashboard">
+                <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
+                    <!-- Pie chart-->
+                    <!-- Weather widget-->
+                    <!-- Trending widget-->
+                    <!-- Cotoneaster card-->
+                    <!-- Table-->
+                </div>
 
-        <div class="mdl-grid mdl-grid--no-spacing dashboard">
+                <div class="mdl-grid ui-cards">
+                    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+                        <h3>Publicaciones</h3>
+                    </div>
 
-            <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
-
-                <!-- Pie chart-->
-               
-                <!-- Weather widget-->
-               
-                <!-- Trending widget-->
-               
-                <!-- Cotoneaster card-->
-                
-                <!-- Table-->
-                
-            </div>
-
-            <div class="mdl-grid mdl-cell mdl-cell--3-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
-                <!-- Robot card-->
-                <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
-                    <div class="mdl-card mdl-shadow--2dp robot">
-                        <div class="mdl-card__title mdl-card--expand">
-                            <h2 class="mdl-card__title-text">BB-8</h2>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            <div>
-                                A skittish but loyal astromech, BB-8 accompanied Poe Dameron on many missions for the
-                                Resistance helping keep his X-wing in working order.
+                    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                        <div class="mdl-card mdl-shadow--2dp">
+                            <div class="mdl-card__title">
+                                <h2 class="mdl-card__title-text">Istanbul</h2>
                             </div>
-                            <a href="http://www.starwars.com/databank/bb-8" target="_blank">Star Wars Databank</a>
+                            <div class="mdl-card__supporting-text">
+                                <small>Titulo</small>
+                                Istanbul is a major city in Turkey that straddles Europe and Asia across the Bosphorus Strait.
+                                Its Old City reflects cultural influences of the many empires that once ruled here.
+                                In the Sultanahmet district, the open-air, Roman-era Hippodrome was for centuries the site of chariot races,
+                                and Egyptian obelisks also remain.
+                                The iconic Byzantine Hagia Sophia features a soaring 6th-century dome and rare Christian mosaics.
+                                <br><br>
+                                <b>Fecha de publicacion</b> 12°C, Wind S at 13 km/h, 71% Humidity
+                                <br>
+                                <b>Lugar:</b> Friday 4:00 PM
+                                <br>
+                                
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Create Post Button -->
+                    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                        <div class="create-post-container">
+                            <div class="center-button">
+                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" onclick="window.location.href='Crear_publicacion.html'">
+                                    <i class="material-icons">add</i>
+                                </button>
+                                <div class="create-post-text">Crear publicación</div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- ToDo_widget-->
-                
-
-    </main>
-
-</div>
+            </div>
+        </main>
+    
 
 <!-- inject:js -->
 <script src="js/d3.min.js"></script>
