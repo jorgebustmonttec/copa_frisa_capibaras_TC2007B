@@ -4,7 +4,7 @@ const db = require('../utils/db');
 const path = require('path');
 
 const fs = require('fs');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 exports.createJugador = async (req, res) => {

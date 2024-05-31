@@ -80,27 +80,39 @@ class Row{
     }
 }
 
-class ExcelPrinter{
+class ExcelPrinter {
+    static print(tableId, excel) {
+        const table = document.getElementById(tableId);
+        console.log(table);
 
-    static print(tableId, excel){
+        excel.header().forEach(title => {
+            table.querySelector("thead>tr").innerHTML += `<th class="mdl-data-table__cell--non-numeric">${title}</th>`;
+        });
 
-        const table = document.getElementById(tableId)
-        console.log(table)
-
-        excel.header().forEach( title => {
-            table.querySelector("thead>tr").innerHTML += `<td>${title}</td>`
-        })
-
+        for (let index = 0; index < excel.rows().count(); index++) {
+            const row = excel.rows().get(index);
+            table.querySelector('tbody').innerHTML += `
+                <tr>
+                    <td class="mdl-data-table__cell--non-numeric">${row.ID()}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${row.Name()}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${row.IDTeam()}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${row.TeamName()}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${row.Username()}</td>
+                    <td class="mdl-data-table__cell--non-numeric">${row.DisplayName()}</td>
+                    <td class="mdl-data-table__cell--non-numeric">
+                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-teal">Editar Información</button>
+                    </td>
+                </tr>`;
+        }
     }
 }
 
 
-const excelInput = document.getElementById('excel-input')
 
-excelInput.addEventListener('change', async function(){
+const excelInput = document.getElementById('excel-input');
 
-    const content = await readXlsxFile(excelInput.files[0])
-
-    const excel = new Excel(content)
-    console.log(ExcelPrinter.print('excel-table', excel))
-})
+excelInput.addEventListener('change', async function() {
+    const content = await readXlsxFile(excelInput.files[0]);
+    const excel = new Excel(content);
+    console.log(ExcelPrinter.print('excel-table', excel));
+});
