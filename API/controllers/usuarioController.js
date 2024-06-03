@@ -3,6 +3,8 @@
 const db = require('../utils/db');
 const path = require('path');
 const fs = require('fs');
+const bcrypt = require('bcryptjs');
+
 
 exports.getAllUsuarios = (req, res) => {
   db.query('SELECT * FROM usuarios', (err, results) => {
@@ -78,4 +80,91 @@ exports.getProfilePicture = (req, res) => {
       }
   });
   */
+};
+
+
+exports.createAdmin = async (req, res) => {
+  const { username, display_name, correo, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  try {
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new admin into the database
+    const query = 'INSERT INTO usuarios (username, display_name, correo, password, tipo_usuario) VALUES (?, ?, ?, ?, 1)';
+    db.query(query, [username, display_name, correo, hashedPassword], (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+
+      res.status(201).json({ message: 'Admin account created successfully' });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.createUser = async (req, res) => {
+  const { username, display_name, correo, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  try {
+    // Check if the username already exists
+    db.query('SELECT * FROM usuarios WHERE username = ?', [username], async (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (results.length > 0) {
+        return res.status(400).json({ error: 'Username already exists' });
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Insert the new user into the database
+      const query = 'INSERT INTO usuarios (username, display_name, correo, password, tipo_usuario) VALUES (?, ?, ?, ?, 2)';
+      db.query(query, [username, display_name, correo, hashedPassword], (err, results) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+
+        res.status(201).json({ message: 'User account created successfully' });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+exports.loginUser = (req, res) => {
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  db.query('SELECT * FROM usuarios WHERE username = ?', [username], async (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (results.length === 0) {
+      return res.status(400).json({ error: 'Username not found' });
+    }
+
+    const user = results[0];
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: 'Incorrect password' });
+    }
+
+    res.status(200).json({ message: 'Login successful' });
+  });
 };
