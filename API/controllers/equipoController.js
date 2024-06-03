@@ -22,7 +22,7 @@ exports.createEquipo = (req, res) => {
 
 
 exports.getAllEquipos = (req, res) => {
-  db.query('SELECT * FROM equipos', (err, results) => {
+  db.query('SELECT id_equipo, nombre_equipo FROM equipos', (err, results) => {
     if (err) {
       res.status(500).json({ error: err.message });
     } else {
