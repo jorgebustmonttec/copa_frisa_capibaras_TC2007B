@@ -71,6 +71,129 @@ const usuarioController = require('../controllers/usuarioController');
 router.get('/', usuarioController.getAllUsuarios);
 
 
+/**
+ * @swagger
+ * /usuarios/perfil/{id}:
+ *   get:
+ *     tags:
+ *       - Usuarios
+ *     summary: Get the profile picture of a usuario
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the usuario
+ *     responses:
+ *       200:
+ *         description: Profile picture of the usuario
+ *         content:
+ *           image/jpeg:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       404:
+ *         description: usuario not found
+ */
+router.get('/perfil/:id', usuarioController.getProfilePicture);
+
+/**
+ * @swagger
+ * /usuarios/createAdmin:
+ *   post:
+ *     tags:
+ *       - Usuarios
+ *     summary: Create an admin account
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               display_name:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Admin account created successfully
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/createAdmin', usuarioController.createAdmin);
+
+/**
+ * @swagger
+ * /usuarios/createUser:
+ *   post:
+ *     tags:
+ *       - Usuarios
+ *     summary: Crear un nuevo usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               display_name:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usuario created successfully
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Server error
+ */
+router.post('/createUser', usuarioController.createUser);
+
+/**
+ * @swagger
+ * /usuarios/login:
+ *   post:
+ *     tags:
+ *       - Usuarios
+ *     summary: Iniciar sesión
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Server error
+ */
+router.post('/login', usuarioController.loginUser);
+
+
 
 
 module.exports = router;
