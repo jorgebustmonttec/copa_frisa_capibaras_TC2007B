@@ -147,11 +147,64 @@ class ExcelPrinter {
                     <td class="mdl-data-table__cell--non-numeric">${row.APE_M()}</td>
                     <td class="mdl-data-table__cell--non-numeric">${row.NUM_IMSS()}</td>
                     <td class="mdl-data-table__cell--non-numeric">${row.ID_Equipo()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-teal">Editar Información</button>
-                    </td>
                 </tr>`;
         }
     }
 }
 
+
+const excelInput = document.getElementById('excel-input');
+
+excelInput.addEventListener('change', async function() {
+    const content = await readXlsxFile(excelInput.files[0]);
+    const excel = new Excel(content);
+    console.log(ExcelPrinter.print('excel-data-table', excel));
+});
+
+
+document.getElementById('cancel-button').addEventListener('click', function() {
+    // Limpiar la tabla
+    document.querySelector('#excel-data-table tbody').innerHTML = '';
+});
+
+document.getElementById('submit-button').addEventListener('click', function() {
+    const rows = document.querySelectorAll('#excel-data-table tbody tr');
+    const data = Array.from(rows).map(row => {
+        const cells = row.querySelectorAll('td');
+        return {
+            username: cells[0].innerText,
+            display_name: cells[1].innerText,
+            correo: cells[2].innerText,
+            password: cells[3].innerText,
+            fecha_nac: cells[4].innerText,
+            CURP: cells[5].innerText,
+            domicilio: cells[6].innerText,
+            telefono: cells[7].innerText,
+            nombre: cells[8].innerText,
+            apellido_p: cells[9].innerText,
+            apellido_m: cells[10].innerText,
+            num_imss: parseInt(cells[11].innerText, 10),
+            id_equipo: parseInt(cells[12].innerText, 10)
+        };
+    });
+
+    // Llamada a la API para subir los datos
+    fetch('http://localhost:3000/jugadores', { // Cambia a tu URL correcta
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        alert('Datos subidos correctamente!');
+        // Limpia la tabla una vez que los datos se han subido con éxito
+        document.querySelector('#excel-data-table tbody').innerHTML = '';
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        alert('Error al subir los datos');
+    });
+});
