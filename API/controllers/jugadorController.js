@@ -78,30 +78,5 @@ exports.getJugadorSmallById = (req, res) => {
 
 
 
-exports.getProfilePicture = (req, res) => {
-    const userId = req.params.id;
-    const imagePath = path.join(__dirname, '..', 'storage', 'img', 'perfil', `${userId}.jpg`);
-    const defaultImagePath = path.join(__dirname, '..', 'storage', 'img', 'perfil', 'generic.jpg');
-
-    fs.access(imagePath, fs.constants.F_OK, (err) => {
-        if (err) {
-            // If the image does not exist, send the default profile picture
-            res.sendFile(defaultImagePath, err => {
-                if (err) {
-                    console.error("Error sending default profile picture:", err);
-                    res.status(500).send("Error sending file");
-                }
-            });
-        } else {
-            // If the image exists, send the user's profile picture
-            res.sendFile(imagePath, err => {
-                if (err) {
-                    console.error("Error sending profile picture:", err);
-                    res.status(500).send("Error sending file");
-                }
-            });
-        }
-    });
-};
 
 

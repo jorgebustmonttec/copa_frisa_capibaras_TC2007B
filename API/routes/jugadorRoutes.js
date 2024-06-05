@@ -183,32 +183,7 @@ router.get('/small', jugadorController.getAllJugadoresSmall);
  */
 router.get('/small/:id', jugadorController.getJugadorSmallById);
 
-/**
- * @swagger
- * /jugadores/perfil/{id}:
- *   get:
- *     tags:
- *       - Jugadores
- *     summary: Get the profile picture of a jugador
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: integer
- *         description: The ID of the jugador
- *     responses:
- *       200:
- *         description: Profile picture of the jugador
- *         content:
- *           image/jpeg:
- *             schema:
- *               type: string
- *               format: binary
- *       404:
- *         description: Jugador not found
- */
-router.get('/perfil/:id', jugadorController.getProfilePicture);
+
 
 
 module.exports = router;
