@@ -147,24 +147,44 @@ exports.loginUser = (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+    return res.status(400).json({
+      message: 'Username and password are required',
+      id_usuario: null,
+      tipo_usuario: null
+    });
   }
 
   db.query('SELECT * FROM usuarios WHERE username = ?', [username], async (err, results) => {
     if (err) {
-      return res.status(500).json({ error: err.message });
+      return res.status(500).json({
+        message: err.message,
+        id_usuario: null,
+        tipo_usuario: null
+      });
     }
     if (results.length === 0) {
-      return res.status(400).json({ error: 'Username not found' });
+      return res.status(400).json({
+        message: 'Username not found',
+        id_usuario: null,
+        tipo_usuario: null
+      });
     }
 
     const user = results[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(400).json({ error: 'Incorrect password' });
+      return res.status(400).json({
+        message: 'Incorrect password',
+        id_usuario: null,
+        tipo_usuario: null
+      });
     }
 
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({
+      message: 'Login successful',
+      id_usuario: user.id_usuario,
+      tipo_usuario: user.tipo_usuario
+    });
   });
 };

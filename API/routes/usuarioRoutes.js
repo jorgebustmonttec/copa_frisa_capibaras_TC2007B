@@ -4,55 +4,58 @@ const express = require('express');
 const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 
+
 /**
  * @swagger
  * tags:
  *   name: Usuarios
- *   description: Todo sobre Usuarios
+ *   description: All about Usuarios
  * 
  * components:
  *   schemas:
  *     Usuario:
  *       type: object
  *       required:
- *         - id_usuario
+ *         - username
+ *         - password
  *       properties:
  *         id_usuario:
  *           type: integer
  *           description: Identificador único del usuario.
  *         username:
  *           type: string
- *           description: Nombre de usuario del usuario.
+ *           description: Nombre de usuario.
  *         display_name:
  *           type: string
- *           description: Nombre para mostrar del usuario.
+ *           description: Nombre para mostrar.
  *         correo:
  *           type: string
- *           description: Dirección de correo electrónico del usuario.
+ *           description: Correo electrónico.
  *         password:
  *           type: string
  *           description: Contraseña del usuario.
  *         tipo_usuario:
  *           type: integer
- *           description: Identificador de tipo para el usuario.
+ *           description: Tipo de usuario (1 para admin, 2 para usuario normal).
  *         imagen:
  *           type: string
- *           description: URL de la imagen del usuario.
+ *           description: Ruta de la imagen del perfil.
  *         created_at:
  *           type: string
  *           format: date-time
- *           description: Marca de tiempo en la que se creó el usuario.
+ *           description: Fecha de creación del usuario.
  *       example:
  *         id_usuario: 1
  *         username: johndoe
  *         display_name: John Doe
  *         correo: johndoe@example.com
- *         password: hashpassword
- *         tipo_usuario: 1
- *         imagen: 'http://example.com/image.jpg'
- *         created_at: "2023-01-01T00:00:00Z"
- *
- * /usuarios:
+ *         password: $2b$10$2nqhUTjvvNNbjwP.2BliROYw2ZJq/y6/6Bx4Ko04LT42pHRWAITAO
+ *         tipo_usuario: 2
+ *         imagen: NA
+ *         created_at: 2024-05-30T21:55:33.000Z
+ */
+
+ /** /usuarios:
  *   get:
  *     tags:
  *       - Usuarios
@@ -135,7 +138,7 @@ router.post('/createAdmin', usuarioController.createAdmin);
 
 /**
  * @swagger
- * /usuarios/createUser:
+ * /usuarios/createUsuario:
  *   post:
  *     tags:
  *       - Usuarios
@@ -163,7 +166,7 @@ router.post('/createAdmin', usuarioController.createAdmin);
  *       500:
  *         description: Server error
  */
-router.post('/createUser', usuarioController.createUser);
+router.post('/createUsuario', usuarioController.createUser);
 
 /**
  * @swagger
@@ -186,13 +189,26 @@ router.post('/createUser', usuarioController.createUser);
  *     responses:
  *       200:
  *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Success message
+ *                 id_usuario::
+ *                   type: integer
+ *                   description: ID of the logged-in user
+ *                 tipo_usuario:
+ *                   type: integer
+ *                   description: ID of the user type
  *       400:
  *         description: Bad request
  *       500:
  *         description: Server error
  */
 router.post('/login', usuarioController.loginUser);
-
 
 
 
