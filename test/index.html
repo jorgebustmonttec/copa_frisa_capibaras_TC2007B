@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <h1>Login</h1>
+    <form id="loginForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+        <button type="submit">Login</button>
+    </form>
+
+    <h1>Jugadores</h1>
+    <button id="loadJugadores">Load Jugadores</button>
+    <table id="jugadoresTable" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>ID Equipo</th>
+                <th>Nombre Equipo</th>
+                <th>Username</th>
+                <th>Display Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            fetch('https://localhost:3443/usuarios/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username: username, password: password })
+            })
+            .then(response => {
+                return response.json().then(data => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok: ' + JSON.stringify(data));
+                    }
+                    return data;
+                });
+            })
+            .then(data => console.log(data))
+            .catch(error => console.error('There was a problem with your fetch operation:', error));
+        });
+
+        document.getElementById('loadJugadores').addEventListener('click', function() {
+            fetch('https://localhost:3443/jugadores/small', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('jugadoresTable').querySelector('tbody');
+                tableBody.innerHTML = ''; // Clear any existing rows
+
+                data.forEach(jugador => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${jugador.id_jugador}</td>
+                        <td>${jugador.nombre}</td>
+                        <td>${jugador.id_equipo}</td>
+                        <td>${jugador.nombre_equipo}</td>
+                        <td>${jugador.username}</td>
+                        <td>${jugador.display_name}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => console.error('There was a problem with your fetch operation:', error));
+        });
+    </script>
+</body>
+</html>
