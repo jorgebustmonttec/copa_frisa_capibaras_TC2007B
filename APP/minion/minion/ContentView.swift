@@ -4,7 +4,6 @@
 //
 //  Created by Miguel Ponce on 16/05/24.
 //
-
 import SwiftUI
 
 struct ContentView: View {
@@ -43,7 +42,7 @@ struct ContentView: View {
                 .padding(.vertical, 30)
                 .padding(.horizontal, 30)
 
-                NavigationLink(destination: AplicacionView()) {
+                NavigationLink(destination: AplicacionView().navigationBarBackButtonHidden(true)) {
                     Text("Continuar como invitado")
                         .foregroundColor(.black)
                         .padding()
@@ -52,15 +51,17 @@ struct ContentView: View {
                         .cornerRadius(10)
                 }
                 .padding(.horizontal, 30)
-                .padding(.bottom, 50) // Añadido para espaciar del borde inferior
+                .padding(.bottom, 50)
             }
             .navigationBarHidden(true)
         }
     }
 }
 
-
 #Preview {
     ContentView()
 }
 
+#Preview {
+    ContentView()
+}
