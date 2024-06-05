@@ -28,6 +28,7 @@
 		8C50552D2C10398A006F3040 /* EquipoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C50552C2C10398A006F3040 /* EquipoView.swift */; };
 		8C50552F2C103DE9006F3040 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C50552E2C103DE9006F3040 /* UserViewModel.swift */; };
 		8C5055312C103E54006F3040 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055302C103E54006F3040 /* APIService.swift */; };
+		8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055332C105A86006F3040 /* UserOptionsView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		8C50552E2C103DE9006F3040 /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 		8C5055302C103E54006F3040 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		8C5055322C104AE4006F3040 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8C5055332C105A86006F3040 /* UserOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOptionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				8C5055322C104AE4006F3040 /* Info.plist */,
+				8C5055332C105A86006F3040 /* UserOptionsView.swift */,
 				8C50552E2C103DE9006F3040 /* UserViewModel.swift */,
 				8C5055022C103865006F3040 /* minionApp.swift */,
 				8C5055042C103865006F3040 /* ContentView.swift */,
@@ -192,6 +195,7 @@
 			files = (
 				8C5055132C103894006F3040 /* SignupView.swift in Sources */,
 				8C5055312C103E54006F3040 /* APIService.swift in Sources */,
+				8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */,
 				8C5055192C1038CE006F3040 /* AplicacionView.swift in Sources */,
 				8C50551D2C1038F6006F3040 /* NotaView.swift in Sources */,
 				8C50552D2C10398A006F3040 /* EquipoView.swift in Sources */,
