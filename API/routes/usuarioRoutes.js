@@ -197,7 +197,7 @@ router.post('/createUsuario', usuarioController.createUser);
  *                 message:
  *                   type: string
  *                   description: Success message
- *                 tipo_usuario:
+ *                 id_usuario::
  *                   type: integer
  *                   description: ID of the logged-in user
  *                 tipo_usuario:
