@@ -8,6 +8,7 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var userViewModel: UserViewModel
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showForgotPassword: Bool = false
@@ -71,7 +72,7 @@ struct LoginView: View {
                         .foregroundColor(.green)
                     }
 
-                    NavigationLink(destination: AplicacionView(), isActive: $navigateToHome) {
+                    NavigationLink(destination: AplicacionView().navigationBarBackButtonHidden(true), isActive: $navigateToHome) {
                         Button(action: {
                             login()
                         }) {
@@ -97,9 +98,9 @@ struct LoginView: View {
     }
 
     private func login() {
-        APIService.shared.login(username: username, password: password) { result in
+        userViewModel.login(username: username, password: password) { result in
             switch result {
-            case .success(let response):
+            case .success:
                 navigateToHome = true
             case .failure(let error):
                 errorMessage = error.localizedDescription
@@ -109,9 +110,8 @@ struct LoginView: View {
     }
 }
 
-
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView().environmentObject(UserViewModel())
     }
 }
