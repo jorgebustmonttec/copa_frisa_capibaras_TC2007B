@@ -1,5 +1,9 @@
+// Definir la URL base de la API
+let apiURL = "https://localhost:3443";
+
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('http://localhost:3000/jugadores/small') // Asegúrate de usar la URL correcta de tu API
+    // Usar la variable apiURL para construir la URL completa
+    fetch(apiURL + '/jugadores/small')
     .then(response => response.json())
     .then(data => printTable(data))
     .catch(error => console.error('Error fetching data:', error));
@@ -37,5 +41,6 @@ function printTable(data) {
 
 function editPlayer(id) {
     console.log('Editar jugador con ID:', id);
-    // Implementa la función de edición como prefieras
+    // Aquí puedes agregar lógica para redirigir al usuario a la página de edición o abrir un modal de edición.
+    // Por ejemplo, podrías redirigir a: window.location.href = 'Edit_Jugador.html?id=' + id;
 }
