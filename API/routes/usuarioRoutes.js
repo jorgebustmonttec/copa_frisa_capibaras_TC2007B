@@ -55,7 +55,9 @@ const usuarioController = require('../controllers/usuarioController');
  *         created_at: 2024-05-30T21:55:33.000Z
  */
 
- /** /usuarios:
+/**
+ * @swagger
+ * /usuarios:
  *   get:
  *     tags:
  *       - Usuarios
@@ -209,6 +211,43 @@ router.post('/createUsuario', usuarioController.createUser);
  *         description: Server error
  */
 router.post('/login', usuarioController.loginUser);
+
+
+
+/**
+ * @swagger
+ * /usuarios/signup:
+ *   post:
+ *     tags:
+ *       - Usuarios
+ *     summary: Sign up a new user
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               display_name:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User account created successfully
+ *       400:
+ *         description: Bad request
+ *       500:
+ *         description: Internal server error
+ */
+router.post('/signup', usuarioController.signup);
 
 
 

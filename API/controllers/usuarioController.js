@@ -188,3 +188,41 @@ exports.loginUser = (req, res) => {
     });
   });
 };
+
+
+exports.signup = async (req, res) => {
+  const { username, display_name, correo, password } = req.body;
+
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password are required' });
+  }
+
+  try {
+    // Check if the username or email already exists
+    db.query('SELECT * FROM usuarios WHERE username = ? OR correo = ?', [username, correo], async (err, results) => {
+      if (err) {
+        return res.status(500).json({ error: err.message });
+      }
+      if (results.length > 0) {
+        const existingField = results[0].username === username ? 'Username' : 'Email';
+        return res.status(400).json({ error: `${existingField} already exists` });
+      }
+
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Insert the new user into the database
+      const query = 'INSERT INTO usuarios (username, display_name, correo, password, tipo_usuario) VALUES (?, ?, ?, ?, 3)';
+      db.query(query, [username, display_name, correo, hashedPassword], (err, results) => {
+        if (err) {
+          return res.status(500).json({ error: err.message });
+        }
+
+        res.status(201).json({ message: 'User account created successfully' });
+      });
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+

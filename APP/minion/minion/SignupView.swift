@@ -4,7 +4,6 @@
 //
 //  Created by Miguel Ponce on 04/06/24.
 //
-
 import SwiftUI
 
 struct SignupView: View {
@@ -14,6 +13,8 @@ struct SignupView: View {
     @State private var password: String = ""
     @State private var confirmPassword: String = ""
     @State private var email: String = ""
+    @State private var showAlert: Bool = false
+    @State private var alertMessage: String = ""
     
     var body: some View {
         NavigationView {
@@ -22,7 +23,11 @@ struct SignupView: View {
                     Button(action: {
                         presentationMode.wrappedValue.dismiss()
                     }) {
+                        Image(systemName: "chevron.left")
+                        Text("Back")
                     }
+                    .foregroundColor(.blue)
+                    .padding()
                     Spacer()
                 }
                 
@@ -45,24 +50,37 @@ struct SignupView: View {
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
 
                     SecureField("Contraseña", text: $password)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .textContentType(.newPassword)
+                        .keyboardType(.asciiCapable)
 
                     SecureField("Confirmar Contraseña", text: $confirmPassword)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .textContentType(.newPassword)
+                        .keyboardType(.asciiCapable)
                     
                     TextField("Correo", text: $email)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .autocapitalization(.none)
+                        .disableAutocorrection(true)
+                        .keyboardType(.emailAddress)
 
                     Button(action: {
-                        // Acción para crear la cuenta
+                        signUp()
                     }) {
                         Text("Crear cuenta")
                             .foregroundColor(.white)
@@ -79,11 +97,40 @@ struct SignupView: View {
             }
             .navigationBarHidden(true)
             .navigationBarBackButtonHidden(true)
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text("Signup"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            }
+        }
+    }
+    
+    private func signUp() {
+        guard !username.isEmpty, !password.isEmpty, !confirmPassword.isEmpty, !email.isEmpty else {
+            alertMessage = "All fields are required."
+            showAlert = true
+            return
+        }
+        
+        guard password == confirmPassword else {
+            alertMessage = "Passwords do not match."
+            showAlert = true
+            return
+        }
+        
+        APIService.shared.signup(username: username, displayName: username, email: email, password: password) { result in
+            switch result {
+            case .success(let response):
+                alertMessage = response.message
+                showAlert = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            case .failure(let error):
+                alertMessage = error.localizedDescription
+                showAlert = true
+            }
         }
     }
 }
-
-
 
 #Preview {
     SignupView()
