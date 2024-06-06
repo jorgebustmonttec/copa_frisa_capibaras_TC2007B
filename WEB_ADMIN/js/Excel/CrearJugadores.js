@@ -156,18 +156,22 @@ class ExcelPrinter {
 const excelInput = document.getElementById('excel-input');
 
 excelInput.addEventListener('change', async function() {
-    const content = await readXlsxFile(excelInput.files[0]);
-    const excel = new Excel(content);
-    console.log(ExcelPrinter.print('excel-data-table', excel));
+    const file = excelInput.files[0];
+    if (file) {
+        const content = await readXlsxFile(file);
+        const excel = new Excel(content);
+        ExcelPrinter.print('excel-data-table', excel);
+    }
 });
-
 
 document.getElementById('cancel-button').addEventListener('click', function() {
     // Limpiar la tabla
     document.querySelector('#excel-data-table tbody').innerHTML = '';
+    // Resetear el input de archivo para permitir que el mismo archivo sea cargado nuevamente
+    document.getElementById('excel-input').value = '';
 });
 
-document.getElementById('submit-button').addEventListener('click', function() {
+document.getElementById('submit-button').addEventListener('click', async function() {
     const rows = document.querySelectorAll('#excel-data-table tbody tr');
     const data = Array.from(rows).map(row => {
         const cells = row.querySelectorAll('td');
@@ -188,23 +192,45 @@ document.getElementById('submit-button').addEventListener('click', function() {
         };
     });
 
-    // Llamada a la API para subir los datos
-    fetch('http://localhost:3000/jugadores', { // Cambia a tu URL correcta
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
+    try {
+        const response = await fetch('http://localhost:3443/jugadores', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        const result = await response.json();
         alert('Datos subidos correctamente!');
-        // Limpia la tabla una vez que los datos se han subido con éxito
-        document.querySelector('#excel-data-table tbody').innerHTML = '';
-    })
-    .catch((error) => {
+        loadTableFromAPI();  // Función para recargar la tabla desde la API
+    } catch (error) {
         console.error('Error:', error);
         alert('Error al subir los datos');
-    });
+    }
 });
+
+
+// Función para cargar datos desde la API y actualizar la tabla
+function loadTableFromAPI() {
+    fetch('https://localhost:3443/jugadores/small')
+    .then(response => response.json())
+    .then(data => {
+        const table = document.getElementById('excel-data-table');
+        const tbody = table.querySelector("tbody");
+        tbody.innerHTML = ''; // Limpia la tabla existente
+
+        data.forEach(player => {
+            tbody.innerHTML += `
+                <tr>
+                   <td class="mdl-data-table__cell--non-numeric">${player.id_jugador}</td>
+                <td class="mdl-data-table__cell--non-numeric">${player.nombre}</td>
+                <td class="mdl-data-table__cell--non-numeric">${player.id_equipo}</td>
+                <td class="mdl-data-table__cell--non-numeric">${player.nombre_equipo}</td>
+                <td class="mdl-data-table__cell--non-numeric">${player.username}</td>
+                <td class="mdl-data-table__cell--non-numeric">${player.display_name}</td>
+                <td class="mdl-data-table__cell--non-numeric">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="editPlayer(${player.id_jugador})">Editar Información</button>
+                </td>
+                </tr>`;
+        });
+    })
+    .catch(error => console.error('Error fetching players:', error));
+}
