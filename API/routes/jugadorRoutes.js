@@ -183,7 +183,58 @@ router.get('/small', jugadorController.getAllJugadoresSmall);
  */
 router.get('/small/:id', jugadorController.getJugadorSmallById);
 
+/**
+ * @swagger
+ * /jugadores/add-to-equipo:
+ *   post:
+ *     tags:
+ *       - Jugadores
+ *     summary: Add a jugador to an equipo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_jugador:
+ *                 type: integer
+ *               id_equipo:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Jugador added to equipo successfully
+ *       404:
+ *         description: Jugador not found
+ *       500:
+ *         description: Server error
+ */
+router.post('/add-to-equipo', jugadorController.addJugadorToEquipo);
 
-
+/**
+ * @swagger
+ * /jugadores/remove-from-equipo:
+ *   post:
+ *     tags:
+ *       - Jugadores
+ *     summary: Remove a jugador from an equipo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_jugador:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Jugador removed from equipo successfully
+ *       404:
+ *         description: Jugador not found
+ *       500:
+ *         description: Server error
+ */
+router.post('/remove-from-equipo', jugadorController.removeJugadorFromEquipo);
 
 module.exports = router;

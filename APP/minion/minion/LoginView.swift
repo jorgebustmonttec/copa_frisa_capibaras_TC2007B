@@ -52,11 +52,15 @@ struct LoginView: View {
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     SecureField("Contraseña", text: $password)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     NavigationLink(destination: ForgotPasswordView(), isActive: $showForgotPassword) {
                         Button("Olvidé mi contraseña") {
