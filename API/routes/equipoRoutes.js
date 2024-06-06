@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const equipoController = require('../controllers/equipoController');
@@ -15,6 +16,7 @@ const upload = require('../utils/upload'); // Import multer configuration
  *       type: object
  *       required:
  *         - nombre_equipo
+ *         - escuela
  *       properties:
  *         id_equipo:
  *           type: integer
@@ -25,10 +27,14 @@ const upload = require('../utils/upload'); // Import multer configuration
  *         escudo:
  *           type: string
  *           description: Ruta del escudo del equipo.
+ *         escuela:
+ *           type: string
+ *           description: Nombre de la escuela.
  *       example:
  *         id_equipo: 1
  *         nombre_equipo: Equipo A
  *         escudo: storage/escudos/logo1.png
+ *         escuela: Primaria Benito Juárez
  *
  * /equipos:
  *   post:
@@ -47,6 +53,8 @@ const upload = require('../utils/upload'); // Import multer configuration
  *               escudo:
  *                 type: string
  *                 format: binary
+ *               escuela:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Equipo created successfully
@@ -54,8 +62,6 @@ const upload = require('../utils/upload'); // Import multer configuration
  *         description: Server error
  */
 router.post('/', upload.single('escudo'), equipoController.createEquipo);
-
-
 
 /**
  * @swagger
