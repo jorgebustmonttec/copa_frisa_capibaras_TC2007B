@@ -1,4 +1,3 @@
-
 //  AplicacionView.swift
 //  App
 //
@@ -8,9 +7,11 @@
 import SwiftUI
 
 struct AplicacionView: View {
+    @State private var selectedTab = 2 // Set HomePageView as the default view
+    
     var body: some View {
         NavigationView {
-            TabView {
+            TabView(selection: $selectedTab) {
                 NotificacionView() // Enlaza a NotificacionView aquí
                     .tabItem {
                         Image(systemName: "bell.fill")
@@ -62,4 +63,3 @@ struct AplicacionView_Previews: PreviewProvider {
             .environmentObject(UserViewModel())
     }
 }
-
