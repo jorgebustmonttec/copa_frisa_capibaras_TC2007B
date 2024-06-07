@@ -8,7 +8,7 @@ const jugadorController = require('../controllers/jugadorController');
 * @swagger
 * tags:
 *   name: Jugadores
-*   description: All about Jugadores
+*   description: Todo sobre Jugadores
 * 
 * components:
 *   schemas:
@@ -31,44 +31,44 @@ const jugadorController = require('../controllers/jugadorController');
 *       properties:
 *         username:
 *           type: string
-*           description: Username of the user.
+*           description: Nombre de usuario.
 *         display_name:
 *           type: string
-*           description: Display name of the user.
+*           description: Nombre para mostrar del usuario.
 *         correo:
 *           type: string
-*           description: Email address of the user.
+*           description: Correo electrónico del usuario.
 *         password:
 *           type: string
-*           description: Password of the user.
+*           description: Contraseña del usuario.
 *         fecha_nac:
 *           type: string
 *           format: date
-*           description: Birth date of the player.
+*           description: Fecha de nacimiento del jugador.
 *         CURP:
 *           type: string
-*           description: CURP of the player.
+*           description: CURP del jugador.
 *         domicilio:
 *           type: string
-*           description: Address of the player.
+*           description: Dirección del jugador.
 *         telefono:
 *           type: string
-*           description: Phone number of the player.
+*           description: Número de teléfono del jugador.
 *         nombre:
 *           type: string
-*           description: First name of the player.
+*           description: Nombre del jugador.
 *         apellido_p:
 *           type: string
-*           description: Paternal surname of the player.
+*           description: Apellido paterno del jugador.
 *         apellido_m:
 *           type: string
-*           description: Maternal surname of the player.
+*           description: Apellido materno del jugador.
 *         num_imss:
 *           type: string
-*           description: IMSS number of the player.
+*           description: Número de IMSS del jugador.
 *         id_equipo:
 *           type: integer
-*           description: Team ID the player belongs to.
+*           description: ID del equipo al que pertenece el jugador.
 *       example:
 *         username: johndoe
 *         display_name: John Doe
@@ -88,7 +88,7 @@ const jugadorController = require('../controllers/jugadorController');
 *   post:
 *     tags:
 *       - Jugadores
-*     summary: Create a new jugador account
+*     summary: Crear una nueva cuenta de jugador
 *     requestBody:
 *       required: true
 *       content:
@@ -97,11 +97,11 @@ const jugadorController = require('../controllers/jugadorController');
 *             $ref: '#/components/schemas/Jugador'
 *     responses:
 *       201:
-*         description: Jugador account created successfully
+*         description: Cuenta de jugador creada exitosamente
 *       400:
-*         description: Bad request
+*         description: Solicitud incorrecta
 *       500:
-*         description: Server error
+*         description: Error del servidor
 */
 router.post('/crear', jugadorController.createJugador);
 
@@ -110,7 +110,7 @@ router.post('/crear', jugadorController.createJugador);
  * @swagger
  * tags:
  *   name: Jugadores
- *   description: All about Jugadores
+ *   description: Todo sobre Jugadores
  * 
  * components:
  *   schemas:
@@ -147,16 +147,18 @@ router.post('/crear', jugadorController.createJugador);
  *   get:
  *     tags:
  *       - Jugadores
- *     summary: Obtener una lista pequeña de jugadores
- *     responses:
- *       200:
- *         description: Una lista de jugadores con información básica.
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/JugadorSmall'
+*     summary: Obtener una lista pequeña de jugadores
+*     responses:
+*       200:
+*         description: Una lista de jugadores con información básica.
+*         content:
+*           application/json:
+*             schema:
+*               type: array
+*               items:
+*                 $ref: '#/components/schemas/JugadorSmall'
+*       500:
+*         description: Error al obtener los jugadores
  */
 router.get('/small', jugadorController.getAllJugadoresSmall);
 
@@ -183,6 +185,8 @@ router.get('/small', jugadorController.getAllJugadoresSmall);
  *               $ref: '#/components/schemas/JugadorSmall'
  *       404:
  *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el jugador
  */
 router.get('/small/:id', jugadorController.getJugadorSmallById);
 
@@ -192,7 +196,7 @@ router.get('/small/:id', jugadorController.getJugadorSmallById);
  *   post:
  *     tags:
  *       - Jugadores
- *     summary: Add a jugador to an equipo
+ *     summary: Agregar un jugador a un equipo
  *     requestBody:
  *       required: true
  *       content:
@@ -206,11 +210,11 @@ router.get('/small/:id', jugadorController.getJugadorSmallById);
  *                 type: integer
  *     responses:
  *       200:
- *         description: Jugador added to equipo successfully
+ *         description: Jugador agregado al equipo exitosamente
  *       404:
- *         description: Jugador not found
+ *         description: Jugador no encontrado
  *       500:
- *         description: Server error
+ *         description: Error del servidor
  */
 router.post('/add-to-equipo', jugadorController.addJugadorToEquipo);
 
@@ -220,7 +224,7 @@ router.post('/add-to-equipo', jugadorController.addJugadorToEquipo);
  *   post:
  *     tags:
  *       - Jugadores
- *     summary: Remove a jugador from an equipo
+ *     summary: Remover un jugador de un equipo
  *     requestBody:
  *       required: true
  *       content:
@@ -232,11 +236,11 @@ router.post('/add-to-equipo', jugadorController.addJugadorToEquipo);
  *                 type: integer
  *     responses:
  *       200:
- *         description: Jugador removed from equipo successfully
- *       404:
- *         description: Jugador not found
- *       500:
- *         description: Server error
+*         description: Jugador removido del equipo exitosamente
+*       404:
+*         description: Jugador no encontrado
+*       500:
+*         description: Error del servidor
  */
 router.post('/remove-from-equipo', jugadorController.removeJugadorFromEquipo);
 

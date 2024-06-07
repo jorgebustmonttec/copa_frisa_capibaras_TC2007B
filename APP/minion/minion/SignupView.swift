@@ -59,7 +59,7 @@ struct SignupView: View {
                         .cornerRadius(10)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
-                        .textContentType(.newPassword)
+                        .textContentType(.none)
                         .keyboardType(.asciiCapable)
 
                     SecureField("Confirmar Contraseña", text: $confirmPassword)
@@ -68,8 +68,10 @@ struct SignupView: View {
                         .cornerRadius(10)
                         .autocapitalization(.none)
                         .disableAutocorrection(true)
-                        .textContentType(.newPassword)
+                        .textContentType(.none)
                         .keyboardType(.asciiCapable)
+
+
                     
                     TextField("Correo", text: $email)
                         .padding()
@@ -105,13 +107,19 @@ struct SignupView: View {
     
     private func signUp() {
         guard !username.isEmpty, !password.isEmpty, !confirmPassword.isEmpty, !email.isEmpty else {
-            alertMessage = "All fields are required."
+            alertMessage = "Todos los campos son requeridos."
             showAlert = true
             return
         }
         
         guard password == confirmPassword else {
-            alertMessage = "Passwords do not match."
+            alertMessage = "Las contraseñas no son iguales."
+            showAlert = true
+            return
+        }
+        
+        guard isValidEmail(email) else {
+            alertMessage = "El correo no es válido."
             showAlert = true
             return
         }
@@ -129,6 +137,12 @@ struct SignupView: View {
                 showAlert = true
             }
         }
+    }
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
+        return emailPredicate.evaluate(with: email)
     }
 }
 

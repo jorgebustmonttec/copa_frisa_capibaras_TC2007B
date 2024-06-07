@@ -4,12 +4,11 @@ const express = require('express');
 const router = express.Router();
 const usuarioController = require('../controllers/usuarioController');
 
-
 /**
  * @swagger
  * tags:
  *   name: Usuarios
- *   description: All about Usuarios
+ *   description: Todo sobre Usuarios
  * 
  * components:
  *   schemas:
@@ -72,9 +71,10 @@ const usuarioController = require('../controllers/usuarioController');
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Usuario'
+ *       500:
+ *         description: Error en el servidor
  */
 router.get('/', usuarioController.getAllUsuarios);
-
 
 /**
  * @swagger
@@ -82,24 +82,26 @@ router.get('/', usuarioController.getAllUsuarios);
  *   get:
  *     tags:
  *       - Usuarios
- *     summary: Get the profile picture of a usuario
+ *     summary: Obtener la foto de perfil de un usuario
  *     parameters:
  *       - in: path
  *         name: id
  *         required: true
  *         schema:
  *           type: integer
- *         description: The ID of the usuario
+ *         description: El ID del usuario
  *     responses:
  *       200:
- *         description: Profile picture of the usuario
+ *         description: Foto de perfil del usuario
  *         content:
  *           image/jpeg:
  *             schema:
  *               type: string
  *               format: binary
  *       404:
- *         description: usuario not found
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error en el servidor
  */
 router.get('/perfil/:id', usuarioController.getProfilePicture);
 
@@ -109,7 +111,7 @@ router.get('/perfil/:id', usuarioController.getProfilePicture);
  *   post:
  *     tags:
  *       - Usuarios
- *     summary: Create an admin account
+ *     summary: Crear una cuenta de administrador
  *     requestBody:
  *       required: true
  *       content:
@@ -130,11 +132,11 @@ router.get('/perfil/:id', usuarioController.getProfilePicture);
  *                 type: string
  *     responses:
  *       201:
- *         description: Admin account created successfully
+ *         description: Cuenta de administrador creada exitosamente
  *       400:
- *         description: Bad request
+ *         description: Solicitud incorrecta
  *       500:
- *         description: Internal server error
+ *         description: Error en el servidor
  */
 router.post('/createAdmin', usuarioController.createAdmin);
 
@@ -162,11 +164,11 @@ router.post('/createAdmin', usuarioController.createAdmin);
  *                 type: string
  *     responses:
  *       201:
- *         description: Usuario created successfully
+ *         description: Cuenta de usuario creada exitosamente
  *       400:
- *         description: Bad request
+ *         description: Solicitud incorrecta
  *       500:
- *         description: Server error
+ *         description: Error en el servidor
  */
 router.post('/createUsuario', usuarioController.createUser);
 
@@ -190,7 +192,7 @@ router.post('/createUsuario', usuarioController.createUser);
  *                 type: string
  *     responses:
  *       200:
- *         description: Login successful
+ *         description: Inicio de sesión exitoso
  *         content:
  *           application/json:
  *             schema:
@@ -198,21 +200,19 @@ router.post('/createUsuario', usuarioController.createUser);
  *               properties:
  *                 message:
  *                   type: string
- *                   description: Success message
- *                 id_usuario::
+ *                   description: Mensaje de éxito
+ *                 id_usuario:
  *                   type: integer
- *                   description: ID of the logged-in user
+ *                   description: ID del usuario que ha iniciado sesión
  *                 tipo_usuario:
  *                   type: integer
- *                   description: ID of the user type
+ *                   description: Tipo de usuario
  *       400:
- *         description: Bad request
+ *         description: Solicitud incorrecta
  *       500:
- *         description: Server error
+ *         description: Error en el servidor
  */
 router.post('/login', usuarioController.loginUser);
-
-
 
 /**
  * @swagger
@@ -220,7 +220,7 @@ router.post('/login', usuarioController.loginUser);
  *   post:
  *     tags:
  *       - Usuarios
- *     summary: Sign up a new user
+ *     summary: Registrar un nuevo usuario
  *     requestBody:
  *       required: true
  *       content:
@@ -241,14 +241,12 @@ router.post('/login', usuarioController.loginUser);
  *                 type: string
  *     responses:
  *       201:
- *         description: User account created successfully
+ *         description: Cuenta de usuario creada exitosamente
  *       400:
- *         description: Bad request
+ *         description: Solicitud incorrecta
  *       500:
- *         description: Internal server error
+ *         description: Error en el servidor
  */
 router.post('/signup', usuarioController.signup);
-
-
 
 module.exports = router;

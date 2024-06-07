@@ -1,17 +1,18 @@
 //jugadorController.js
 
+
 const db = require('../utils/db');
 const path = require('path');
-
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
+
 const saltRounds = 10;
 
 exports.createJugador = async (req, res) => {
   const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
   
   if (!username || !display_name || !correo || !password || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo) {
-    return res.status(400).json({ error: 'Missing required fields' });
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
   try {
@@ -23,8 +24,8 @@ exports.createJugador = async (req, res) => {
         [username, display_name, correo, hashedPassword],
         (err, result) => {
           if (err) {
-            console.error('Error inserting into usuarios:', err);
-            reject(new Error('Database error while creating user'));
+            console.error('Error al insertar en usuarios:', err);
+            reject(new Error('Error en la base de datos al crear el usuario'));
           } else {
             resolve(result);
           }
@@ -40,8 +41,8 @@ exports.createJugador = async (req, res) => {
         [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, userId, id_equipo],
         (err, result) => {
           if (err) {
-            console.error('Error inserting into jugadores:', err);
-            reject(new Error('Database error while creating jugador'));
+            console.error('Error al insertar en jugadores:', err);
+            reject(new Error('Error en la base de datos al crear el jugador'));
           } else {
             resolve(result);
           }
@@ -49,7 +50,7 @@ exports.createJugador = async (req, res) => {
       );
     });
 
-    res.status(201).json({ message: 'Jugador account created successfully' });
+    res.status(201).json({ message: 'Cuenta de jugador creada exitosamente' });
   } catch (err) {
     console.error('Error:', err);
     res.status(500).json({ error: err.message });
@@ -89,7 +90,7 @@ exports.getJugadorSmallById = (req, res) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else if (result.length === 0) {
-        res.status(404).json({ error: 'Jugador not found' });
+        res.status(404).json({ error: 'Jugador no encontrado' });
       } else {
         res.json(result[0]);
       }
@@ -108,9 +109,9 @@ exports.addJugadorToEquipo = (req, res) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else if (result.affectedRows === 0) {
-        res.status(404).json({ error: 'Jugador not found' });
+        res.status(404).json({ error: 'Jugador no encontrado' });
       } else {
-        res.status(200).json({ message: 'Jugador added to equipo successfully' });
+        res.status(200).json({ message: 'Jugador agregado al equipo exitosamente' });
       }
     }
   );
@@ -126,9 +127,9 @@ exports.removeJugadorFromEquipo = (req, res) => {
       if (err) {
         res.status(500).json({ error: err.message });
       } else if (result.affectedRows === 0) {
-        res.status(404).json({ error: 'Jugador not found' });
+        res.status(404).json({ error: 'Jugador no encontrado' });
       } else {
-        res.status(200).json({ message: 'Jugador removed from equipo successfully' });
+        res.status(200).json({ message: 'Jugador removido del equipo exitosamente' });
       }
     }
   );

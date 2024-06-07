@@ -47,7 +47,7 @@ struct AplicacionView: View {
                     }
                     .tag(4)
             }
-            .navigationBarTitle("Detalle del Jugador")
+            //.navigationBarTitle("Detalle del Jugador")
             .navigationBarItems(trailing: NavigationLink(destination: UserOptionsView()) {
                 Image(systemName: "gear")
                     .imageScale(.large)
