@@ -13,7 +13,9 @@ function handleFileSelect(event) {
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
             jsonSheet = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+            jsonSheet = removeEmptyRows(jsonSheet);
             displayTable(jsonSheet);
+            printData(jsonSheet);
         };
         reader.readAsArrayBuffer(file);
     }
@@ -31,6 +33,11 @@ function displayTable(data) {
         });
         table.appendChild(tr);
     });
+}
+
+function printData(data) {
+    const output = document.getElementById('output');
+    output.textContent = JSON.stringify(data, null, 2);
 }
 
 function uploadData() {
@@ -91,6 +98,10 @@ function uploadData() {
         .then(data => console.log('Success:', data))
         .catch(error => console.error('Error:', error));
     });
+}
+
+function removeEmptyRows(data) {
+    return data.filter(row => row.some(cell => cell !== undefined && cell !== null && cell !== ""));
 }
 
 function convertExcelDate(excelDate) {

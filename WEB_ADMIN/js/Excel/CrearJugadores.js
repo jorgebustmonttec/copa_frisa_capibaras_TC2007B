@@ -1,123 +1,83 @@
-class Excel{
-    constructor(content){
-        this.content = content
+document.getElementById('excel-input').addEventListener('change', handleFileSelect, false);
+document.getElementById('submit-button').addEventListener('click', uploadData, false);
 
+let jsonSheet;
+
+class Excel {
+    constructor(content) {
+        this.content = content;
     }
 
-    header(){
-        return this.content[0]
+    header() {
+        return this.content[0];
     }
 
-    rows(){
-        return new RowCollection(this.content.slice(1,this.content.length))
-    }
-}
-
-class RowCollection{
-
-    constructor(rows){
-        this.rows = rows
-    }
-
-    first(){
-
-        return new Row(this.rows[0])
-    }
-
-    get(index){
-        return new Row(this.rows[index])
-
-    }
-
-    count(){
-
-        return this.rows.length
-
+    rows() {
+        return new RowCollection(this.content.slice(1, this.content.length));
     }
 }
 
-class Row{
-
-    constructor(row){
-
-        this.row = row
-
+class RowCollection {
+    constructor(rows) {
+        this.rows = rows;
     }
 
-    Username(){
-
-        return this.row[0]
-
-    }
-    NameDisplay(){
-
-        return this.row[1]
-
+    first() {
+        return new Row(this.rows[0]);
     }
 
-    Correo(){
-
-        return this.row[2]
-
+    get(index) {
+        return new Row(this.rows[index]);
     }
 
-    Password(){
+    count() {
+        return this.rows.length;
+    }
+}
 
-        return this.row[3]
-
+class Row {
+    constructor(row) {
+        this.row = row;
     }
 
-    FechaDeNacimiento(){
-
-        return this.row[4]
-
+    Username() {
+        return this.row[0];
     }
-
-    CURP(){
-
-        return this.row[5]
-
+    NameDisplay() {
+        return this.row[1];
     }
-
-    Domicilio(){
-
-        return this.row[6]
-
+    Correo() {
+        return this.row[2];
     }
-
-    Telefono(){
-
-        return this.row[7]
-
+    Password() {
+        return this.row[3];
     }
-
-    Name(){
-
-        return this.row[8]
-
+    FechaDeNacimiento() {
+        return this.row[4];
     }
-
-    Ape_P(){
-
-        return this.row[9]
-
+    CURP() {
+        return this.row[5];
     }
-    APE_M(){
-
-        return this.row[10]
-
+    Domicilio() {
+        return this.row[6];
     }
-
-    NUM_IMSS(){
-
-        return this.row[11]
-
+    Telefono() {
+        return this.row[7];
     }
-
-    ID_Equipo(){
-
-        return this.row[12]
-
+    Name() {
+        return this.row[8];
+    }
+    Ape_P() {
+        return this.row[9];
+    }
+    APE_M() {
+        return this.row[10];
+    }
+    NUM_IMSS() {
+        return this.row[11];
+    }
+    ID_Equipo() {
+        return this.row[12];
     }
 }
 
@@ -152,85 +112,79 @@ class ExcelPrinter {
     }
 }
 
-
-const excelInput = document.getElementById('excel-input');
-
-excelInput.addEventListener('change', async function() {
-    const file = excelInput.files[0];
+function handleFileSelect(event) {
+    const file = event.target.files[0];
     if (file) {
-        const content = await readXlsxFile(file);
-        const excel = new Excel(content);
-        ExcelPrinter.print('excel-data-table', excel);
+        readXlsxFile(file).then((content) => {
+            const excel = new Excel(content);
+            ExcelPrinter.print('excel-table', excel);
+            jsonSheet = content;
+        });
     }
-});
+}
 
-document.getElementById('cancel-button').addEventListener('click', function() {
-    // Limpiar la tabla
-    document.querySelector('#excel-data-table tbody').innerHTML = '';
-    // Resetear el input de archivo para permitir que el mismo archivo sea cargado nuevamente
-    document.getElementById('excel-input').value = '';
-});
+function uploadData() {
+    if (!jsonSheet) {
+        alert('No data to upload');
+        return;
+    }
 
-document.getElementById('submit-button').addEventListener('click', async function() {
-    const rows = document.querySelectorAll('#excel-data-table tbody tr');
-    const data = Array.from(rows).map(row => {
-        const cells = row.querySelectorAll('td');
-        return {
-            username: cells[0].innerText,
-            display_name: cells[1].innerText,
-            correo: cells[2].innerText,
-            password: cells[3].innerText,
-            fecha_nac: cells[4].innerText,
-            CURP: cells[5].innerText,
-            domicilio: cells[6].innerText,
-            telefono: cells[7].innerText,
-            nombre: cells[8].innerText,
-            apellido_p: cells[9].innerText,
-            apellido_m: cells[10].innerText,
-            num_imss: parseInt(cells[11].innerText, 10),
-            id_equipo: parseInt(cells[12].innerText, 10)
+    const headers = jsonSheet[0];
+    jsonSheet.slice(1).forEach((row, rowIndex) => {
+        const rowData = {};
+        row.forEach((cell, index) => {
+            rowData[headers[index]] = cell;
+        });
+
+        // Check if all required fields are present
+        if (!rowData['Username'] || !rowData['Nombre Display'] || !rowData['Correo'] || !rowData['Password'] ||
+            !rowData['Fecha de nacimiento'] || !rowData['CURP'] || !rowData['Domicilio'] || !rowData['Telefono'] ||
+            !rowData['Nombre'] || !rowData['Apellido Paterno'] || !rowData['Apellido Materno'] || !rowData['Num_IMSS'] ||
+            !rowData['ID Equipo']) {
+            console.warn(`Skipping row ${rowIndex} due to missing required fields`);
+            return;
+        }
+
+        console.log('Uploading row:', rowIndex, rowData);
+
+        const dataToSend = {
+            username: rowData['Username'],
+            display_name: rowData['Nombre Display'],
+            correo: rowData['Correo'],
+            password: rowData['Password'],
+            fecha_nac: convertExcelDate(rowData['Fecha de nacimiento']),
+            CURP: rowData['CURP'],
+            domicilio: rowData['Domicilio'],
+            telefono: rowData['Telefono'],
+            nombre: rowData['Nombre'],
+            apellido_p: rowData['Apellido Paterno'],
+            apellido_m: rowData['Apellido Materno'],
+            num_imss: rowData['Num_IMSS'],
+            id_equipo: rowData['ID Equipo']
         };
-    });
 
-    try {
-        const response = await fetch('http://localhost:3443/jugadores', {
+        console.log('Data to send:', dataToSend);
+
+        fetch('https://localhost:3443/jugadores/crear', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
-        });
-        const result = await response.json();
-        alert('Datos subidos correctamente!');
-        loadTableFromAPI();  // Función para recargar la tabla desde la API
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error al subir los datos');
-    }
-});
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(dataToSend)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    });
+}
 
-
-// Función para cargar datos desde la API y actualizar la tabla
-function loadTableFromAPI() {
-    fetch('https://localhost:3443/jugadores/small')
-    .then(response => response.json())
-    .then(data => {
-        const table = document.getElementById('excel-data-table');
-        const tbody = table.querySelector("tbody");
-        tbody.innerHTML = ''; // Limpia la tabla existente
-
-        data.forEach(player => {
-            tbody.innerHTML += `
-                <tr>
-                   <td class="mdl-data-table__cell--non-numeric">${player.id_jugador}</td>
-                <td class="mdl-data-table__cell--non-numeric">${player.nombre}</td>
-                <td class="mdl-data-table__cell--non-numeric">${player.id_equipo}</td>
-                <td class="mdl-data-table__cell--non-numeric">${player.nombre_equipo}</td>
-                <td class="mdl-data-table__cell--non-numeric">${player.username}</td>
-                <td class="mdl-data-table__cell--non-numeric">${player.display_name}</td>
-                <td class="mdl-data-table__cell--non-numeric">
-                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="editPlayer(${player.id_jugador})">Editar Información</button>
-                </td>
-                </tr>`;
-        });
-    })
-    .catch(error => console.error('Error fetching players:', error));
+function convertExcelDate(excelDate) {
+    if (!excelDate) return null;
+    const date = new Date((excelDate - (25567 + 1)) * 86400 * 1000);
+    return date.toISOString().split('T')[0];
 }
