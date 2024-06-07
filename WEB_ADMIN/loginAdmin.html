@@ -91,7 +91,12 @@ document.getElementById('loginForm').onsubmit = async function(e) {
             const result = await response.json();
             console.log(result);
             if (result.message === "Login successful") {
-                // Mostrar el formulario del token
+                if (result.tipo_usuario !== 1) {
+                    alert("Cuenta con insuficientes permisos.");
+                    return;
+                }
+                // Almacenar el ID del usuario y mostrar el formulario del token
+                localStorage.setItem('id_usuario', result.id_usuario);
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('tokenForm').style.display = 'block';
                 // Generar un token aleatorio y mostrarlo en la consola
@@ -114,12 +119,13 @@ document.getElementById('tokenForm').onsubmit = function(e) {
     var tokenValue = document.getElementById('token').value;
     // Verificar que el token ingresado sea igual al generado
     if (parseInt(tokenValue, 10) === window.generatedToken) {
-        window.location.href = 'MainAdmin.html';
+        window.location.href = 'MainAdmin.html'; // Redirigir a la página del administrador
     } else {
         alert("Token incorrecto, por favor ingrese el token correcto.");
     }
 };
 </script>
+
 
 
 
