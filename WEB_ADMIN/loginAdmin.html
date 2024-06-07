@@ -95,10 +95,14 @@ document.getElementById('loginForm').onsubmit = async function(e) {
                     alert("Cuenta con insuficientes permisos.");
                     return;
                 }
-                // Almacenar el ID del usuario y mostrar el formulario del token
+                // Almacenar el ID del usuario y tipo de usuario y cambiar el estado de sesión
                 localStorage.setItem('id_usuario', result.id_usuario);
+                localStorage.setItem('tipo_usuario', result.tipo_usuario);
+                localStorage.setItem('isLoggedIn', 'true');
+
                 document.getElementById('loginForm').style.display = 'none';
                 document.getElementById('tokenForm').style.display = 'block';
+                
                 // Generar un token aleatorio y mostrarlo en la consola
                 window.generatedToken = Math.floor(100000 + Math.random() * 900000);
                 console.log("Su token es: " + window.generatedToken);
@@ -125,6 +129,7 @@ document.getElementById('tokenForm').onsubmit = function(e) {
     }
 };
 </script>
+
 
 
 
