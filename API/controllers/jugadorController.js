@@ -10,6 +10,10 @@ const saltRounds = 10;
 exports.createJugador = async (req, res) => {
   const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
   
+  if (!username || !display_name || !correo || !password || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo) {
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -18,8 +22,12 @@ exports.createJugador = async (req, res) => {
         'INSERT INTO usuarios (username, display_name, correo, password, tipo_usuario, imagen, created_at) VALUES (?, ?, ?, ?, 2, "NA", NOW())',
         [username, display_name, correo, hashedPassword],
         (err, result) => {
-          if (err) reject(err);
-          else resolve(result);
+          if (err) {
+            console.error('Error inserting into usuarios:', err);
+            reject(new Error('Database error while creating user'));
+          } else {
+            resolve(result);
+          }
         }
       );
     });
@@ -31,14 +39,19 @@ exports.createJugador = async (req, res) => {
         'INSERT INTO jugadores (fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_usuario, id_equipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, userId, id_equipo],
         (err, result) => {
-          if (err) reject(err);
-          else resolve(result);
+          if (err) {
+            console.error('Error inserting into jugadores:', err);
+            reject(new Error('Database error while creating jugador'));
+          } else {
+            resolve(result);
+          }
         }
       );
     });
 
     res.status(201).json({ message: 'Jugador account created successfully' });
   } catch (err) {
+    console.error('Error:', err);
     res.status(500).json({ error: err.message });
   }
 };
