@@ -8,6 +8,8 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const jugadorRoutes = require('./routes/jugadorRoutes');
 const equipoRoutes = require('./routes/equipoRoutes');
+const publicacionRoutes = require('./routes/publicacionRoutes'); // Add this line
+
 
 const app = express();
 //const port = 3000;
@@ -45,6 +47,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/usuarios', usuarioRoutes);
 app.use('/jugadores', jugadorRoutes);
 app.use('/equipos', equipoRoutes);
+app.use('/publicaciones', publicacionRoutes); // Add this line
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
