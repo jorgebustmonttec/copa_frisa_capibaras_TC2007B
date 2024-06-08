@@ -335,7 +335,7 @@
 <div class="container py-4">
     <div class="row mb-4">
         <div class="col-12 col-md-4">
-            <input type="file" class="form-control" id="excel-input">
+            <input type="file" class="form-control" id="fileInput">
         </div>
     </div>
 </div>
@@ -348,22 +348,23 @@
                 <h1 class="mdl-card__title-text">Crear Jugador desde Excel</h1>
             </div>
             <div class="mdl-card__supporting-text no-padding">
-                <table class="mdl-data-table mdl-js-data-table" id="excel-data-table">
+                <table class="mdl-data-table mdl-js-data-table" id="excelTable">
                     <thead><tr></tr></thead>
                     <tbody></tbody>
                 </table>
-                <div class="mdl-card__actions">
-                    <button id="cancel-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                        Cancelar
-                    </type="button">
-                    <button id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
-                        Subir
-                    </button>
-                </div>
+            </div>
+            <div class="mdl-card__actions">
+                <button id="cancel-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Cancelar
+                </button>
+                <button id="uploadButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    Subir
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -405,10 +406,13 @@
 <script src="js/widgets/table/table.min.js"></script>
 <script src="js/widgets/todo/todo.min.js"></script>
 <script src="js/Excel/JugadoresJSON.js"></script>
-<script src="js/Excel/CrearJugadores.js"></script>
+<script src="js/Excel/CrearJugadoresDummy.js"></script>
 
 
-<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+
+
 <!-- endinject -->
 
 </body>
