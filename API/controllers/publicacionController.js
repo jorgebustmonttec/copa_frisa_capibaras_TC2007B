@@ -135,3 +135,19 @@ exports.getPostById = (req, res) => {
         }
     });
 };
+
+
+exports.deletePost = (req, res) => {
+    const { id } = req.params;
+
+    db.query('DELETE FROM publicaciones WHERE id_post = ?', [id], (err, result) => {
+        if (err) {
+            console.error('Error al eliminar la publicación:', err);
+            return res.status(500).json({ error: 'Error al eliminar la publicación' });
+        } else if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Publicación no encontrada' });
+        } else {
+            res.status(200).json({ message: 'Publicación eliminada exitosamente' });
+        }
+    });
+};

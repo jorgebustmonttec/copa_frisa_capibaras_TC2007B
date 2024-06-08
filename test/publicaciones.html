@@ -30,7 +30,7 @@
                 <th>Título</th>
                 <th>Contenido</th>
                 <th>Imagen</th>
-                <th>Editar</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -75,11 +75,14 @@
                     row.innerHTML = `
                         <td>${publicacion.id_post}</td>
                         <td>${publicacion.autor}</td>
-                        <td>${publicacion.fecha}</td>
+                        <td>${new Date(publicacion.fecha).toLocaleString()}</td>
                         <td>${publicacion.titulo}</td>
                         <td>${publicacion.contenido || ''}</td>
                         <td><img src="${imagenUrl}" alt="Imagen" style="width:50px;"></td>
-                        <td><button onclick="editPost(${publicacion.id_post})">Edit</button></td>
+                        <td>
+                            <button onclick="editPost(${publicacion.id_post})">Edit</button>
+                            <button onclick="deletePost(${publicacion.id_post})">Delete</button>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 }
@@ -94,7 +97,7 @@
                 const form = document.getElementById('create-post-form');
                 const formData = new FormData(form);
 
-                const response = await fetch(`${apiUrl}/publicaciones`, {
+                const response = await fetch(`${apiUrl}/publicaciones/crear`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -132,9 +135,31 @@
             }
         }
 
+        async function deletePost(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/publicaciones/eliminar/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Error al eliminar la publicación');
+                alert('Publicación eliminada exitosamente');
+
+                // Reload the posts table
+                fetchPosts();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
         function editPost(id) {
             window.location.href = `editPost.html?id=${id}`;
         }
+
+        document.addEventListener('DOMContentLoaded', fetchPosts);
     </script>
 </body>
 </html>
