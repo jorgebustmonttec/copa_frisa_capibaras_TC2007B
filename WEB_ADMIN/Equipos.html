@@ -304,13 +304,19 @@
             <button class="search-button">
                 <i class="material-icons">search</i>
             </button>
+             
         </div>
     </div>
 </div>
     
 
 
-<!-- Sección para la Tabla de Jugadores que usa datos estáticos JSON -->
+
+<!-- Botón Agregar Nuevo -->
+            <button id="add-new-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Agregar Nuevo Equipo
+            </button>
+
 <div class="mdl-grid ui-tables">
     <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
         <div class="mdl-card mdl-shadow--2dp">
@@ -342,6 +348,24 @@
 </div>
 
 <!-- inject:js -->
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var editButtons = document.querySelectorAll('.edit-button');
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            window.location.href = 'Edit_Equipo.html';
+        });
+    });
+
+    // Controlador para el botón Agregar Nuevo
+    document.getElementById('add-new-button').addEventListener('click', function() {
+        window.location.href = 'Crear_Equipo.html'; // Asegúrate de que la URL es correcta
+    });
+});
+
+</script>
 
 
 <script>

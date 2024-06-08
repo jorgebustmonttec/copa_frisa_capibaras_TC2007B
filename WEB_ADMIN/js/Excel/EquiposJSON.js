@@ -3,7 +3,7 @@ let apiURL = "https://localhost:3443";
 
 document.addEventListener('DOMContentLoaded', function() {
     // Usar la variable apiURL para construir la URL completa para obtener datos de equipos
-    fetch(apiURL + '/equipos')
+    fetch(apiURL + '/equipos/all')
     .then(response => response.json())
     .then(data => printTable(data))
     .catch(error => console.error('Error fetching data:', error));

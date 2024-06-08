@@ -37,3 +37,15 @@
 .search-button i {
     font-size: 24px;
 }
+
+
+#add-new-button {
+    border: 2px solid red;
+    border-radius: 25px;
+    color: white;
+    background-color: black;
+    margin-left: 1000px; /* Asegura un espacio entre la barra de búsqueda y el botón */
+    margin-top: 50;
+    margin-bottom: 50;
+     /* Ajusta según sea necesario */
+}
