@@ -1,11 +1,9 @@
 const multer = require('multer');
 const path = require('path');
 
-// Set storage engine
-const storage = multer.diskStorage({
+const getStorage = (folder) => multer.diskStorage({
     destination: (req, file, cb) => {
-        const uploadPath = path.join(__dirname, '..', 'storage', 'img', 'escudos');
-        console.log('Upload path:', uploadPath); // Debug log
+        const uploadPath = path.join(__dirname, '..', 'storage', 'img', folder);
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
@@ -13,9 +11,8 @@ const storage = multer.diskStorage({
     }
 });
 
-// Initialize upload
-const upload = multer({
-    storage: storage,
+const upload = (folder) => multer({
+    storage: getStorage(folder),
     limits: { fileSize: 20000000 }, // 20 MB
     fileFilter: (req, file, cb) => {
         checkFileType(file, cb);

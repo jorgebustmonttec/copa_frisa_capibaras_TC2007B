@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const equipoController = require('../controllers/equipoController');
-const upload = require('../utils/upload'); // Import multer configuration
+const upload = require('../utils/upload')('escudos'); // Specify folder as 'escudos'
+
 
 /**
  * @swagger
