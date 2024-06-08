@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipos</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Equipos</h1>
+    <button onclick="fetchEquipos()">Load Equipos</button>
+    <table id="equipos-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Equipo</th>
+                <th>Escuela</th>
+                <th>Escudo</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <h2>Crear un nuevo equipo</h2>
+    <form id="create-equipo-form" onsubmit="createEquipo(event)">
+        <label for="nombre_equipo">Nombre del Equipo:</label>
+        <input type="text" id="nombre_equipo" name="nombre_equipo" >
+        <br>
+        <label for="escuela">Escuela:</label>
+        <input type="text" id="escuela" name="escuela" >
+        <br>
+        <label for="escudo">Subir Escudo:</label>
+        <input type="file" id="escudo" name="escudo" accept="image/*" >
+        <br>
+        <button type="submit">Crear Equipo</button>
+    </form>
+
+    <script>
+        const apiUrl = 'https://localhost:3443';
+
+        async function fetchEquipos() {
+            try {
+                const response = await fetch(`${apiUrl}/equipos`);
+                if (!response.ok) throw new Error('Error al obtener los equipos');
+                const equipos = await response.json();
+
+                const tableBody = document.querySelector('#equipos-table tbody');
+                tableBody.innerHTML = '';
+
+                for (const equipo of equipos) {
+                    const escudoResponse = await fetch(`${apiUrl}/equipos/single/${equipo.id_equipo}/escudo`);
+                    const escudoBlob = await escudoResponse.blob();
+                    const escudoUrl = URL.createObjectURL(escudoBlob);
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${equipo.id_equipo}</td>
+                        <td>${equipo.nombre_equipo}</td>
+                        <td>${equipo.escuela}</td>
+                        <td><img src="${escudoUrl}" alt="Escudo" style="width:50px;"></td>
+                        <td><button onclick="editEquipo(${equipo.id_equipo})">Edit</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function createEquipo(event) {
+            event.preventDefault();
+            try {
+                const form = document.getElementById('create-equipo-form');
+                const formData = new FormData(form);
+
+                const response = await fetch(`${apiUrl}/equipos/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre_equipo: formData.get('nombre_equipo'),
+                        escuela: formData.get('escuela')
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error al crear el equipo');
+                const result = await response.json();
+                const id = result.id_equipo;
+
+                // Now upload the image
+                const escudoFormData = new FormData();
+                escudoFormData.append('escudo', formData.get('escudo'));
+
+                const escudoResponse = await fetch(`${apiUrl}/equipos/create/${id}/escudo`, {
+                    method: 'POST',
+                    body: escudoFormData
+                });
+
+                if (!escudoResponse.ok) throw new Error('Error al subir el escudo');
+                alert('Equipo creado exitosamente');
+
+                // Clear the form
+                form.reset();
+
+                // Reload the equipos table
+                fetchEquipos();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function editEquipo(id) {
+            window.location.href = `editEquipo.html?id=${id}`;
+        }
+    </script>
+</body>
+</html>
