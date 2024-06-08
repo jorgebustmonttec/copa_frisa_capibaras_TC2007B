@@ -39,7 +39,7 @@ exports.getEquipoShieldById = (req, res) => {
           return res.status(404).json({ error: 'Equipo no encontrado' });
       } else {
           const escudoPath = result[0].escudo;
-          const absolutePath = path.resolve(process.cwd(), escudoPath);
+          const absolutePath = path.resolve(__dirname, '..', escudoPath); // Adjust the path here
           res.sendFile(absolutePath, (err) => {
               if (err) {
                   console.error('Error al enviar el archivo:', err);
@@ -51,6 +51,7 @@ exports.getEquipoShieldById = (req, res) => {
       }
   });
 };
+
 
 exports.createEquipo = (req, res) => {
   const { nombre_equipo, escuela } = req.body;
@@ -85,6 +86,26 @@ exports.addEquipoImg = (req, res) => {
           return res.status(404).json({ error: 'Equipo no encontrado' });
       } else {
           res.status(200).json({ message: 'Escudo del equipo actualizado exitosamente' });
+      }
+  });
+};
+
+exports.updateEquipo = (req, res) => {
+  const { id } = req.params;
+  const { nombre_equipo, escuela } = req.body;
+
+  if (!nombre_equipo || !escuela) {
+      return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  db.query('UPDATE equipos SET nombre_equipo = ?, escuela = ? WHERE id_equipo = ?', [nombre_equipo, escuela, id], (err, result) => {
+      if (err) {
+          console.error('Error al actualizar el equipo:', err);
+          return res.status(500).json({ error: 'Error al actualizar el equipo' });
+      } else if (result.affectedRows === 0) {
+          return res.status(404).json({ error: 'Equipo no encontrado' });
+      } else {
+          res.status(200).json({ message: 'Equipo actualizado exitosamente' });
       }
   });
 };
