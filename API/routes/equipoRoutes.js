@@ -10,7 +10,7 @@ const upload = require('../utils/upload'); // Import multer configuration
  * tags:
  *   name: Equipos
  *   description: Todo sobre Equipos
- * 
+ *
  * components:
  *   schemas:
  *     Equipo:
@@ -25,55 +25,25 @@ const upload = require('../utils/upload'); // Import multer configuration
  *         nombre_equipo:
  *           type: string
  *           description: Nombre del equipo.
- *         escudo:
- *           type: string
- *           description: Ruta del escudo del equipo.
  *         escuela:
  *           type: string
  *           description: Nombre de la escuela.
  *       example:
  *         id_equipo: 1
- *         nombre_equipo: Equipo A
- *         escudo: storage/escudos/logo1.png
+ *         nombre_equipo: Los Tigres de Juárez
  *         escuela: Primaria Benito Juárez
- *
- * /equipos/create:
- *   post:
- *     tags:
- *       - Equipos
- *     summary: Crear un nuevo equipo
- *     requestBody:
- *       required: true
- *       content:
- *         multipart/form-data:
- *           schema:
- *             type: object
- *             properties:
- *               nombre_equipo:
- *                 type: string
- *               escudo:
- *                 type: string
- *                 format: binary
- *               escuela:
- *                 type: string
- *     responses:
- *       201:
- *         description: Equipo creado exitosamente
- *       500:
- *         description: Error del servidor
  */
-router.post('/create', upload.single('escudo'), equipoController.createEquipo);
 
 /**
  * @swagger
- * /equipos/all:
+ * /equipos:
  *   get:
  *     tags:
  *       - Equipos
- *     summary: Obtener una lista de equipos
+ *     summary: Obtener todos los equipos
  *     responses:
  *       200:
- *         description: Una lista de equipos.
+ *         description: Lista de todos los equipos
  *         content:
  *           application/json:
  *             schema:
@@ -83,7 +53,7 @@ router.post('/create', upload.single('escudo'), equipoController.createEquipo);
  *       500:
  *         description: Error al obtener los equipos
  */
-router.get('/all', equipoController.getAllEquipos);
+router.get('/', equipoController.getAllEquipos);
 
 /**
  * @swagger
@@ -101,7 +71,7 @@ router.get('/all', equipoController.getAllEquipos);
  *         description: Identificador único del equipo
  *     responses:
  *       200:
- *         description: Información del equipo.
+ *         description: Información del equipo
  *         content:
  *           application/json:
  *             schema:
@@ -112,5 +82,107 @@ router.get('/all', equipoController.getAllEquipos);
  *         description: Error al obtener el equipo
  */
 router.get('/single/:id', equipoController.getEquipoById);
+
+/**
+ * @swagger
+ * /equipos/single/{id}/escudo:
+ *   get:
+ *     tags:
+ *       - Equipos
+ *     summary: Obtener el escudo de un equipo por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Escudo del equipo
+ *         content:
+ *           image/png:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el escudo del equipo
+ */
+router.get('/single/:id/escudo', equipoController.getEquipoShieldById);
+/**
+ * @swagger
+ * /equipos/create:
+ *   post:
+ *     tags:
+ *       - Equipos
+ *     summary: Crear un nuevo equipo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre_equipo:
+ *                 type: string
+ *               escuela:
+ *                 type: string
+ *             example:
+ *               nombre_equipo: Los Tigres de Juárez
+ *               escuela: Primaria Benito Juárez
+ *     responses:
+ *       201:
+ *         description: Equipo creado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id_equipo:
+ *                   type: integer
+ *       400:
+ *         description: Faltan campos obligatorios
+ *       500:
+ *         description: Error al crear el equipo
+ */
+router.post('/create', equipoController.createEquipo);
+
+/**
+ * @swagger
+ * /equipos/create/{id}/escudo:
+ *   post:
+ *     tags:
+ *       - Equipos
+ *     summary: Agregar una imagen de escudo a un equipo
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               escudo:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Escudo del equipo actualizado exitosamente
+ *       400:
+ *         description: No se proporcionó ninguna imagen
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al actualizar el escudo del equipo
+ */
+router.post('/create/:id/escudo', upload.single('escudo'), equipoController.addEquipoImg);
 
 module.exports = router;

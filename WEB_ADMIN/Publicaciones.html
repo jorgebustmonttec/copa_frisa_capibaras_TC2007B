@@ -1,6 +1,6 @@
 <!doctype html>
 
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
     <link rel="icon" type="image/png" href="images/na_16х16.png">
     <meta charset="utf-8">
@@ -37,27 +37,40 @@
     <link rel="stylesheet" href="lib/application.min.css">
     <!-- endinject -->
 
-     <style>
-        .create-post-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 150px; /* Ajustar altura según sea necesario */
-            border: 2px dashed #ccc;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-        .create-post-button {
-            margin-top: 10px;
-        }
-        .create-post-text {
-            font-size: 16px;
-            color: #757575;
-            margin-top: 10px;
-        }
-    </style>
+    <style>
+    .create-post-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 200px; /* Increased height */
+        width: 90%; /* Adjusted width to be responsive */
+        max-width: 600px; /* Maximum width to maintain design consistency */
+        border: 3px dashed #ccc; /* Made the border slightly thicker */
+        padding: 30px; /* Increased padding */
+        text-align: center;
+        cursor: pointer;
+        background-color: #333; /* Dark background */
+        transition: background-color 0.3s;
+        border-radius: 5px;
+        margin: auto; /* Center the container */
+    }
+    .create-post-container:hover {
+        background-color: #444; /* Slightly lighter on hover */
+    }
+    .create-post-text {
+        font-size: 20px; /* Increased font size */
+        color: #fff; /* White text */
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+    .create-post-icon {
+        font-size: 60px; /* Larger icon size */
+        color: white; /* Icon color remains red */
+    }
+</style>
+</head>
+<body>
     
 
 </head>
@@ -325,51 +338,69 @@
                 </div>
 
                 <div class="mdl-grid ui-cards">
-                    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
-                        <h3>Publicaciones</h3>
-                    </div>
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <h3>Publicaciones</h3>
+    </div>
 
-                    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                        <div class="mdl-card mdl-shadow--2dp">
-                            <div class="mdl-card__title">
-                                <h2 class="mdl-card__title-text">Titulo</h2>
-                            </div>
-                            <div class="mdl-card__supporting-text">
-                                <small>Autor</small>
-                                Istanbul is a major city in Turkey that straddles Europe and Asia across the Bosphorus Strait.
-                                Its Old City reflects cultural influences of the many empires that once ruled here.
-                                In the Sultanahmet district, the open-air, Roman-era Hippodrome was for centuries the site of chariot races,
-                                and Egyptian obelisks also remain.
-                                The iconic Byzantine Hagia Sophia features a soaring 6th-century dome and rare Christian mosaics.
-                                <br><br>
-                                <b>Fecha de publicacion</b> 12°C, Wind S at 13 km/h, 71% Humidity
-                                <br>
-                                <b>Lugar:</b> Friday 4:00 PM
-                                <br>
-                                
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Create Post Button -->
-                    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-                        <div class="create-post-container">
-                            <div>
-                                <div class="create-post-text">Crear publicación</div>
-                                <button class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored create-post-button" onclick="window.location.href='Crear_publicacion.html'">
-                                    <i class="material-icons">add</i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- ToDo_widget-->
+    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text" id="publicationTitle">Titulo</h2>
             </div>
-        </main>
-    
-    
+            <div class="mdl-card__supporting-text">
+                <small id="publicationAuthor">Autor</small>
+                <p id="publicationDescription">Istanbul is a major city in Turkey that straddles Europe and Asia across the Bosphorus Strait.
+                Its Old City reflects cultural influences of the many empires that once ruled here.
+                In the Sultanahmet district, the open-air, Roman-era Hippodrome was for centuries the site of chariot races,
+                and Egyptian obelisks also remain.
+                The iconic Byzantine Hagia Sophia features a soaring 6th-century dome and rare Christian mosaics.</p>
+                <br>
+                <b>Fecha de publicacion</b> <span id="publicationDate">12°C, Wind S at 13 km/h, 71% Humidity</span>
+                <br>
+                <b></b> <span id="publicationPlace">Friday 4:00 PM</span>
+                <br>
+                <div id="publicationPhoto"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modified Create Post Button -->
+    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+        <button class="create-post-container" onclick="window.location.href='Crear_publicacion.html'">
+            <div class="create-post-text">Crear publicación</div>
+            <i class="material-icons create-post-icon">add_circle</i>
+        </button>
+    </div>
+</div>
+<!-- ToDo_widget-->
+</div>
+</main>
+
+<!-- In Publicaciones.html, add this right before the closing </body> tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const publicationData = JSON.parse(localStorage.getItem('publication'));
+    const photoData = localStorage.getItem('publicationPhoto');
+
+    if (publicationData) {
+        document.getElementById('publicationTitle').textContent = publicationData.title;
+        document.getElementById('publicationDescription').textContent = publicationData.description;
+        document.getElementById('publicationAuthor').textContent = publicationData.author;
+        document.getElementById('publicationDate').textContent = publicationData.date;
+        document.getElementById('publicationPlace').textContent = publicationData.place;
+    }
+
+    if (photoData) {
+        const img = document.createElement('img');
+        img.src = photoData;
+        img.style.maxWidth = '100%'; // Ensures the image fits within the card
+        document.getElementById('publicationPhoto').appendChild(img);
+    }
+});
+</script>
 
 <!-- inject:js -->
+<script src="js/session/sessionManagement.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>
 <script src="js/material.min.js"></script>
