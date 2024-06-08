@@ -1,17 +1,18 @@
-// Definir la URL base de la API
 let apiURL = "https://localhost:3443";
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Usar la variable apiURL para construir la URL completa
+    fetchAndPrintTable();
+});
+
+function fetchAndPrintTable() {
     fetch(apiURL + '/jugadores/small')
     .then(response => response.json())
     .then(data => printTable(data))
     .catch(error => console.error('Error fetching data:', error));
-});
+}
 
 function printTable(data) {
     const table = document.getElementById('static-json-table');
-    // Asegurarse de que la tabla esté limpia antes de añadir nuevos datos
     table.querySelector("thead>tr").innerHTML = `
         <th class="mdl-data-table__cell--non-numeric">ID</th>
         <th class="mdl-data-table__cell--non-numeric">Nombre</th>
