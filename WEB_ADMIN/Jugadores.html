@@ -307,22 +307,16 @@
 </div>
     
 
-<div class = "container py-4">
-    <div class = "row mb-4">
-        <div class = "col-12 col-md-4">
-            <input type="file" class = "form-control" id="excel-input">
-        </div>
-    </div>
-</div>
 
+<!-- Sección para la Tabla de Jugadores que usa datos estáticos JSON -->
 <div class="mdl-grid ui-tables">
     <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
         <div class="mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
-                <h1 class="mdl-card__title-text">Tabla de jugadores</h1>
+                <h1 class="mdl-card__title-text">Tabla de Jugadores</h1>
             </div>
             <div class="mdl-card__supporting-text no-padding">
-                <table class="mdl-data-table mdl-js-data-table" id="excel-table">
+                <table class="mdl-data-table mdl-js-data-table" id="static-json-table">
                     <thead>
                         <tr></tr>
                     </thead>
@@ -332,6 +326,42 @@
         </div>
     </div>
 </div>
+
+<!-- Entrada para cargar archivos Excel -->
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12 col-md-4">
+            <input type="file" class="form-control" id="excel-input">
+        </div>
+    </div>
+</div>
+
+<!-- Sección para la Tabla que maneja datos de Excel -->
+<div class="mdl-grid ui-tables">
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h1 class="mdl-card__title-text">Crear Jugador desde Excel</h1>
+            </div>
+            <div class="mdl-card__supporting-text no-padding">
+                <table class="mdl-data-table mdl-js-data-table" id="excel-data-table">
+                    <thead><tr></tr></thead>
+                    <tbody></tbody>
+                </table>
+                <div class="mdl-card__actions">
+                    <button id="cancel-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                        Cancelar
+                    </type="button">
+                    <button id="submit-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                        Subir
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 
 
@@ -369,7 +399,9 @@
 <script src="js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
 <script src="js/widgets/table/table.min.js"></script>
 <script src="js/widgets/todo/todo.min.js"></script>
-<script src="js/Excel/Jugadores.js"></script>
+<script src="js/Excel/JugadoresJSON.js"></script>
+<script src="js/Excel/CrearJugadores.js"></script>
+
 
 <script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 <!-- endinject -->

@@ -64,22 +64,65 @@
 </div>
 
 <script>
-    document.getElementById('loginForm').onsubmit = function(e) {
-        e.preventDefault();
-        this.style.display = 'none';
-        document.getElementById('tokenForm').style.display = 'block';
+document.getElementById('loginForm').onsubmit = async function(e) {
+    e.preventDefault();
+
+    var email = document.getElementById('e-mail').value;
+    var password = document.getElementById('password').value;
+
+    var data = JSON.stringify({
+        "username": email,
+        "password": password
+    });
+
+    var requestOptions = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'accept': 'application/json'
+        },
+        body: data,
+        redirect: 'follow'
     };
 
-    document.getElementById('tokenForm').onsubmit = function(e) {
-        e.preventDefault();
-        var tokenValue = document.getElementById('token').value;
-        if (tokenValue.trim() !== '') {
-            window.location.href = 'MainAdmin.html';
+    try {
+        const response = await fetch('https://localhost:3443/usuarios/login', requestOptions);
+        if (response.ok) {
+            const result = await response.json();
+            console.log(result);
+            if (result.message === "Login successful") {
+                // Mostrar el formulario del token
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('tokenForm').style.display = 'block';
+                // Generar un token aleatorio y mostrarlo en la consola
+                window.generatedToken = Math.floor(100000 + Math.random() * 900000);
+                console.log("Su token es: " + window.generatedToken);
+            } else {
+                alert("Credenciales incorrectas, por favor intente de nuevo.");
+            }
         } else {
-            alert("Por favor, ingrese un token válido.");
+            throw new Error('Network response was not ok.');
         }
-    };
+    } catch (error) {
+        console.error('Error:', error);
+        alert("Hubo un error al intentar conectar con el servidor.");
+    }
+};
+
+document.getElementById('tokenForm').onsubmit = function(e) {
+    e.preventDefault();
+    var tokenValue = document.getElementById('token').value;
+    // Verificar que el token ingresado sea igual al generado
+    if (parseInt(tokenValue, 10) === window.generatedToken) {
+        window.location.href = 'MainAdmin.html';
+    } else {
+        alert("Token incorrecto, por favor ingrese el token correcto.");
+    }
+};
 </script>
+
+
+
 
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>
