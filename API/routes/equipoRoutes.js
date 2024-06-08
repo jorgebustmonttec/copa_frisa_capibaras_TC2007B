@@ -1,3 +1,4 @@
+//equipoRoutes.js
 
 const express = require('express');
 const router = express.Router();
@@ -8,7 +9,7 @@ const upload = require('../utils/upload'); // Import multer configuration
  * @swagger
  * tags:
  *   name: Equipos
- *   description: All about Equipos
+ *   description: Todo sobre Equipos
  * 
  * components:
  *   schemas:
@@ -57,9 +58,9 @@ const upload = require('../utils/upload'); // Import multer configuration
  *                 type: string
  *     responses:
  *       201:
- *         description: Equipo created successfully
+ *         description: Equipo creado exitosamente
  *       500:
- *         description: Server error
+ *         description: Error del servidor
  */
 router.post('/', upload.single('escudo'), equipoController.createEquipo);
 
@@ -79,6 +80,8 @@ router.post('/', upload.single('escudo'), equipoController.createEquipo);
  *               type: array
  *               items:
  *                 $ref: '#/components/schemas/Equipo'
+ *       500:
+ *         description: Error al obtener los equipos
  */
 router.get('/', equipoController.getAllEquipos);
 
@@ -105,6 +108,8 @@ router.get('/', equipoController.getAllEquipos);
  *               $ref: '#/components/schemas/Equipo'
  *       404:
  *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el equipo
  */
 router.get('/:id', equipoController.getEquipoById);
 

@@ -8,54 +8,37 @@
 import SwiftUI
 
 struct NotaView: View {
-    var nota: Nota  // Suponiendo que `Nota` es un modelo que incluye todos los detalles necesarios
+    var title: String
+    var imageName: String
+    var message: String
 
     var body: some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: 10) {
-                Text(nota.titulo)
-                    .font(.title)
-                    .fontWeight(.bold)
-                
-                Text("Fecha: \(nota.fecha, formatter: dateFormatter)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
+        VStack {
+            Text(title)
+                .font(.title)
+                .fontWeight(.bold)
+                .padding()
+            
+            Image(imageName)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .cornerRadius(8)
+                .shadow(radius: 4)
+                .padding()
+            
+            Text(message)
+                .font(.body)
+                .padding()
 
-                Image(nota.imagen)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-
-                Text(nota.mensaje)
-                    .padding(.top, 5)
-
-                HStack {
-                    Text("❤️ \(nota.likes)  ✉️ \(nota.comentarios)")
-                    Spacer()
-                }
-                .padding(.vertical)
-
-                Text("Que bonito!")
-                    .italic()
-            }
-            .padding()
+            Spacer()
         }
-        .navigationBarTitle("Detalle", displayMode: .inline)
-    }
-
-    private var dateFormatter: DateFormatter {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
-        return formatter
+        .navigationBarTitle(Text(title), displayMode: .inline)
+        .padding()
     }
 }
 
-// Modelo de datos para Nota
-struct Nota {
-    var titulo: String
-    var fecha: Date
-    var imagen: String
-    var mensaje: String
-    var likes: Int
-    var comentarios: Int
+struct NotaView_Previews: PreviewProvider {
+    static var previews: some View {
+        NotaView(title: "Titulo Ejemplo", imageName: "REGLAS", message: "Detalles del ejemplo aquí")
+    }
 }

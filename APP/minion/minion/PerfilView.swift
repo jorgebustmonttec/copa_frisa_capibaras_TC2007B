@@ -23,10 +23,8 @@ struct PerfilView: View {
             if userViewModel.userType == 1 {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
-                        // Espacio en la parte superior
                         Spacer(minLength: 20)
                         
-                        // Sección del nombre y foto
                         HStack(spacing: 16) {
                             Image(systemName: "person.fill")
                                 .resizable()
@@ -47,7 +45,6 @@ struct PerfilView: View {
 
                         Divider()
                         
-                        // Estadísticas con un estilo más limpio
                         Group {
                             StatisticView(label: "Goles", value: String(goles))
                             StatisticView(label: "Posición", value: posicion)
@@ -62,10 +59,10 @@ struct PerfilView: View {
                 .navigationBarTitle("Perfil del Jugador", displayMode: .inline)
             } else {
                 VStack {
-                    Text("You are not a player, but you can look up other players.")
+                    Text("No eres un jugador, pero puedes buscar otros jugadores.")
                         .padding()
                     NavigationLink(destination: BusquedaView()) {
-                        Text("Go to Search")
+                        Text("Ir a Buscar")
                             .foregroundColor(.white)
                             .padding()
                             .background(Color.blue)
@@ -76,13 +73,21 @@ struct PerfilView: View {
             }
         } else {
             VStack {
-                Text("You are not logged in.")
+                Text("No has iniciado sesion.")
                     .padding()
+                NavigationLink(destination: BusquedaView()) {
+                    Text("Buscar Jugadores")
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                }
+                .padding()
                 Button(action: {
-                    presentationMode.wrappedValue.dismiss() // Dismiss current view
+                    presentationMode.wrappedValue.dismiss()
                 }) {
                     NavigationLink(destination: ContentView().navigationBarHidden(true)) {
-                        Text("Go to Login")
+                        Text("Ir a Iniciar Sesión")
                             .foregroundColor(.white)
                             .padding()
                             .background(Color.blue)
@@ -95,7 +100,6 @@ struct PerfilView: View {
     }
 }
 
-// Vista auxiliar para mostrar estadísticas
 struct StatisticView: View {
     var label: String
     var value: String
