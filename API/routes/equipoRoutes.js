@@ -37,7 +37,7 @@ const upload = require('../utils/upload'); // Import multer configuration
  *         escudo: storage/escudos/logo1.png
  *         escuela: Primaria Benito Juárez
  *
- * /equipos:
+ * /equipos/create:
  *   post:
  *     tags:
  *       - Equipos
@@ -62,11 +62,11 @@ const upload = require('../utils/upload'); // Import multer configuration
  *       500:
  *         description: Error del servidor
  */
-router.post('/', upload.single('escudo'), equipoController.createEquipo);
+router.post('/create', upload.single('escudo'), equipoController.createEquipo);
 
 /**
  * @swagger
- * /equipos:
+ * /equipos/all:
  *   get:
  *     tags:
  *       - Equipos
@@ -83,11 +83,11 @@ router.post('/', upload.single('escudo'), equipoController.createEquipo);
  *       500:
  *         description: Error al obtener los equipos
  */
-router.get('/', equipoController.getAllEquipos);
+router.get('/all', equipoController.getAllEquipos);
 
 /**
  * @swagger
- * /equipos/{id}:
+ * /equipos/single/{id}:
  *   get:
  *     tags:
  *       - Equipos
@@ -111,6 +111,6 @@ router.get('/', equipoController.getAllEquipos);
  *       500:
  *         description: Error al obtener el equipo
  */
-router.get('/:id', equipoController.getEquipoById);
+router.get('/single/:id', equipoController.getEquipoById);
 
 module.exports = router;
