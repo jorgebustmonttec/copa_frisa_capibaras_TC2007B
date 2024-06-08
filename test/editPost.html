@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Publicación</title>
+    <style>
+        .changed {
+            border: 2px solid red;
+        }
+        .highlighted {
+            outline: 2px solid red;
+        }
+        .hidden {
+            display: none;
+        }
+        .disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        img {
+            max-width: 100px;
+            display: block;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar Publicación</h1>
+    <button onclick="goBack()">Back</button>
+    <form id="edit-post-form" onsubmit="updatePost(event)">
+        <input type="hidden" id="id_post">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" placeholder="Título">
+        <br>
+        <label for="contenido">Contenido:</label>
+        <textarea id="contenido" name="contenido" placeholder="Contenido"></textarea>
+        <br>
+        <label for="imagen">Subir Imagen:</label>
+        <input type="file" id="imagen" name="imagen" accept="image/*">
+        <br>
+        <img id="current-imagen" src="" alt="Current Imagen">
+        <button type="button" id="remove-image-button" onclick="removeUploadedImage()">Remove Uploaded Image</button>
+        <br>
+        <button type="submit" id="update-button" class="disabled" disabled>Actualizar Publicación</button>
+    </form>
+    <script>
+        const apiUrl = 'https://localhost:3443';
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        let post = {}; // To store the original post data
+        let uploadedImage = false; // To track if a new image is uploaded
+
+        document.getElementById('id_post').value = id;
+
+        async function fetchPost() {
+            try {
+                const response = await fetch(`${apiUrl}/publicaciones/${id}`);
+                if (!response.ok) throw new Error('Error al obtener la publicación');
+                post = await response.json();
+
+                document.getElementById('titulo').placeholder = post.titulo;
+                document.getElementById('contenido').placeholder = post.contenido;
+
+                const imagenResponse = await fetch(`${apiUrl}/publicaciones/${id}/imagen`);
+                if (imagenResponse.ok) {
+                    const imagenBlob = await imagenResponse.blob();
+                    const imagenUrl = URL.createObjectURL(imagenBlob);
+                    document.getElementById('current-imagen').src = imagenUrl;
+                }
+
+                document.getElementById('titulo').addEventListener('input', handleInputChange);
+                document.getElementById('contenido').addEventListener('input', handleInputChange);
+                document.getElementById('imagen').addEventListener('change', handleInputChange);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function handleInputChange() {
+            const titulo = document.getElementById('titulo').value;
+            const contenido = document.getElementById('contenido').value;
+            const imagen = document.getElementById('imagen').files.length > 0;
+
+            const updateButton = document.getElementById('update-button');
+            uploadedImage = imagen; // Track if a new image is uploaded
+
+            if (titulo || contenido || imagen) {
+                updateButton.classList.remove('disabled');
+                updateButton.disabled = false;
+            } else {
+                updateButton.classList.add('disabled');
+                updateButton.disabled = true;
+            }
+        }
+
+        function removeUploadedImage() {
+            document.getElementById('imagen').value = null;
+            uploadedImage = false;
+            handleInputChange();
+        }
+
+        async function updatePost(event) {
+            event.preventDefault();
+            try {
+                const titulo = document.getElementById('titulo').value || post.titulo;
+                const contenido = document.getElementById('contenido').value || post.contenido;
+
+                const response = await fetch(`${apiUrl}/publicaciones/actualizar/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        titulo,
+                        contenido
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error al actualizar la publicación');
+
+                if (uploadedImage) {
+                    const imagenFormData = new FormData();
+                    imagenFormData.append('imagen', document.getElementById('imagen').files[0]);
+
+                    const imagenResponse = await fetch(`${apiUrl}/publicaciones/${id}/imagen`, {
+                        method: 'POST',
+                        body: imagenFormData
+                    });
+
+                    if (!imagenResponse.ok) throw new Error('Error al actualizar la imagen');
+                }
+
+                alert('Publicación actualizada exitosamente');
+                window.location.href = 'publicaciones.html';
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function goBack() {
+            window.location.href = 'publicaciones.html';
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchPost);
+    </script>
+</body>
+</html>
