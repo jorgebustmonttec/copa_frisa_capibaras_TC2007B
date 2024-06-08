@@ -250,4 +250,29 @@ router.post('/:id/imagen', upload.single('imagen'), publicacionController.addPos
  */
 router.put('/actualizar/:id', publicacionController.updatePost);
 
+/**
+ * @swagger
+ * /publicaciones/eliminar/{id}:
+ *   delete:
+ *     tags:
+ *       - Publicaciones
+ *     summary: Eliminar una publicación
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único de la publicación
+ *     responses:
+ *       200:
+ *         description: Publicación eliminada exitosamente
+ *       404:
+ *         description: Publicación no encontrada
+ *       500:
+ *         description: Error al eliminar la publicación
+ */
+router.delete('/eliminar/:id', publicacionController.deletePost);
+
+
 module.exports = router;
