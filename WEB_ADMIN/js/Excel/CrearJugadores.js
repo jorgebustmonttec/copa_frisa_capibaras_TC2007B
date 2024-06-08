@@ -84,15 +84,28 @@ class Row {
 class ExcelPrinter {
     static print(tableId, excel) {
         const table = document.getElementById(tableId);
-        console.log(table);
+        if (!table) {
+            console.error(`Table with id "${tableId}" not found`);
+            return;
+        }
+
+        const thead = table.querySelector("thead>tr");
+        const tbody = table.querySelector('tbody');
+        if (!thead || !tbody) {
+            console.error('Table structure is incorrect');
+            return;
+        }
+
+        thead.innerHTML = ''; // Clear existing header
+        tbody.innerHTML = ''; // Clear existing rows
 
         excel.header().forEach(title => {
-            table.querySelector("thead>tr").innerHTML += `<th class="mdl-data-table__cell--non-numeric">${title}</th>`;
+            thead.innerHTML += `<th class="mdl-data-table__cell--non-numeric">${title}</th>`;
         });
 
         for (let index = 0; index < excel.rows().count(); index++) {
             const row = excel.rows().get(index);
-            table.querySelector('tbody').innerHTML += `
+            tbody.innerHTML += `
                 <tr>
                     <td class="mdl-data-table__cell--non-numeric">${row.Username()}</td>
                     <td class="mdl-data-table__cell--non-numeric">${row.NameDisplay()}</td>
@@ -112,12 +125,13 @@ class ExcelPrinter {
     }
 }
 
+
 function handleFileSelect(event) {
     const file = event.target.files[0];
     if (file) {
         readXlsxFile(file).then((content) => {
             const excel = new Excel(content);
-            ExcelPrinter.print('excel-table', excel);
+            ExcelPrinter.print('excel-data-table', excel);
             jsonSheet = content;
         });
     }
@@ -178,13 +192,28 @@ function uploadData() {
             }
             return response.json();
         })
-        .then(data => console.log('Success:', data))
+        .then(data => {
+            console.log('Success:', data);
+            fetchAndPrintTable(); // Reload the table on success
+        })
         .catch(error => console.error('Error:', error));
     });
 }
 
+
 function convertExcelDate(excelDate) {
     if (!excelDate) return null;
-    const date = new Date((excelDate - (25567 + 1)) * 86400 * 1000);
+    let date = new Date(excelDate);
+    if (isNaN(date.getTime())) {
+        const parts = excelDate.split('/');
+        if (parts.length === 3) {
+            // Adjust to match Date constructor format MM/DD/YYYY
+            date = new Date(`20${parts[2]}`, parts[1] - 1, parts[0]);
+        }
+    }
+    if (isNaN(date.getTime())) {
+        console.error('Invalid date:', excelDate);
+        return null;
+    }
     return date.toISOString().split('T')[0];
 }
