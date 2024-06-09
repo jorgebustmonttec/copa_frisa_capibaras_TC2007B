@@ -37,6 +37,59 @@
     <link rel="stylesheet" href="lib/application.min.css">
     <!-- endinject -->
 
+
+<style>
+    /* Estilo base para el formulario */
+.mdl-grid {
+    background-color: #333; /* Color de fondo oscuro */
+    color: white; /* Letras en blanco */
+    padding: 20px; /* Espaciado interior para mejor visibilidad */
+    border-radius: 8px; /* Bordes redondeados para un look moderno */
+}
+
+/* Ajuste de las etiquetas para mejorar la visibilidad */
+label {
+    color: white; /* Color de texto para las etiquetas */
+    font-weight: bold; /* Negrita para mejorar la legibilidad */
+    margin-bottom: 5px; /* Espacio debajo de la etiqueta */
+    display: block; /* Hacer que la etiqueta ocupe toda la línea */
+}
+
+/* Estilos para los selectores y entradas de texto */
+.mdl-textfield__input, select {
+    background-color: #555; /* Fondo más claro que el general para distinguir el input */
+    color: white; /* Texto en blanco */
+    border: none; /* Sin bordes adicionales */
+    border-bottom: 1px solid white; /* Subrayado para indicar el límite del input */
+    border-radius: 4px; /* Bordes ligeramente redondeados */
+    padding: 10px; /* Padding para mayor comodidad al escribir */
+    width: 100%; /* Uso máximo del espacio disponible */
+}
+
+/* Ajustes para los botones */
+button.mdl-button {
+    background-color: #1976D2; /* Color azul para botón de acción */
+    color: white; /* Texto en blanco */
+    margin-top: 20px; /* Espacio superior para separar del resto del formulario */
+    font-weight: bold; /* Texto en negrita para los botones */
+    letter-spacing: 1px; /* Espaciado de caracteres para mejorar la estética */
+}
+
+/* Botón de volver con un estilo diferente para diferenciar */
+button.mdl-button--accent {
+    background-color: #D32F2F; /* Color rojo para el botón de volver */
+}
+
+/* Estilos para inputs tipo datetime-local */
+input[type='datetime-local'] {
+    cursor: pointer; /* Cambio de cursor para indicar interactividad */
+}
+
+</style>
+
+
+
+
 </head>
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header is-small-screen">
@@ -45,14 +98,9 @@
             <div class="mdl-layout-spacer"></div>
             <!-- Search-->
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                <label class="mdl-button mdl-js-button mdl-button--icon" for="search">
-                    <i class="material-icons">search</i>
-                </label>
+                
 
-                <div class="mdl-textfield__expandable-holder">
-                    <input class="mdl-textfield__input" type="text" id="search"/>
-                    <label class="mdl-textfield__label" for="search">Enter your query...</label>
-                </div>
+                
             </div>
 
             <div class="material-icons mdl-badge mdl-badge--overlap mdl-button--icon notification" id="notification"
@@ -293,68 +341,80 @@
         </div>
     </div> <!-- a partir de aqui termina la plantilla -->
 
-    <main class="mdl-layout__content">
+    <main class="mdl-layout__content mdl-color--grey-100">
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <button onclick="fetchAllPartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Todos los Partidos
+            </button>
+            <button onclick="fetchPastPartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Partidos Pasados
+            </button>
+            <button onclick="fetchFuturePartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Partidos Futuros
+            </button>
+        </div>
+    </div>
 
-        <div class="mdl-grid mdl-grid--no-spacing dashboard">
-
-            <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
-
-                <!-- Pie chart-->
-               
-                <!-- Weather widget-->
-
-                 <div class="mdl-cell mdl-cell--3-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
-                <div class="mdl-card mdl-shadow--2dp">
-                    <div class="mdl-card__title">
-                        <h2 class="mdl-card__title-text">Equipos con mayor goles</h2>
-                    </div>
-                    <div class="mdl-card__supporting-text">
-                        <div class="chart1__container">
-
-                        </div>
-                    </div>
+    <div class="mdl-grid ui-tables">
+        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h1 class="mdl-card__title-text">Partidos</h1>
+                </div>
+                <div class="mdl-card__supporting-text no-padding">
+                    <table class="mdl-data-table mdl-js-data-table" id="partidosTable">
+                        <thead>
+                            <tr>
+                                <th>Equipo A</th>
+                                <th>Escudo A</th>
+                                <th>Goles A</th>
+                                <th>Equipo B</th>
+                                <th>Escudo B</th>
+                                <th>Goles B</th>
+                                <th>Fecha</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
                 </div>
             </div>
+        </div>
+    </div>
 
-               
-                <!-- Trending widget-->
-               
-                <!-- Cotoneaster card-->
-                
-                <!-- Table-->
-             
-                           
-                </div>
-                
+    <h2>Crear un nuevo partido</h2>
+    <form id="createPartidoForm" onsubmit="createPartido(event)">
+        <div class="mdl-grid">
+            <div class="mdl-cell mdl-cell--6-col">
+                <label for="equipoA">Equipo A:</label>
+                <select id="equipoA" name="equipoA" class="mdl-textfield__input" required></select>
             </div>
+            <div class="mdl-cell mdl-cell--6-col">
+                <label for="equipoB">Equipo B:</label>
+                <select id="equipoB" name="equipoB" class="mdl-textfield__input" required></select>
+            </div>
+            <div class="mdl-cell mdl-cell--6-col">
+                <label for="fecha">Fecha:</label>
+                <input type="datetime-local" id="fecha" name="fecha" class="mdl-textfield__input" required>
+            </div>
+            <div class="mdl-cell mdl-cell--12-col">
+                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                    Crear Partido
+                </button>
+                <button type="button" onclick="window.location.href='Partidos.html'" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                    Volver
+                </button>
+            </div>
+        </div>
+    </form>
+</main>
 
 
-
-            <div class="mdl-grid mdl-cell mdl-cell--3-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
-                <!-- Robot card-->
-                <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--6-col-tablet mdl-cell--2-col-phone">
-                    <div class="mdl-card mdl-shadow--2dp robot">
-                        <div class="mdl-card__title mdl-card--expand">
-                            <h2 class="mdl-card__title-text">BB-8</h2>
-                        </div>
-                        <div class="mdl-card__supporting-text">
-                            <div>
-                                A skittish but loyal astromech, BB-8 accompanied Poe Dameron on many missions for the
-                                Resistance helping keep his X-wing in working order.
-                            </div>
-                            <a href="http://www.starwars.com/databank/bb-8" target="_blank">Star Wars Databank</a>
-                        </div>
-                    </div>
-                </div>
-                <!-- ToDo_widget-->
-                
-
-    </main>
-
-</div>
 
 <!-- inject:js -->
 
+<script src="js/PartidosJS/PartidosJSON.js"></script>
 <script src="js/session/sessionManagement.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>

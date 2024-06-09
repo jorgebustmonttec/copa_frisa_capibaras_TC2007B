@@ -1,3 +1,5 @@
+/* 
+
 const apiUrl = 'https://localhost:3443';
 
 async function fetchPosts() {
@@ -55,3 +57,5 @@ async function deletePost(id) {
 }
 
 document.addEventListener('DOMContentLoaded', fetchPosts);
+
+*/
