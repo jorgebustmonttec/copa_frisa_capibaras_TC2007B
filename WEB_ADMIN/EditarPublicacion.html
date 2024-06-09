@@ -294,11 +294,11 @@
         <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-card mdl-shadow--2dp employer-form">
         <div class="mdl-card__title">
-            <h2>Crear Publicación</h2>
-            <div class="mdl-card__subtitle">Por favor completa los datos</div>
+            <h2>Editar Publicación</h2>
+            <div class="mdl-card__subtitle">Por favor edita los datos</div>
         </div>
         <div class="mdl-card__supporting-text">
-            <form id="create-post-form">
+            <form id="edit-post-form" onsubmit="updatePost(event)">
                 <div class="form__article">
                     <h3>Detalles de la Publicación</h3>
                     <div class="mdl-grid">
@@ -306,36 +306,31 @@
                             <input class="mdl-textfield__input" type="text" id="titulo" name="titulo"/>
                             <label class="mdl-textfield__label" for="titulo">Título</label>
                         </div>
-                        <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="autor" name="autor"/>
-                            <label class="mdl-textfield__label" for="autor">Autor(ID)</label>
-                        </div>
-                    </div>
-                    <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <textarea class="mdl-textfield__input" type="text" rows= "3" id="contenido" name="contenido"></textarea>
+                            <textarea class="mdl-textfield__input" type="text" rows="3" id="contenido" name="contenido"></textarea>
                             <label class="mdl-textfield__label" for="contenido">Contenido</label>
                         </div>
-                    </div>
-                    <div class="mdl-grid">
                         <div class="mdl-cell mdl-cell--12-col">
                             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
+                            <img id="current-imagen" src="" alt="Current Imagen" style="width: 100%; height: auto;">
+                            <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="removeUploadedImage()">Remove Uploaded Image</button>
                         </div>
                     </div>
                 </div>
                 <div class="form__action">
-                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Crear </button>
-                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="window.location.href='Publicaciones.html'">Volver</button>
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="update-button" disabled>Actualizar</button>
+                    <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="goBack()">Volver</button>
                 </div>
             </form>
         </div>
     </div>
 </main>
 
+
     </div>
 
 <!-- inject:js -->
-<script src="js/EquiposJS/CrearPublicacion.js"></script>
+<script src="js/EquiposJS/EditarPublicacionJS.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>
 <script src="js/material.min.js"></script>

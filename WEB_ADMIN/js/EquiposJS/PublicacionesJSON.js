@@ -39,7 +39,7 @@ async function fetchPosts() {
 }
 
 function editPost(id) {
-    window.location.href = `editPost.html?id=${id}`;
+    window.location.href = `EditarPublicacion.html?id=${id}`;
 }
 
 async function deletePost(id) {
