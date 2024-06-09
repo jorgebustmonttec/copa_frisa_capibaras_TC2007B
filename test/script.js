@@ -1,3 +1,5 @@
+//script.js
+
 document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
 document.getElementById('uploadButton').addEventListener('click', uploadData, false);
 

@@ -15,10 +15,8 @@ const jugadorController = require('../controllers/jugadorController');
 *     Jugador:
 *       type: object
 *       required:
-*         - username
 *         - display_name
 *         - correo
-*         - password
 *         - fecha_nac
 *         - CURP
 *         - domicilio
@@ -29,18 +27,12 @@ const jugadorController = require('../controllers/jugadorController');
 *         - num_imss
 *         - id_equipo
 *       properties:
-*         username:
-*           type: string
-*           description: Nombre de usuario.
 *         display_name:
 *           type: string
 *           description: Nombre para mostrar del usuario.
 *         correo:
 *           type: string
 *           description: Correo electrónico del usuario.
-*         password:
-*           type: string
-*           description: Contraseña del usuario.
 *         fecha_nac:
 *           type: string
 *           format: date
@@ -70,10 +62,8 @@ const jugadorController = require('../controllers/jugadorController');
 *           type: integer
 *           description: ID del equipo al que pertenece el jugador.
 *       example:
-*         username: johndoe
 *         display_name: John Doe
 *         correo: johndoe@example.com
-*         password: password123
 *         fecha_nac: "2000-01-01"
 *         CURP: ABCD123456HDEFLL09
 *         domicilio: 1234 Main St
@@ -83,7 +73,10 @@ const jugadorController = require('../controllers/jugadorController');
 *         apellido_m: Smith
 *         num_imss: 123456789
 *         id_equipo: 1
-*
+*/
+
+/**
+* @swagger
 * /jugadores/crear:
 *   post:
 *     tags:
