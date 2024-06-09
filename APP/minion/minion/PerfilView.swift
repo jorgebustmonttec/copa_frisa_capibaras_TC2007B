@@ -20,7 +20,7 @@ struct PerfilView: View {
 
     var body: some View {
         if userViewModel.isLoggedIn {
-            if userViewModel.userType == 1 {
+            if userViewModel.userType == 2 {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 10) {
                         Spacer(minLength: 20)

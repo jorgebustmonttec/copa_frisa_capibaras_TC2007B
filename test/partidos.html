@@ -28,8 +28,10 @@
             <tr>
                 <th>Equipo A</th>
                 <th>Escudo A</th>
+                <th>Goles A</th>
                 <th>Equipo B</th>
                 <th>Escudo B</th>
+                <th>Goles B</th>
                 <th>Fecha</th>
                 <th>Acciones</th>
             </tr>
@@ -84,12 +86,17 @@
                     const equipoA = await fetchEquipo(partido.equipo_a);
                     const equipoB = await fetchEquipo(partido.equipo_b);
 
+                    const golesA = await fetchTotalGoals(partido.equipo_a, partido.id_partido);
+                    const golesB = await fetchTotalGoals(partido.equipo_b, partido.id_partido);
+
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${equipoA.nombre_equipo}</td>
                         <td><img src="${equipoA.escudo}" alt="Escudo A" style="width:50px;"></td>
+                        <td>${golesA}</td>
                         <td>${equipoB.nombre_equipo}</td>
                         <td><img src="${equipoB.escudo}" alt="Escudo B" style="width:50px;"></td>
+                        <td>${golesB}</td>
                         <td>${new Date(partido.fecha).toLocaleString()}</td>
                         <td>
                             <button onclick="editPartido(${partido.id_partido})">Edit</button>
@@ -120,6 +127,18 @@
             } catch (error) {
                 console.error('Error:', error);
                 return { nombre_equipo: 'N/A', escudo: '' };
+            }
+        }
+
+        async function fetchTotalGoals(teamId, matchId) {
+            try {
+                const response = await fetch(`${apiUrl}/puntos/goles/equipo/${teamId}/partido/${matchId}/total`);
+                if (!response.ok) throw new Error('Error al obtener los goles');
+                const data = await response.json();
+                return data.total_goals;
+            } catch (error) {
+                console.error('Error:', error);
+                return 0;
             }
         }
 

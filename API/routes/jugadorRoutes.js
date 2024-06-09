@@ -5,97 +5,97 @@ const router = express.Router();
 const jugadorController = require('../controllers/jugadorController');
 
 /**
-* @swagger
-* tags:
-*   name: Jugadores
-*   description: Todo sobre Jugadores
-* 
-* components:
-*   schemas:
-*     Jugador:
-*       type: object
-*       required:
-*         - display_name
-*         - correo
-*         - fecha_nac
-*         - CURP
-*         - domicilio
-*         - telefono
-*         - nombre
-*         - apellido_p
-*         - apellido_m
-*         - num_imss
-*         - id_equipo
-*       properties:
-*         display_name:
-*           type: string
-*           description: Nombre para mostrar del usuario.
-*         correo:
-*           type: string
-*           description: Correo electrónico del usuario.
-*         fecha_nac:
-*           type: string
-*           format: date
-*           description: Fecha de nacimiento del jugador.
-*         CURP:
-*           type: string
-*           description: CURP del jugador.
-*         domicilio:
-*           type: string
-*           description: Dirección del jugador.
-*         telefono:
-*           type: string
-*           description: Número de teléfono del jugador.
-*         nombre:
-*           type: string
-*           description: Nombre del jugador.
-*         apellido_p:
-*           type: string
-*           description: Apellido paterno del jugador.
-*         apellido_m:
-*           type: string
-*           description: Apellido materno del jugador.
-*         num_imss:
-*           type: string
-*           description: Número de IMSS del jugador.
-*         id_equipo:
-*           type: integer
-*           description: ID del equipo al que pertenece el jugador.
-*       example:
-*         display_name: John Doe
-*         correo: johndoe@example.com
-*         fecha_nac: "2000-01-01"
-*         CURP: ABCD123456HDEFLL09
-*         domicilio: 1234 Main St
-*         telefono: 555-1234
-*         nombre: John
-*         apellido_p: Doe
-*         apellido_m: Smith
-*         num_imss: 123456789
-*         id_equipo: 1
-*/
+ * @swagger
+ * tags:
+ *   name: Jugadores
+ *   description: Todo sobre Jugadores
+ * 
+ * components:
+ *   schemas:
+ *     Jugador:
+ *       type: object
+ *       required:
+ *         - display_name
+ *         - correo
+ *         - fecha_nac
+ *         - CURP
+ *         - domicilio
+ *         - telefono
+ *         - nombre
+ *         - apellido_p
+ *         - apellido_m
+ *         - num_imss
+ *         - id_equipo
+ *       properties:
+ *         display_name:
+ *           type: string
+ *           description: Nombre para mostrar del usuario.
+ *         correo:
+ *           type: string
+ *           description: Correo electrónico del usuario.
+ *         fecha_nac:
+ *           type: string
+ *           format: date
+ *           description: Fecha de nacimiento del jugador.
+ *         CURP:
+ *           type: string
+ *           description: CURP del jugador.
+ *         domicilio:
+ *           type: string
+ *           description: Dirección del jugador.
+ *         telefono:
+ *           type: string
+ *           description: Número de teléfono del jugador.
+ *         nombre:
+ *           type: string
+ *           description: Nombre del jugador.
+ *         apellido_p:
+ *           type: string
+ *           description: Apellido paterno del jugador.
+ *         apellido_m:
+ *           type: string
+ *           description: Apellido materno del jugador.
+ *         num_imss:
+ *           type: string
+ *           description: Número de IMSS del jugador.
+ *         id_equipo:
+ *           type: integer
+ *           description: ID del equipo al que pertenece el jugador.
+ *       example:
+ *         display_name: John Doe
+ *         correo: johndoe@example.com
+ *         fecha_nac: "2000-01-01"
+ *         CURP: ABCD123456HDEFLL09
+ *         domicilio: 1234 Main St
+ *         telefono: 555-1234
+ *         nombre: John
+ *         apellido_p: Doe
+ *         apellido_m: Smith
+ *         num_imss: 123456789
+ *         id_equipo: 1
+ */
 
 /**
-* @swagger
-* /jugadores/crear:
-*   post:
-*     tags:
-*       - Jugadores
-*     summary: Crear una nueva cuenta de jugador
-*     requestBody:
-*       required: true
-*       content:
-*         application/json:
-*           schema:
-*             $ref: '#/components/schemas/Jugador'
-*     responses:
-*       201:
-*         description: Cuenta de jugador creada exitosamente
-*       400:
-*         description: Solicitud incorrecta
-*       500:
-*         description: Error del servidor
-*/
+ * @swagger
+ * /jugadores/crear:
+ *   post:
+ *     tags:
+ *       - Jugadores
+ *     summary: Crear una nueva cuenta de jugador
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Jugador'
+ *     responses:
+ *       201:
+ *         description: Cuenta de jugador creada exitosamente
+ *       400:
+ *         description: Solicitud incorrecta
+ *       500:
+ *         description: Error del servidor
+ */
 router.post('/crear', jugadorController.createJugador);
 
 
@@ -140,18 +140,18 @@ router.post('/crear', jugadorController.createJugador);
  *   get:
  *     tags:
  *       - Jugadores
-*     summary: Obtener una lista pequeña de jugadores
-*     responses:
-*       200:
-*         description: Una lista de jugadores con información básica.
-*         content:
-*           application/json:
-*             schema:
-*               type: array
-*               items:
-*                 $ref: '#/components/schemas/JugadorSmall'
-*       500:
-*         description: Error al obtener los jugadores
+ *     summary: Obtener una lista pequeña de jugadores
+ *     responses:
+ *       200:
+ *         description: Una lista de jugadores con información básica.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/JugadorSmall'
+ *       500:
+ *         description: Error al obtener los jugadores
  */
 router.get('/small', jugadorController.getAllJugadoresSmall);
 
@@ -229,11 +229,11 @@ router.post('/add-to-equipo', jugadorController.addJugadorToEquipo);
  *                 type: integer
  *     responses:
  *       200:
-*         description: Jugador removido del equipo exitosamente
-*       404:
-*         description: Jugador no encontrado
-*       500:
-*         description: Error del servidor
+ *         description: Jugador removido del equipo exitosamente
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error del servidor
  */
 router.post('/remove-from-equipo', jugadorController.removeJugadorFromEquipo);
 
@@ -264,6 +264,34 @@ router.post('/remove-from-equipo', jugadorController.removeJugadorFromEquipo);
  *         description: Error al obtener el jugador
  */
 router.get('/single/:id', jugadorController.getJugadorById);
+
+/**
+ * @swagger
+ * /jugadores/singlebyuser/{id}:
+ *   get:
+ *     tags:
+ *       - Jugadores
+ *     summary: Obtener la información completa de un jugador por ID de usuario
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del usuario
+ *     responses:
+ *       200:
+ *         description: Información del jugador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Jugador'
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el jugador
+ */
+router.get('/singlebyuser/:id', jugadorController.getJugadorByUserId);
 
 /**
  * @swagger
@@ -333,5 +361,36 @@ router.get('/single/:id', jugadorController.getJugadorById);
  */
 router.put('/update/:id', jugadorController.updateJugador);
 
+/**
+ * @swagger
+ * /jugadores/equipo/{id_equipo}:
+ *   get:
+ *     tags:
+ *       - Jugadores
+ *     summary: Obtener todos los jugadores de un equipo por ID de equipo
+ *     parameters:
+ *       - in: path
+ *         name: id_equipo
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Lista de jugadores del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/JugadorSmall'
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener los jugadores del equipo
+ */
+router.get('/equipo/:id_equipo', jugadorController.getJugadoresByEquipo);
+
+router.get('/partido/:matchId', jugadorController.getJugadoresByMatch);
 
 module.exports = router;

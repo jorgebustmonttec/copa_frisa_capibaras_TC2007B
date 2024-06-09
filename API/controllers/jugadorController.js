@@ -177,6 +177,33 @@ exports.getJugadorById = (req, res) => {
   );
 };
 
+exports.getJugadorByUserId = (req, res) => {
+  const { id } = req.params;
+  
+  db.query(
+    `SELECT 
+        jugadores.id_jugador, jugadores.fecha_nac, jugadores.CURP, jugadores.domicilio, jugadores.telefono, 
+        jugadores.nombre, jugadores.apellido_p, jugadores.apellido_m, jugadores.num_imss, jugadores.id_equipo, 
+        jugadores.doc_carta_responsabilidad, jugadores.doc_curp, jugadores.doc_ine, 
+        usuarios.id_usuario, usuarios.username, usuarios.display_name, usuarios.correo, usuarios.tipo_usuario, 
+        usuarios.imagen, usuarios.created_at, usuarios.first_login 
+     FROM jugadores 
+     JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario 
+     WHERE usuarios.id_usuario = ?`,
+    [id],
+    (err, result) => {
+      if (err) {
+        console.error('Error al obtener el jugador:', err);
+        res.status(500).json({ error: 'Error al obtener el jugador' });
+      } else if (result.length === 0) {
+        res.status(404).json({ error: 'Jugador no encontrado' });
+      } else {
+        res.json(result[0]);
+      }
+    }
+  );
+}
+
 exports.updateJugador = async (req, res) => {
   const { id } = req.params;
   const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
@@ -225,4 +252,47 @@ exports.updateJugador = async (req, res) => {
     console.error('Error:', err);
     res.status(500).json({ error: 'Error al actualizar el jugador' });
   }
+};
+
+exports.getJugadoresByEquipo = (req, res) => {
+  const { id_equipo } = req.params;
+
+  db.query(
+    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, 
+            COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
+            usuarios.username, usuarios.display_name 
+     FROM jugadores 
+     LEFT JOIN equipos ON jugadores.id_equipo = equipos.id_equipo 
+     JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario 
+     WHERE jugadores.id_equipo = ?`,
+    [id_equipo],
+    (err, results) => {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        res.json(results);
+      }
+    }
+  );
+};
+
+exports.getJugadoresByMatch = (req, res) => {
+  const { matchId } = req.params;
+  
+  db.query(`
+      SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, 
+             COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
+             usuarios.username, usuarios.display_name 
+      FROM jugadores 
+      LEFT JOIN equipos ON jugadores.id_equipo = equipos.id_equipo 
+      JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario 
+      JOIN puntos ON jugadores.id_jugador = puntos.id_jugador 
+      WHERE puntos.id_partido = ?
+  `, [matchId], (err, results) => {
+      if (err) {
+          res.status(500).json({ error: err.message });
+      } else {
+          res.json(results);
+      }
+  });
 };

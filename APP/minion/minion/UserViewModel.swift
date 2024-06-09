@@ -11,6 +11,7 @@ class UserViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var userId: Int?
     @Published var userType: Int?
+    @Published var firstLogin: Bool = false
     
     init() {
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
@@ -25,23 +26,39 @@ class UserViewModel: ObservableObject {
         }
     }
     
-    func login(username: String, password: String, completion: @escaping (Result<Void, APIError>) -> Void) {
+    func login(username: String, password: String, completion: @escaping (Result<LoginResponse, APIError>) -> Void) {
         APIService.shared.login(username: username, password: password) { result in
             switch result {
             case .success(let response):
                 self.userId = response.userId
                 self.userType = response.userType
-                self.isLoggedIn = true
-                
-                UserDefaults.standard.set(true, forKey: "isLoggedIn")
                 UserDefaults.standard.set(response.userId, forKey: "userId")
                 UserDefaults.standard.set(response.userType, forKey: "userType")
                 
-                completion(.success(()))
+                if response.userType == 2 {
+                    self.fetchUserDetails(userId: response.userId!) { result in
+                        switch result {
+                        case .success(let userDetails):
+                            self.firstLogin = userDetails.first_login == 1
+                            completion(.success(response))
+                        case .failure(let error):
+                            completion(.failure(error))
+                        }
+                    }
+                } else {
+                    self.isLoggedIn = true
+                    UserDefaults.standard.set(true, forKey: "isLoggedIn")
+                    completion(.success(response))
+                }
+                
             case .failure(let error):
                 completion(.failure(error))
             }
         }
+    }
+    
+    func fetchUserDetails(userId: Int, completion: @escaping (Result<UserDetails, APIError>) -> Void) {
+        APIService.shared.fetchUserDetails(userId: userId, completion: completion)
     }
     
     func logout() {
