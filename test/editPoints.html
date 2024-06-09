@@ -70,7 +70,6 @@
                 const response = await fetch(`${apiUrl}/tipo_puntos/${id}`);
                 if (!response.ok) throw new Error('Error al obtener el tipo de punto');
                 const tipoPunto = await response.json();
-                console.log('Fetched tipo_punto:', tipoPunto);  // Debug log
                 return tipoPunto;
             } catch (error) {
                 console.error('Error:', error);
@@ -81,7 +80,7 @@
         async function deletePoint(id) {
             if (confirm('¿Estás seguro de que quieres eliminar este punto?')) {
                 try {
-                    const response = await fetch(`${apiUrl}/puntos/goles/eliminar/${id}`, {
+                    const response = await fetch(`${apiUrl}/puntos/eliminar/${id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json'

@@ -294,4 +294,132 @@ router.get('/goles/equipo/:teamId/partido/:matchId/total', puntosController.getT
  */
 router.get('/partido/:id', puntosController.getPointsByMatch);
 
+/**
+ * @swagger
+ * /puntos/green:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener todas las tarjetas verdes
+ *     responses:
+ *       200:
+ *         description: Lista de todas las tarjetas verdes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Punto'
+ *       500:
+ *         description: Error al obtener las tarjetas verdes
+ */
+router.get('/green', puntosController.getAllGreenCards);
+
+/**
+ * @swagger
+ * /puntos/green/player/{id}:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas verdes por ID de jugador
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas verdes del jugador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_green_cards:
+ *                   type: integer
+ *                   example: 5
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas verdes del jugador
+ */
+router.get('/green/player/:id', puntosController.getTotalGreenCardsByPlayer);
+
+/**
+ * @swagger
+ * /puntos/green/team/{id}:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas verdes por ID de equipo
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas verdes del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_green_cards:
+ *                   type: integer
+ *                   example: 10
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas verdes del equipo
+ */
+router.get('/green/team/:id', puntosController.getTotalGreenCardsByTeam);
+
+/**
+ * @swagger
+ * /puntos/green/create:
+ *   post:
+ *     tags:
+ *       - Puntos
+ *     summary: Crear una tarjeta verde
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - id_partido
+ *               - id_jugador
+ *             properties:
+ *               id_partido:
+ *                 type: integer
+ *                 description: ID del partido
+ *               id_jugador:
+ *                 type: integer
+ *                 description: ID del jugador
+ *     responses:
+ *       201:
+ *         description: Tarjeta verde creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id_punto:
+ *                   type: integer
+ *                   example: 1
+ *       400:
+ *         description: Faltan campos obligatorios
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al crear la tarjeta verde
+ */
+router.post('/green/create', puntosController.createGreenCardPoint);
+
 module.exports = router;

@@ -346,6 +346,9 @@ class APIService {
         task.resume()
     }
 
+    
+
+    
 
 
 
@@ -362,4 +365,177 @@ class SelfSignedCertificateDelegate: NSObject, URLSessionDelegate {
             completionHandler(.performDefaultHandling, nil)
         }
     }
+}
+
+
+struct APIJugador: Codable {
+    var id_jugador: Int
+    var fecha_nac: String
+    var CURP: String
+    var domicilio: String
+    var telefono: String
+    var nombre: String
+    var apellido_p: String
+    var apellido_m: String
+    var num_imss: String
+    var id_equipo: Int
+    var posicion: String
+    var doc_carta_responsabilidad: String?
+    var doc_curp: String?
+    var doc_ine: String?
+    var id_usuario: Int
+    var username: String
+    var display_name: String
+    var correo: String
+    var tipo_usuario: Int
+    var imagen: String?
+    var created_at: String
+    var first_login: Int
+    var goles: Int?
+    var tarjetas: Int?
+    var ultimoJuegoFecha: String?
+    var ultimoJuegoResultado: String?
+}
+
+struct APILastGameInfo: Codable {
+    var message: String
+    var date: String
+    var result: String
+}
+
+struct APIGreenCards: Codable {
+    var total_green_cards: Int
+}
+
+extension APIService {
+    func fetchJugador(url: String, completion: @escaping (Result<APIJugador, APIError>) -> Void) {
+            guard let url = URL(string: url) else {
+                completion(.failure(.invalidURL))
+                return
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+
+            let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                do {
+                    let jugador = try JSONDecoder().decode(APIJugador.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(jugador))
+                    }
+                } catch {
+                    completion(.failure(.decodingFailed("Failed to decode jugador response.")))
+                }
+            }
+            task.resume()
+        }
+
+        func fetchEquipo(url: String, completion: @escaping (Result<APIEquipo, APIError>) -> Void) {
+            guard let url = URL(string: url) else {
+                completion(.failure(.invalidURL))
+                return
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+
+            let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                do {
+                    let equipo = try JSONDecoder().decode(APIEquipo.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(equipo))
+                    }
+                } catch {
+                    completion(.failure(.decodingFailed("Failed to decode equipo response.")))
+                }
+            }
+            task.resume()
+        }
+    func fetchLastGameInfo(url: String, completion: @escaping (Result<APILastGameInfo, APIError>) -> Void) {
+           guard let url = URL(string: url) else {
+               completion(.failure(.invalidURL))
+               return
+           }
+
+           var request = URLRequest(url: url)
+           request.httpMethod = "GET"
+
+           let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+           let task = session.dataTask(with: request) { data, response, error in
+               if let error = error {
+                   completion(.failure(.requestFailed))
+                   return
+               }
+
+               guard let data = data else {
+                   completion(.failure(.requestFailed))
+                   return
+               }
+
+               do {
+                   let lastGameInfo = try JSONDecoder().decode(APILastGameInfo.self, from: data)
+                   DispatchQueue.main.async {
+                       completion(.success(lastGameInfo))
+                   }
+               } catch {
+                   completion(.failure(.decodingFailed("Failed to decode last game info response.")))
+               }
+           }
+           task.resume()
+       }
+    
+    func fetchGreenCards(url: String, completion: @escaping (Result<APIGreenCards, APIError>) -> Void) {
+            guard let url = URL(string: url) else {
+                completion(.failure(.invalidURL))
+                return
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "GET"
+
+            let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+            let task = session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                do {
+                    let greenCards = try JSONDecoder().decode(APIGreenCards.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(greenCards))
+                    }
+                } catch {
+                    completion(.failure(.decodingFailed("Failed to decode green cards response.")))
+                }
+            }
+            task.resume()
+        }
 }

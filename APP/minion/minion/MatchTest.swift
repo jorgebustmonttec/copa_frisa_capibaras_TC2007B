@@ -32,17 +32,13 @@ struct MatchTest: View {
     @State private var errorMessage: String = ""
 
     var body: some View {
-        ScrollView {
+//        ScrollView {
             VStack {
                 Image("copa")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(height: 150)
-                    .padding(.top)
-
-                Text("Partidos")
-                    .font(.largeTitle)
-                    .padding()
+                    .frame(height: 130)
+                    //.padding(.top)
 
                 if !errorMessage.isEmpty {
                     Text(errorMessage)
@@ -59,7 +55,7 @@ struct MatchTest: View {
                             partidoView(partido: partido)
                         }
                     }
-                    .frame(height: 300)
+                    .frame(height: 150)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(10)
                 }
@@ -74,13 +70,13 @@ struct MatchTest: View {
                             partidoView(partido: partido)
                         }
                     }
-                    .frame(height: 300)
+                    .frame(height: 150)
                     .background(Color.gray.opacity(0.1))
                     .cornerRadius(10)
                 }
                 .padding()
             }
-        }
+        //}
         .onAppear {
             fetchEquipos()
             fetchPastPartidos()
@@ -99,9 +95,9 @@ struct MatchTest: View {
                             .resizable()
                             .frame(width: 50, height: 50)
                     }
-                    Text("Equipo A: \(equipoA.nombre_equipo)")
+                    Text(" \(equipoA.nombre_equipo)")
                 }
-                Text("Goles A: \(goals["\(partido.id_partido)_\(partido.equipo_a)"] ?? 0)")
+                Text("- \(goals["\(partido.id_partido)_\(partido.equipo_a)"] ?? 0)")
             }
             HStack {
                 if let equipoB = getEquipo(by: partido.equipo_b) {
@@ -110,9 +106,9 @@ struct MatchTest: View {
                             .resizable()
                             .frame(width: 50, height: 50)
                     }
-                    Text("Equipo B: \(equipoB.nombre_equipo)")
+                    Text(" \(equipoB.nombre_equipo)")
                 }
-                Text("Goles B: \(goals["\(partido.id_partido)_\(partido.equipo_b)"] ?? 0)")
+                Text("- \(goals["\(partido.id_partido)_\(partido.equipo_b)"] ?? 0)")
             }
         }
         .padding()

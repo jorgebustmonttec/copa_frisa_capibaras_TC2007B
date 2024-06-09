@@ -251,5 +251,44 @@ router.delete('/eliminar/:id', partidoController.deletePartido);
  */
 router.put('/actualizar/:id', partidoController.updatePartido);
 
+/**
+ * @swagger
+ * /partidos/lastgamebyuser/{id}:
+ *   get:
+ *     tags:
+ *       - Partidos
+ *     summary: Obtener información del último partido por ID de usuario
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del usuario
+ *     responses:
+ *       200:
+ *         description: Información del último partido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Success
+ *                 date:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2024-06-09T19:21:17.000Z"
+ *                 result:
+ *                   type: string
+ *                   example: "5 - 2"
+ *       404:
+ *         description: Jugador o partido no encontrado
+ *       500:
+ *         description: Error al obtener la información del partido
+ */
+router.get('/lastgamebyuser/:id', partidoController.getLastGameInfoByUserId);
+
 
 module.exports = router;
