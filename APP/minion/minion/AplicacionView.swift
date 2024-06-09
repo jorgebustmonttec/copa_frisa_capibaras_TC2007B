@@ -26,7 +26,7 @@ struct AplicacionView: View {
                     }
                     .tag(1)
                 
-                HomePageView() // Enlaza a HomePageView aquí
+                MatchTest() // Enlaza a HomePageView aquí
                     .tabItem {
                         Image(systemName: "trophy.fill")
                         Text("Inicio")

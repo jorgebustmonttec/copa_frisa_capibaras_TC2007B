@@ -1,5 +1,4 @@
 //jugadorRoutes.js
-
 const express = require('express');
 const router = express.Router();
 const jugadorController = require('../controllers/jugadorController');
@@ -26,6 +25,7 @@ const jugadorController = require('../controllers/jugadorController');
  *         - apellido_m
  *         - num_imss
  *         - id_equipo
+ *         - posicion
  *       properties:
  *         display_name:
  *           type: string
@@ -61,6 +61,9 @@ const jugadorController = require('../controllers/jugadorController');
  *         id_equipo:
  *           type: integer
  *           description: ID del equipo al que pertenece el jugador.
+ *         posicion:
+ *           type: string
+ *           description: Posición del jugador.
  *       example:
  *         display_name: John Doe
  *         correo: johndoe@example.com
@@ -73,6 +76,7 @@ const jugadorController = require('../controllers/jugadorController');
  *         apellido_m: Smith
  *         num_imss: 123456789
  *         id_equipo: 1
+ *         posicion: Delantero
  */
 
 /**
@@ -97,7 +101,6 @@ const jugadorController = require('../controllers/jugadorController');
  *         description: Error del servidor
  */
 router.post('/crear', jugadorController.createJugador);
-
 
 /**
  * @swagger
@@ -128,6 +131,9 @@ router.post('/crear', jugadorController.createJugador);
  *         display_name:
  *           type: string
  *           description: Nombre para mostrar del jugador.
+ *         posicion:
+ *           type: string
+ *           description: Posición del jugador.
  *       example:
  *         id_jugador: 1
  *         nombre: Carlos
@@ -135,6 +141,7 @@ router.post('/crear', jugadorController.createJugador);
  *         nombre_equipo: Equipo A
  *         username: carlos.martinez
  *         display_name: Carlos Martinez
+ *         posicion: Defensa
  *
  * /jugadores/small:
  *   get:
@@ -337,6 +344,8 @@ router.get('/singlebyuser/:id', jugadorController.getJugadorByUserId);
  *                 type: string
  *               id_equipo:
  *                 type: integer
+ *               posicion:
+ *                 type: string
  *             example:
  *               display_name: "Juan Perez"
  *               correo: "juan.perez@example.com"
@@ -349,6 +358,7 @@ router.get('/singlebyuser/:id', jugadorController.getJugadorByUserId);
  *               apellido_m: "Lopez"
  *               num_imss: "1234567890"
  *               id_equipo: 1
+ *               posicion: Portero
  *     responses:
  *       200:
  *         description: Jugador actualizado exitosamente

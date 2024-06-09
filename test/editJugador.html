@@ -60,6 +60,9 @@
         <label for="id_equipo">ID Equipo:</label>
         <input type="number" id="id_equipo" name="id_equipo" placeholder="ID Equipo">
         <br>
+        <label for="posicion">Posición:</label>
+        <input type="text" id="posicion" name="posicion" placeholder="Posición">
+        <br>
         <label for="password">Nueva Contraseña:</label>
         <input type="password" id="password" name="password" placeholder="Nueva Contraseña">
         <br>
@@ -93,6 +96,7 @@
                 document.getElementById('telefono').placeholder = jugador.telefono;
                 document.getElementById('num_imss').placeholder = jugador.num_imss;
                 document.getElementById('id_equipo').placeholder = jugador.id_equipo;
+                document.getElementById('posicion').placeholder = jugador.posicion;
 
                 document.getElementById('nombre').addEventListener('input', handleInputChange);
                 document.getElementById('apellido_p').addEventListener('input', handleInputChange);
@@ -106,6 +110,7 @@
                 document.getElementById('telefono').addEventListener('input', handleInputChange);
                 document.getElementById('num_imss').addEventListener('input', handleInputChange);
                 document.getElementById('id_equipo').addEventListener('input', handleInputChange);
+                document.getElementById('posicion').addEventListener('input', handleInputChange);
                 document.getElementById('password').addEventListener('input', handleInputChange);
             } catch (error) {
                 console.error('Error:', error);
@@ -151,6 +156,7 @@
                     telefono: document.getElementById('telefono').value || jugadorData.telefono,
                     num_imss: document.getElementById('num_imss').value || jugadorData.num_imss,
                     id_equipo: document.getElementById('id_equipo').value || jugadorData.id_equipo,
+                    posicion: document.getElementById('posicion').value || jugadorData.posicion,
                     password: document.getElementById('password').value
                 };
 
