@@ -1,118 +1,93 @@
-class Excel{
-    constructor(content){
-        this.content = content
+document.getElementById('fileInput').addEventListener('change', handleFileSelect, false);
+document.getElementById('uploadButton').addEventListener('click', uploadData, false);
 
-    }
+let jsonSheet;
 
-    header(){
-        return this.content[0]
-    }
-
-    rows(){
-        return new RowCollection(this.content.slice(1,this.content.length))
-    }
-}
-
-class RowCollection{
-
-    constructor(rows){
-        this.rows = rows
-    }
-
-    first(){
-
-        return new Row(this.rows[0])
-    }
-
-    get(index){
-        return new Row(this.rows[index])
-
-    }
-
-    count(){
-
-        return this.rows.length
-
+function handleFileSelect(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const firstSheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[firstSheetName];
+            jsonSheet = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+            jsonSheet = removeEmptyRows(jsonSheet);
+            displayTable(jsonSheet);
+            printData(jsonSheet);
+        };
+        reader.readAsArrayBuffer(file);
     }
 }
 
-class Row{
-
-    constructor(row){
-
-        this.row = row
-
-    }
-
-    ID(){
-
-        return this.row[0]
-
-    }
-    Name(){
-
-        return this.row[1]
-
-    }
-
-    IDTeam(){
-
-        return this.row[2]
-
-    }
-
-    TeamName(){
-
-        return this.row[3]
-
-    }
-
-    Username(){
-
-        return this.row[4]
-
-    }
-
-    DisplayName(){
-
-        return this.row[5]
-
-    }
+function displayTable(data) {
+    const table = document.getElementById('excelTable');
+    table.innerHTML = "";
+    data.forEach((row) => {
+        const tr = document.createElement('tr');
+        row.forEach((cell) => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+        });
+        table.appendChild(tr);
+    });
 }
 
-class ExcelPrinter {
-    static print(tableId, excel) {
-        const table = document.getElementById(tableId);
-        console.log(table);
+function printData(data) {
+    const output = document.getElementById('output');
+    output.textContent = JSON.stringify(data, null, 2);
+}
 
-        excel.header().forEach(title => {
-            table.querySelector("thead>tr").innerHTML += `<th class="mdl-data-table__cell--non-numeric">${title}</th>`;
+function uploadData() {
+    if (!jsonSheet) {
+        alert('No data to upload');
+        return;
+    }
+
+    const headers = jsonSheet[0];
+    jsonSheet.slice(1).forEach((row, rowIndex) => {
+        const rowData = {};
+        row.forEach((cell, index) => {
+            rowData[headers[index]] = cell;
         });
 
-        for (let index = 0; index < excel.rows().count(); index++) {
-            const row = excel.rows().get(index);
-            table.querySelector('tbody').innerHTML += `
-                <tr>
-                    <td class="mdl-data-table__cell--non-numeric">${row.ID()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">${row.Name()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">${row.IDTeam()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">${row.TeamName()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">${row.Username()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">${row.DisplayName()}</td>
-                    <td class="mdl-data-table__cell--non-numeric">
-                        <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-teal">Editar Información</button>
-                    </td>
-                </tr>`;
+        // Check if all required fields are present
+        if (!rowData['Nombre Display'] || !rowData['Correo'] ||
+            !rowData['Fecha de nacimiento'] || !rowData['CURP'] || !rowData['Domicilio'] || !rowData['Telefono'] ||
+            !rowData['Nombre'] || !rowData['Apellido Paterno'] || !rowData['Apellido Materno'] || !rowData['Num_IMSS'] ||
+            !rowData['ID Equipo']) {
+            console.warn(`Skipping row ${rowIndex} due to missing required fields`);
+            return;
         }
-    }
+
+        console.log('Uploading row:', rowIndex, rowData);
+
+        fetch('https://localhost:3443/jugadores/crear', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(rowData)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => console.log('Success:', data))
+        .catch(error => console.error('Error:', error));
+    });
 }
 
+function removeEmptyRows(data) {
+    return data.filter(row => row.some(cell => cell !== undefined && cell !== null && cell !== ""));
+}
 
-
-const excelInput = document.getElementById('excel-input');
-
-excelInput.addEventListener('change', async function() {
-    const content = await readXlsxFile(excelInput.files[0]);
-    const excel = new Excel(content);
-    console.log(ExcelPrinter.print('excel-table', excel));
-});
+function convertExcelDate(excelDate) {
+    if (!excelDate) return null;
+    const date = new Date((excelDate - (25567 + 1)) * 86400 * 1000);
+    return date.toISOString().split('T')[0];
+}
