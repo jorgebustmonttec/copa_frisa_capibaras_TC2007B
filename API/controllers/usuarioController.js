@@ -201,3 +201,25 @@ exports.signup = async (req, res) => {
     res.status(500).json({ error: 'Error en el servidor' });
   }
 };
+
+exports.changePassword = async (req, res) => {
+    const { userId, newPassword } = req.body;
+    if (!userId || !newPassword) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        db.query('UPDATE usuarios SET password = ?, first_login = 0 WHERE id_usuario = ?', [hashedPassword, userId], (err, result) => {
+            if (err) {
+                console.error('Error al cambiar la contraseña:', err);
+                res.status(500).json({ error: 'Error al cambiar la contraseña' });
+            } else {
+                res.status(200).json({ message: 'Contraseña cambiada exitosamente' });
+            }
+        });
+    } catch (err) {
+        console.error('Error:', err);
+        res.status(500).json({ error: 'Error al cambiar la contraseña' });
+    }
+};

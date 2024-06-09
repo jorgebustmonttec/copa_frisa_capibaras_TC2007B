@@ -249,4 +249,45 @@ router.post('/login', usuarioController.loginUser);
  */
 router.post('/signup', usuarioController.signup);
 
+/**
+ * @swagger
+ * /usuarios/changePassword:
+ *   put:
+ *     tags:
+ *       - Usuarios
+ *     summary: Cambiar la contraseña de un usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - userId
+ *               - newPassword
+ *             properties:
+ *               userId:
+ *                 type: integer
+ *                 description: ID del usuario que cambia la contraseña
+ *               newPassword:
+ *                 type: string
+ *                 description: Nueva contraseña del usuario
+ *     responses:
+ *       200:
+ *         description: Contraseña cambiada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Mensaje de éxito
+ *       400:
+ *         description: Solicitud incorrecta
+ *       500:
+ *         description: Error en el servidor
+ */
+router.put('/changePassword', usuarioController.changePassword);
+
 module.exports = router;
