@@ -116,3 +116,69 @@ exports.updatePartido = (req, res) => {
         }
     );
 };
+
+exports.getLastGameInfoByUserId = (req, res) => {
+    const { id } = req.params;
+
+    // Step 1: Get player details using user ID
+    db.query('SELECT id_equipo FROM jugadores WHERE id_usuario = ?', [id], (err, jugadorResult) => {
+        if (err) {
+            console.error('Error al obtener el jugador:', err);
+            return res.status(500).json({ error: 'Error al obtener el jugador' });
+        } else if (jugadorResult.length === 0) {
+            return res.status(404).json({ error: 'Jugador no encontrado' });
+        }
+
+        const teamId = jugadorResult[0].id_equipo;
+
+        // Step 2: Get the latest match for the team that has already happened
+        db.query('SELECT * FROM partidos WHERE (equipo_a = ? OR equipo_b = ?) AND fecha < now() ORDER BY fecha DESC LIMIT 1', [teamId, teamId], (err, partidoResult) => {
+            if (err) {
+                console.error('Error al obtener el partido:', err);
+                return res.status(500).json({ error: 'Error al obtener el partido' });
+            } else if (partidoResult.length === 0) {
+                return res.status(404).json({ error: 'No se encontraron partidos para este equipo' });
+            }
+
+            const partido = partidoResult[0];
+
+            // Step 3: Get the total goals for both teams in the latest match
+            const getGoalsQuery = 'SELECT id_equipo, COUNT(*) as total_goals FROM puntos WHERE id_partido = ? AND tipo_punto = 1 GROUP BY id_equipo';
+
+            db.query(getGoalsQuery, [partido.id_partido], (err, goalsResult) => {
+                if (err) {
+                    console.error('Error al obtener los goles del partido:', err);
+                    return res.status(500).json({ error: 'Error al obtener los goles del partido' });
+                }
+
+                let golesA = 0;
+                let golesB = 0;
+
+                goalsResult.forEach(goal => {
+                    if (goal.id_equipo === partido.equipo_a) {
+                        golesA = goal.total_goals;
+                    } else if (goal.id_equipo === partido.equipo_b) {
+                        golesB = goal.total_goals;
+                    }
+                });
+
+                // Ensure the player's team's goals are always on the left
+                let resultString = "";
+                if (teamId === partido.equipo_a) {
+                    resultString = `${golesA} - ${golesB}`;
+                } else {
+                    resultString = `${golesB} - ${golesA}`;
+                }
+
+                // Step 4: Format the response
+                const response = {
+                    message: 'Success',
+                    date: partido.fecha,
+                    result: resultString
+                };
+
+                res.json(response);
+            });
+        });
+    });
+};
