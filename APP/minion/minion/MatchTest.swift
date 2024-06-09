@@ -6,23 +6,7 @@
 //
 import SwiftUI
 
-struct APIPartido: Codable, Identifiable {
-    var id: Int { id_partido }
-    var id_partido: Int
-    var equipo_a: Int
-    var equipo_b: Int
-    var fecha: String
-}
 
-struct APIEquipo: Codable {
-    var id_equipo: Int
-    var nombre_equipo: String
-    var escudo: Data?
-}
-
-struct APIGoals: Codable {
-    var total_goals: Int
-}
 
 struct MatchTest: View {
     @State private var pastPartidos: [APIPartido] = []
