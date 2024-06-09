@@ -139,7 +139,7 @@ const apiUrl = 'https://localhost:3443';
         }
 
         async function editPartido(id) {
-            window.location.href = `editPartido.html?id=${id}`;
+            window.location.href = `EditarPartido.html?id=${id}`;
         }
 
         async function deletePartido(id) {
