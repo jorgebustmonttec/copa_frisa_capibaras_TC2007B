@@ -66,8 +66,4 @@ struct ContentView: View {
     }
 }
 
-#Preview {
-    ContentView()
-        .environmentObject(UserViewModel())
-}
 

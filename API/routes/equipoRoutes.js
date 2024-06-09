@@ -3,7 +3,8 @@
 const express = require('express');
 const router = express.Router();
 const equipoController = require('../controllers/equipoController');
-const upload = require('../utils/upload'); // Import multer configuration
+const upload = require('../utils/upload')('escudos'); // Specify folder as 'escudos'
+
 
 /**
  * @swagger
@@ -184,5 +185,46 @@ router.post('/create', equipoController.createEquipo);
  *         description: Error al actualizar el escudo del equipo
  */
 router.post('/create/:id/escudo', upload.single('escudo'), equipoController.addEquipoImg);
+
+/**
+ * @swagger
+ * /equipos/update/{id}:
+ *   put:
+ *     tags:
+ *       - Equipos
+ *     summary: Actualizar un equipo
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               nombre_equipo:
+ *                 type: string
+ *               escuela:
+ *                 type: string
+ *             example:
+ *               nombre_equipo: Los Tigres de Juárez
+ *               escuela: Primaria Benito Juárez
+ *     responses:
+ *       200:
+ *         description: Equipo actualizado exitosamente
+ *       400:
+ *         description: Faltan campos obligatorios
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al actualizar el equipo
+ */
+router.put('/update/:id', equipoController.updateEquipo);
+
 
 module.exports = router;

@@ -13,9 +13,9 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var showForgotPassword: Bool = false
     @State private var showSignup: Bool = false
-    @State private var navigateToHome: Bool = false
     @State private var showAlert: Bool = false
     @State private var errorMessage: String = ""
+    @State private var showSheet: Bool = false
 
     var body: some View {
         NavigationView {
@@ -33,7 +33,7 @@ struct LoginView: View {
                     }
                     Spacer()
                 }
-                .padding(.top, 20) // Ajuste de la distancia desde la parte superior
+                .padding(.top, 20)
                 .padding(.leading, 5)
                 
                 Image("copa")
@@ -76,17 +76,15 @@ struct LoginView: View {
                         .foregroundColor(.green)
                     }
 
-                    NavigationLink(destination: AplicacionView().navigationBarBackButtonHidden(true), isActive: $navigateToHome) {
-                        Button(action: {
-                            login()
-                        }) {
-                            Text("Iniciar Sesión")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.blue)
-                                .cornerRadius(10)
-                        }
+                    Button(action: {
+                        login()
+                    }) {
+                        Text("Iniciar Sesión")
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(10)
                     }
                 }
                 .padding(.horizontal, 30)
@@ -98,14 +96,21 @@ struct LoginView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
+            .sheet(isPresented: $showSheet, content: {
+                ChangePasswordSheetView()
+            })
         }
     }
 
     private func login() {
         userViewModel.login(username: username, password: password) { result in
             switch result {
-            case .success:
-                navigateToHome = true
+            case .success(let response):
+                if response.userType == 2 && userViewModel.firstLogin {
+                    showSheet = true // Show the sheet for user type 2 (players) if it's their first login
+                } else {
+                    userViewModel.isLoggedIn = true
+                }
             case .failure(let error):
                 errorMessage = error.localizedDescription
                 showAlert = true

@@ -28,6 +28,7 @@
                 <th>Nombre del Equipo</th>
                 <th>Escuela</th>
                 <th>Escudo</th>
+                <th>Editar</th>
             </tr>
         </thead>
         <tbody>
@@ -37,13 +38,13 @@
     <h2>Crear un nuevo equipo</h2>
     <form id="create-equipo-form" onsubmit="createEquipo(event)">
         <label for="nombre_equipo">Nombre del Equipo:</label>
-        <input type="text" id="nombre_equipo" name="nombre_equipo" required>
+        <input type="text" id="nombre_equipo" name="nombre_equipo" >
         <br>
         <label for="escuela">Escuela:</label>
-        <input type="text" id="escuela" name="escuela" required>
+        <input type="text" id="escuela" name="escuela" >
         <br>
         <label for="escudo">Subir Escudo:</label>
-        <input type="file" id="escudo" name="escudo" accept="image/*" required>
+        <input type="file" id="escudo" name="escudo" accept="image/*" >
         <br>
         <button type="submit">Crear Equipo</button>
     </form>
@@ -71,6 +72,7 @@
                         <td>${equipo.nombre_equipo}</td>
                         <td>${equipo.escuela}</td>
                         <td><img src="${escudoUrl}" alt="Escudo" style="width:50px;"></td>
+                        <td><button onclick="editEquipo(${equipo.id_equipo})">Edit</button></td>
                     `;
                     tableBody.appendChild(row);
                 }
@@ -120,6 +122,10 @@
             } catch (error) {
                 console.error('Error:', error);
             }
+        }
+
+        function editEquipo(id) {
+            window.location.href = `editEquipo.html?id=${id}`;
         }
     </script>
 </body>

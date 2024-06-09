@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C177ADE2C15AF3900653A6F /* MatchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177ADD2C15AF3900653A6F /* MatchTest.swift */; };
+		8C177AE22C16224F00653A6F /* APIService2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AE12C16224F00653A6F /* APIService2.swift */; };
 		8C5055032C103865006F3040 /* minionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055022C103865006F3040 /* minionApp.swift */; };
 		8C5055052C103865006F3040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055042C103865006F3040 /* ContentView.swift */; };
 		8C5055072C103867006F3040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5055062C103867006F3040 /* Assets.xcassets */; };
@@ -29,9 +31,13 @@
 		8C50552F2C103DE9006F3040 /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C50552E2C103DE9006F3040 /* UserViewModel.swift */; };
 		8C5055312C103E54006F3040 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055302C103E54006F3040 /* APIService.swift */; };
 		8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055332C105A86006F3040 /* UserOptionsView.swift */; };
+		8C92D3D02C1565E100CEB4B7 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D3CF2C1565E100CEB4B7 /* SheetView.swift */; };
+		8C92D3D22C15679500CEB4B7 /* ChangePasswordSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D3D12C15679500CEB4B7 /* ChangePasswordSheetView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8C177ADD2C15AF3900653A6F /* MatchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTest.swift; sourceTree = "<group>"; };
+		8C177AE12C16224F00653A6F /* APIService2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService2.swift; sourceTree = "<group>"; };
 		8C5054FF2C103865006F3040 /* minion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5055022C103865006F3040 /* minionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = minionApp.swift; sourceTree = "<group>"; };
 		8C5055042C103865006F3040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -56,6 +62,8 @@
 		8C5055302C103E54006F3040 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		8C5055322C104AE4006F3040 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8C5055332C105A86006F3040 /* UserOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOptionsView.swift; sourceTree = "<group>"; };
+		8C92D3CF2C1565E100CEB4B7 /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
+		8C92D3D12C15679500CEB4B7 /* ChangePasswordSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordSheetView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,9 +98,11 @@
 			children = (
 				8C5055322C104AE4006F3040 /* Info.plist */,
 				8C5055332C105A86006F3040 /* UserOptionsView.swift */,
+				8C92D3CF2C1565E100CEB4B7 /* SheetView.swift */,
 				8C50552E2C103DE9006F3040 /* UserViewModel.swift */,
 				8C5055022C103865006F3040 /* minionApp.swift */,
 				8C5055042C103865006F3040 /* ContentView.swift */,
+				8C92D3D12C15679500CEB4B7 /* ChangePasswordSheetView.swift */,
 				8C5055102C103888006F3040 /* LoginView.swift */,
 				8C5055122C103894006F3040 /* SignupView.swift */,
 				8C5055142C1038A7006F3040 /* ForgotPasswordView.swift */,
@@ -109,6 +119,8 @@
 				8C50552A2C10397D006F3040 /* PerfilView.swift */,
 				8C50552C2C10398A006F3040 /* EquipoView.swift */,
 				8C5055302C103E54006F3040 /* APIService.swift */,
+				8C177AE12C16224F00653A6F /* APIService2.swift */,
+				8C177ADD2C15AF3900653A6F /* MatchTest.swift */,
 				8C5055062C103867006F3040 /* Assets.xcassets */,
 				8C5055082C103867006F3040 /* Preview Content */,
 			);
@@ -194,9 +206,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C5055132C103894006F3040 /* SignupView.swift in Sources */,
+				8C92D3D02C1565E100CEB4B7 /* SheetView.swift in Sources */,
 				8C5055312C103E54006F3040 /* APIService.swift in Sources */,
+				8C177ADE2C15AF3900653A6F /* MatchTest.swift in Sources */,
 				8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */,
 				8C5055192C1038CE006F3040 /* AplicacionView.swift in Sources */,
+				8C92D3D22C15679500CEB4B7 /* ChangePasswordSheetView.swift in Sources */,
 				8C50551D2C1038F6006F3040 /* NotaView.swift in Sources */,
 				8C50552D2C10398A006F3040 /* EquipoView.swift in Sources */,
 				8C5055272C103962006F3040 /* JugadorView.swift in Sources */,
@@ -207,6 +222,7 @@
 				8C5055052C103865006F3040 /* ContentView.swift in Sources */,
 				8C50552B2C10397D006F3040 /* PerfilView.swift in Sources */,
 				8C5055152C1038A7006F3040 /* ForgotPasswordView.swift in Sources */,
+				8C177AE22C16224F00653A6F /* APIService2.swift in Sources */,
 				8C5055292C10396C006F3040 /* Jugador.swift in Sources */,
 				8C5055232C103946006F3040 /* StatsView.swift in Sources */,
 				8C5055252C103953006F3040 /* Partido.swift in Sources */,

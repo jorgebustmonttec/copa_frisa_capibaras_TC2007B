@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Jugador</title>
+    <style>
+        input:focus, textarea:focus {
+            outline: 2px solid blue;
+        }
+        .changed {
+            border: 2px solid red;
+        }
+        .hidden {
+            display: none;
+        }
+        input::placeholder {
+            color: gray;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Editar Jugador</h1>
+    <form id="edit-jugador-form" onsubmit="updateJugador(event)">
+        <input type="hidden" id="id_jugador">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre">
+        <br>
+        <label for="apellido_p">Apellido Paterno:</label>
+        <input type="text" id="apellido_p" name="apellido_p" placeholder="Apellido Paterno">
+        <br>
+        <label for="apellido_m">Apellido Materno:</label>
+        <input type="text" id="apellido_m" name="apellido_m" placeholder="Apellido Materno">
+        <br>
+        <label for="display_name">Nombre para Mostrar:</label>
+        <input type="text" id="display_name" name="display_name" placeholder="Nombre para Mostrar">
+        <br>
+        <label for="username">Nombre de Usuario:</label>
+        <input type="text" id="username" name="username" placeholder="Nombre de Usuario">
+        <br>
+        <label for="correo">Correo:</label>
+        <input type="email" id="correo" name="correo" placeholder="Correo">
+        <br>
+        <label for="fecha_nac">Fecha de Nacimiento:</label>
+        <input type="date" id="fecha_nac" name="fecha_nac">
+        <br>
+        <label for="CURP">CURP:</label>
+        <input type="text" id="CURP" name="CURP" placeholder="CURP">
+        <br>
+        <label for="domicilio">Domicilio:</label>
+        <input type="text" id="domicilio" name="domicilio" placeholder="Domicilio">
+        <br>
+        <label for="telefono">Teléfono:</label>
+        <input type="text" id="telefono" name="telefono" placeholder="Teléfono">
+        <br>
+        <label for="num_imss">Número IMSS:</label>
+        <input type="text" id="num_imss" name="num_imss" placeholder="Número IMSS">
+        <br>
+        <label for="id_equipo">ID Equipo:</label>
+        <input type="number" id="id_equipo" name="id_equipo" placeholder="ID Equipo">
+        <br>
+        <label for="posicion">Posición:</label>
+        <input type="text" id="posicion" name="posicion" placeholder="Posición">
+        <br>
+        <label for="password">Nueva Contraseña:</label>
+        <input type="password" id="password" name="password" placeholder="Nueva Contraseña">
+        <br>
+        <button type="submit" id="update-button" class="hidden" disabled>Actualizar Jugador</button>
+    </form>
+    <button onclick="goBack()">Volver</button>
+    <script>
+        const apiUrl = 'https://localhost:3443';
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+        let jugadorData = {};
+
+        document.getElementById('id_jugador').value = id;
+
+        async function fetchJugador() {
+            try {
+                const response = await fetch(`${apiUrl}/jugadores/single/${id}`);
+                if (!response.ok) throw new Error('Error al obtener el jugador');
+                const jugador = await response.json();
+                jugadorData = jugador; // Store the original data
+
+                document.getElementById('nombre').placeholder = jugador.nombre;
+                document.getElementById('apellido_p').placeholder = jugador.apellido_p;
+                document.getElementById('apellido_m').placeholder = jugador.apellido_m;
+                document.getElementById('display_name').placeholder = jugador.display_name;
+                document.getElementById('username').placeholder = jugador.username;
+                document.getElementById('correo').placeholder = jugador.correo;
+                document.getElementById('fecha_nac').value = jugador.fecha_nac.split('T')[0];
+                document.getElementById('CURP').placeholder = jugador.CURP;
+                document.getElementById('domicilio').placeholder = jugador.domicilio;
+                document.getElementById('telefono').placeholder = jugador.telefono;
+                document.getElementById('num_imss').placeholder = jugador.num_imss;
+                document.getElementById('id_equipo').placeholder = jugador.id_equipo;
+                document.getElementById('posicion').placeholder = jugador.posicion;
+
+                document.getElementById('nombre').addEventListener('input', handleInputChange);
+                document.getElementById('apellido_p').addEventListener('input', handleInputChange);
+                document.getElementById('apellido_m').addEventListener('input', handleInputChange);
+                document.getElementById('display_name').addEventListener('input', handleInputChange);
+                document.getElementById('username').addEventListener('input', handleInputChange);
+                document.getElementById('correo').addEventListener('input', handleInputChange);
+                document.getElementById('fecha_nac').addEventListener('input', handleInputChange);
+                document.getElementById('CURP').addEventListener('input', handleInputChange);
+                document.getElementById('domicilio').addEventListener('input', handleInputChange);
+                document.getElementById('telefono').addEventListener('input', handleInputChange);
+                document.getElementById('num_imss').addEventListener('input', handleInputChange);
+                document.getElementById('id_equipo').addEventListener('input', handleInputChange);
+                document.getElementById('posicion').addEventListener('input', handleInputChange);
+                document.getElementById('password').addEventListener('input', handleInputChange);
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function handleInputChange() {
+            const inputs = document.querySelectorAll('input');
+            let isChanged = false;
+
+            inputs.forEach(input => {
+                if (input.value !== input.defaultValue) {
+                    input.classList.add('changed');
+                    isChanged = true;
+                } else {
+                    input.classList.remove('changed');
+                }
+            });
+
+            const updateButton = document.getElementById('update-button');
+            if (isChanged) {
+                updateButton.classList.remove('hidden');
+                updateButton.disabled = false;
+            } else {
+                updateButton.classList.add('hidden');
+                updateButton.disabled = true;
+            }
+        }
+
+        async function updateJugador(event) {
+            event.preventDefault();
+            try {
+                const dataToUpdate = {
+                    nombre: document.getElementById('nombre').value || jugadorData.nombre,
+                    apellido_p: document.getElementById('apellido_p').value || jugadorData.apellido_p,
+                    apellido_m: document.getElementById('apellido_m').value || jugadorData.apellido_m,
+                    display_name: document.getElementById('display_name').value || jugadorData.display_name,
+                    username: document.getElementById('username').value || jugadorData.username,
+                    correo: document.getElementById('correo').value || jugadorData.correo,
+                    fecha_nac: document.getElementById('fecha_nac').value || jugadorData.fecha_nac.split('T')[0],
+                    CURP: document.getElementById('CURP').value || jugadorData.CURP,
+                    domicilio: document.getElementById('domicilio').value || jugadorData.domicilio,
+                    telefono: document.getElementById('telefono').value || jugadorData.telefono,
+                    num_imss: document.getElementById('num_imss').value || jugadorData.num_imss,
+                    id_equipo: document.getElementById('id_equipo').value || jugadorData.id_equipo,
+                    posicion: document.getElementById('posicion').value || jugadorData.posicion,
+                    password: document.getElementById('password').value
+                };
+
+                const response = await fetch(`${apiUrl}/jugadores/update/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dataToUpdate)
+                });
+
+                if (!response.ok) throw new Error('Error al actualizar el jugador');
+                alert('Jugador actualizado exitosamente');
+                window.location.href = 'jugadortest.html';
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchJugador);
+    </script>
+</body>
+</html>

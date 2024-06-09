@@ -1,5 +1,11 @@
 //
 //  APIService.swift
+//  grrrrrr
+//
+//  Created by Jorge Bustamante on 09/06/24.
+//
+//
+//  APIService.swift
 //  minion
 //
 //  Created by Jorge Bustamante on 05/06/24.
@@ -23,6 +29,12 @@ struct SignupResponse: Codable {
     var error: String?
 }
 
+struct UserDetails: Codable {
+    var id_jugador: Int
+    var first_login: Int
+    // Add other fields as needed
+}
+
 enum APIError: Error, LocalizedError {
     case invalidURL
     case requestFailed
@@ -39,6 +51,8 @@ enum APIError: Error, LocalizedError {
         }
     }
 }
+
+
 
 
 class APIService {
@@ -88,6 +102,39 @@ class APIService {
         task.resume()
     }
     
+    func fetchUserDetails(userId: Int, completion: @escaping (Result<UserDetails, APIError>) -> Void) {
+        guard let url = URL(string: "https://localhost:3443/jugadores/singlebyuser/\(userId)") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        
+        let task = session.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(.failure(.requestFailed))
+                return
+            }
+            
+            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 {
+                do {
+                    let userDetails = try JSONDecoder().decode(UserDetails.self, from: data)
+                    DispatchQueue.main.async {
+                        completion(.success(userDetails))
+                    }
+                } catch {
+                    completion(.failure(.decodingFailed("Failed to decode user details response.")))
+                }
+            } else {
+                completion(.failure(.requestFailed))
+            }
+        }
+        task.resume()
+    }
+    
     func signup(username: String, displayName: String, email: String, password: String, completion: @escaping (Result<SignupResponse, APIError>) -> Void) {
         guard let url = URL(string: "https://localhost:3443/usuarios/signup") else {
             completion(.failure(.invalidURL))
@@ -131,6 +178,179 @@ class APIService {
         }
         task.resume()
     }
+    
+    func changePassword(userId: Int, newPassword: String, completion: @escaping (Result<Void, APIError>) -> Void) {
+        guard let url = URL(string: "https://localhost:3443/usuarios/changePassword") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        let body: [String: Any] = ["userId": userId, "newPassword": newPassword]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body)
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            if httpResponse.statusCode == 200 {
+                completion(.success(()))
+            } else {
+                completion(.failure(.requestFailed))
+            }
+        }
+        task.resume()
+    }
+    
+    
+    func fetchPartidos(url: String, completion: @escaping (Result<[APIPartido], APIError>) -> Void) {
+        guard let url = URL(string: url) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            do {
+                let partidos = try JSONDecoder().decode([APIPartido].self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(partidos))
+                }
+            } catch {
+                completion(.failure(.decodingFailed("Failed to decode partidos response.")))
+            }
+        }
+        task.resume()
+    }
+
+    func fetchEquipos(completion: @escaping (Result<[APIEquipo], APIError>) -> Void) {
+        guard let url = URL(string: "https://localhost:3443/equipos") else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            do {
+                let equipos = try JSONDecoder().decode([APIEquipo].self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(equipos))
+                }
+            } catch {
+                completion(.failure(.decodingFailed("Failed to decode equipos response.")))
+            }
+        }
+        task.resume()
+    }
+    
+    
+    
+    // Add these functions inside the APIService class
+
+    // Add these functions inside the APIService class
+
+    func fetchGoals(url: String, completion: @escaping (Result<APIGoals, APIError>) -> Void) {
+        guard let url = URL(string: url) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            do {
+                let goals = try JSONDecoder().decode(APIGoals.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(goals))
+                }
+            } catch {
+                completion(.failure(.decodingFailed("Failed to decode goals response.")))
+            }
+        }
+        task.resume()
+    }
+
+    func fetchEquipoShield(url: String, completion: @escaping (Result<Data, APIError>) -> Void) {
+        guard let url = URL(string: url) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            completion(.success(data))
+        }
+        task.resume()
+    }
+
+
+
+
+    
+
 }
 
 class SelfSignedCertificateDelegate: NSObject, URLSessionDelegate {

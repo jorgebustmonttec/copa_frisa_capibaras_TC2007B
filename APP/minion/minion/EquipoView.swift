@@ -20,7 +20,7 @@ struct EquipoView: View {
 
     var body: some View {
         if userViewModel.isLoggedIn {
-            if userViewModel.userType == 1 {
+            if userViewModel.userType == 2 {
                 NavigationView {
                     VStack(alignment: .leading, spacing: 20) {
                         HStack {
