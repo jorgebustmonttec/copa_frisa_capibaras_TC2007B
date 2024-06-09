@@ -148,3 +148,81 @@ exports.removeJugadorFromEquipo = (req, res) => {
     }
   );
 };
+
+
+exports.getJugadorById = (req, res) => {
+  const { id } = req.params;
+  
+  db.query(
+    `SELECT 
+        jugadores.id_jugador, jugadores.fecha_nac, jugadores.CURP, jugadores.domicilio, jugadores.telefono, 
+        jugadores.nombre, jugadores.apellido_p, jugadores.apellido_m, jugadores.num_imss, jugadores.id_equipo, 
+        jugadores.doc_carta_responsabilidad, jugadores.doc_curp, jugadores.doc_ine, 
+        usuarios.id_usuario, usuarios.username, usuarios.display_name, usuarios.correo, usuarios.tipo_usuario, 
+        usuarios.imagen, usuarios.created_at, usuarios.first_login 
+     FROM jugadores 
+     JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario 
+     WHERE jugadores.id_jugador = ?`,
+    [id],
+    (err, result) => {
+      if (err) {
+        console.error('Error al obtener el jugador:', err);
+        res.status(500).json({ error: 'Error al obtener el jugador' });
+      } else if (result.length === 0) {
+        res.status(404).json({ error: 'Jugador no encontrado' });
+      } else {
+        res.json(result[0]);
+      }
+    }
+  );
+};
+
+exports.updateJugador = async (req, res) => {
+  const { id } = req.params;
+  const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
+
+  if (!username || !display_name || !correo || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo) {
+    return res.status(400).json({ error: 'Faltan campos obligatorios' });
+  }
+
+  try {
+    // Check for unique email, CURP, and username
+    const [emailCheckResult] = await db.promise().query('SELECT id_usuario FROM usuarios WHERE correo = ? AND id_usuario != (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)', [correo, id]);
+    if (emailCheckResult.length > 0) {
+      return res.status(400).json({ error: 'El correo ya está en uso' });
+    }
+
+    const [curpCheckResult] = await db.promise().query('SELECT id_jugador FROM jugadores WHERE CURP = ? AND id_jugador != ?', [CURP, id]);
+    if (curpCheckResult.length > 0) {
+      return res.status(400).json({ error: 'El CURP ya está en uso' });
+    }
+
+    const [usernameCheckResult] = await db.promise().query('SELECT id_usuario FROM usuarios WHERE username = ? AND id_usuario != (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)', [username, id]);
+    if (usernameCheckResult.length > 0) {
+      return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
+    }
+
+    // Update password if provided
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, saltRounds);
+    }
+
+    // Update usuarios table
+    const [userUpdateResult] = await db.promise().query(
+      'UPDATE usuarios SET username = ?, display_name = ?, correo = ?, password = ?, first_login = false WHERE id_usuario = (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)',
+      [username, display_name, correo, hashedPassword || null, id]
+    );
+
+    // Update jugadores table
+    const [playerUpdateResult] = await db.promise().query(
+      'UPDATE jugadores SET fecha_nac = ?, CURP = ?, domicilio = ?, telefono = ?, nombre = ?, apellido_p = ?, apellido_m = ?, num_imss = ?, id_equipo = ? WHERE id_jugador = ?',
+      [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, id]
+    );
+
+    res.status(200).json({ message: 'Jugador actualizado exitosamente' });
+  } catch (err) {
+    console.error('Error:', err);
+    res.status(500).json({ error: 'Error al actualizar el jugador' });
+  }
+};

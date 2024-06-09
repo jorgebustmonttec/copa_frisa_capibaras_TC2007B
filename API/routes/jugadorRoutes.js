@@ -237,4 +237,101 @@ router.post('/add-to-equipo', jugadorController.addJugadorToEquipo);
  */
 router.post('/remove-from-equipo', jugadorController.removeJugadorFromEquipo);
 
+/**
+ * @swagger
+ * /jugadores/single/{id}:
+ *   get:
+ *     tags:
+ *       - Jugadores
+ *     summary: Obtener la información completa de un jugador por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *     responses:
+ *       200:
+ *         description: Información del jugador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Jugador'
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el jugador
+ */
+router.get('/single/:id', jugadorController.getJugadorById);
+
+/**
+ * @swagger
+ * /jugadores/update/{id}:
+ *   put:
+ *     tags:
+ *       - Jugadores
+ *     summary: Actualizar la información de un jugador
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               display_name:
+ *                 type: string
+ *               correo:
+ *                 type: string
+ *               fecha_nac:
+ *                 type: string
+ *                 format: date
+ *               CURP:
+ *                 type: string
+ *               domicilio:
+ *                 type: string
+ *               telefono:
+ *                 type: string
+ *               nombre:
+ *                 type: string
+ *               apellido_p:
+ *                 type: string
+ *               apellido_m:
+ *                 type: string
+ *               num_imss:
+ *                 type: string
+ *               id_equipo:
+ *                 type: integer
+ *             example:
+ *               display_name: "Juan Perez"
+ *               correo: "juan.perez@example.com"
+ *               fecha_nac: "2010-05-14"
+ *               CURP: "PEREJ010514HDFLLN"
+ *               domicilio: "Calle Falsa 123"
+ *               telefono: "555-1234"
+ *               nombre: "Juan"
+ *               apellido_p: "Perez"
+ *               apellido_m: "Lopez"
+ *               num_imss: "1234567890"
+ *               id_equipo: 1
+ *     responses:
+ *       200:
+ *         description: Jugador actualizado exitosamente
+ *       400:
+ *         description: Solicitud incorrecta
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al actualizar el jugador
+ */
+router.put('/update/:id', jugadorController.updateJugador);
+
+
 module.exports = router;
