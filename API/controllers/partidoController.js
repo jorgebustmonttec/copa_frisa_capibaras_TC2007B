@@ -69,3 +69,50 @@ exports.createPartido = (req, res) => {
         }
     });
 };
+
+exports.deletePartido = (req, res) => {
+    const { id } = req.params;
+    db.query('DELETE FROM puntos WHERE id_partido = ?', [id], (err, result) => {
+        if (err) {
+            console.error('Error al eliminar los puntos del partido:', err);
+            res.status(500).json({ error: 'Error al eliminar los puntos del partido' });
+        } else {
+            db.query('DELETE FROM partidos WHERE id_partido = ?', [id], (err, result) => {
+                if (err) {
+                    console.error('Error al eliminar el partido:', err);
+                    res.status(500).json({ error: 'Error al eliminar el partido' });
+                } else if (result.affectedRows === 0) {
+                    res.status(404).json({ error: 'Partido no encontrado' });
+                } else {
+                    res.status(200).json({ message: 'Partido y sus puntos eliminados exitosamente' });
+                }
+            });
+        }
+    });
+};
+
+exports.updatePartido = (req, res) => {
+    const { id } = req.params;
+    const { equipo_a, equipo_b, fecha, ganador } = req.body;
+
+    if (!equipo_a || !equipo_b || !fecha) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+    const formattedFecha = new Date(fecha).toISOString().slice(0, 19).replace('T', ' ');
+
+    db.query(
+        'UPDATE partidos SET equipo_a = ?, equipo_b = ?, fecha = ?, ganador = ? WHERE id_partido = ?',
+        [equipo_a, equipo_b, formattedFecha, ganador || null, id],
+        (err, result) => {
+            if (err) {
+                console.error('Error al actualizar el partido:', err);
+                res.status(500).json({ error: 'Error al actualizar el partido' });
+            } else if (result.affectedRows === 0) {
+                res.status(404).json({ error: 'Partido no encontrado' });
+            } else {
+                res.status(200).json({ message: 'Partido actualizado exitosamente' });
+            }
+        }
+    );
+};

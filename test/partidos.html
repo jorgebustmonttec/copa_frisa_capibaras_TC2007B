@@ -31,6 +31,7 @@
                 <th>Equipo B</th>
                 <th>Escudo B</th>
                 <th>Fecha</th>
+                <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -90,6 +91,10 @@
                         <td>${equipoB.nombre_equipo}</td>
                         <td><img src="${equipoB.escudo}" alt="Escudo B" style="width:50px;"></td>
                         <td>${new Date(partido.fecha).toLocaleString()}</td>
+                        <td>
+                            <button onclick="editPartido(${partido.id_partido})">Edit</button>
+                            <button onclick="deletePartido(${partido.id_partido})">Delete</button>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 }
@@ -172,6 +177,31 @@
                 fetchAllPartidos();
             } catch (error) {
                 console.error('Error:', error);
+            }
+        }
+
+        async function editPartido(id) {
+            window.location.href = `editPartido.html?id=${id}`;
+        }
+
+        async function deletePartido(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este partido?')) {
+                try {
+                    const response = await fetch(`${apiUrl}/partidos/eliminar/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) throw new Error('Error al eliminar el partido');
+                    alert('Partido eliminado exitosamente');
+
+                    // Reload the partidos table
+                    fetchAllPartidos();
+                } catch (error) {
+                    console.error('Error:', error);
+                }
             }
         }
 

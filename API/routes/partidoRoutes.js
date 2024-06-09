@@ -180,4 +180,76 @@ router.get('/futuros', partidoController.getFuturePartidos);
  */
 router.post('/crear', partidoController.createPartido);
 
+/**
+ * @swagger
+ * /partidos/eliminar/{id}:
+ *   delete:
+ *     tags:
+ *       - Partidos
+ *     summary: Eliminar un partido por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Partido eliminado exitosamente
+ *       404:
+ *         description: Partido no encontrado
+ *       500:
+ *         description: Error al eliminar el partido
+ */
+router.delete('/eliminar/:id', partidoController.deletePartido);
+
+/**
+ * @swagger
+ * /partidos/actualizar/{id}:
+ *   put:
+ *     tags:
+ *       - Partidos
+ *     summary: Actualizar un partido
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               equipo_a:
+ *                 type: integer
+ *               equipo_b:
+ *                 type: integer
+ *               fecha:
+ *                 type: string
+ *                 format: date-time
+ *               ganador:
+ *                 type: integer
+ *             example:
+ *               equipo_a: 1
+ *               equipo_b: 2
+ *               fecha: "2024-06-01T12:00:00Z"
+ *               ganador: null
+ *     responses:
+ *       200:
+ *         description: Partido actualizado exitosamente
+ *       400:
+ *         description: Faltan campos obligatorios
+ *       404:
+ *         description: Partido no encontrado
+ *       500:
+ *         description: Error al actualizar el partido
+ */
+router.put('/actualizar/:id', partidoController.updatePartido);
+
+
 module.exports = router;
