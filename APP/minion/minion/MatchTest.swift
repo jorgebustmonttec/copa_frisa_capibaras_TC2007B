@@ -6,6 +6,24 @@
 //
 import SwiftUI
 
+struct APIPartido: Codable, Identifiable {
+    var id: Int { id_partido }
+    var id_partido: Int
+    var equipo_a: Int
+    var equipo_b: Int
+    var fecha: String
+}
+
+struct APIEquipo: Codable {
+    var id_equipo: Int
+    var nombre_equipo: String
+    var escudo: Data?
+}
+
+struct APIGoals: Codable {
+    var total_goals: Int
+}
+
 struct MatchTest: View {
     @State private var pastPartidos: [APIPartido] = []
     @State private var futurePartidos: [APIPartido] = []
@@ -14,65 +32,59 @@ struct MatchTest: View {
     @State private var errorMessage: String = ""
 
     var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack {
-                    Image("copa")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(height: 150)
-                        .padding(.top)
+        ScrollView {
+            VStack {
+                Image("copa")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 150)
+                    .padding(.top)
 
-                    Text("Partidos")
-                        .font(.largeTitle)
+                Text("Partidos")
+                    .font(.largeTitle)
+                    .padding()
+
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
                         .padding()
-
-                    if !errorMessage.isEmpty {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .padding()
-                    }
-
-                    VStack {
-                        Text("Partidos Pasados")
-                            .font(.headline)
-                            .padding()
-                        ScrollView {
-                            ForEach(pastPartidos) { partido in
-                                NavigationLink(destination: MatchDetailsView(partido: partido, equipoA: getEquipo(by: partido.equipo_a)!, equipoB: getEquipo(by: partido.equipo_b)!, goalsA: goals["\(partido.id_partido)_\(partido.equipo_a)"] ?? 0, goalsB: goals["\(partido.id_partido)_\(partido.equipo_b)"] ?? 0)) {
-                                    partidoView(partido: partido)
-                                }
-                            }
-                        }
-                        .frame(height: 300)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(10)
-                    }
-                    .padding()
-
-                    VStack {
-                        Text("Partidos Futuros")
-                            .font(.headline)
-                            .padding()
-                        ScrollView {
-                            ForEach(futurePartidos) { partido in
-                                NavigationLink(destination: MatchDetailsView(partido: partido, equipoA: getEquipo(by: partido.equipo_a)!, equipoB: getEquipo(by: partido.equipo_b)!, goalsA: goals["\(partido.id_partido)_\(partido.equipo_a)"] ?? 0, goalsB: goals["\(partido.id_partido)_\(partido.equipo_b)"] ?? 0)) {
-                                    partidoView(partido: partido)
-                                }
-                            }
-                        }
-                        .frame(height: 300)
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(10)
-                    }
-                    .padding()
                 }
+
+                VStack {
+                    Text("Partidos Pasados")
+                        .font(.headline)
+                        .padding()
+                    ScrollView {
+                        ForEach(pastPartidos) { partido in
+                            partidoView(partido: partido)
+                        }
+                    }
+                    .frame(height: 300)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                }
+                .padding()
+
+                VStack {
+                    Text("Partidos Futuros")
+                        .font(.headline)
+                        .padding()
+                    ScrollView {
+                        ForEach(futurePartidos) { partido in
+                            partidoView(partido: partido)
+                        }
+                    }
+                    .frame(height: 300)
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                }
+                .padding()
             }
-            .onAppear {
-                fetchEquipos()
-                fetchPastPartidos()
-                fetchFuturePartidos()
-            }
+        }
+        .onAppear {
+            fetchEquipos()
+            fetchPastPartidos()
+            fetchFuturePartidos()
         }
     }
 
@@ -208,4 +220,3 @@ struct MatchTest_Previews: PreviewProvider {
         MatchTest()
     }
 }
-

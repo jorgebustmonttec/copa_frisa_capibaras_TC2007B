@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8C177ADE2C15AF3900653A6F /* MatchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177ADD2C15AF3900653A6F /* MatchTest.swift */; };
-		8C177AE02C15B21B00653A6F /* MatchDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177ADF2C15B21B00653A6F /* MatchDetailsView.swift */; };
 		8C5055032C103865006F3040 /* minionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055022C103865006F3040 /* minionApp.swift */; };
 		8C5055052C103865006F3040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055042C103865006F3040 /* ContentView.swift */; };
 		8C5055072C103867006F3040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5055062C103867006F3040 /* Assets.xcassets */; };
@@ -37,7 +36,6 @@
 
 /* Begin PBXFileReference section */
 		8C177ADD2C15AF3900653A6F /* MatchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTest.swift; sourceTree = "<group>"; };
-		8C177ADF2C15B21B00653A6F /* MatchDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDetailsView.swift; sourceTree = "<group>"; };
 		8C5054FF2C103865006F3040 /* minion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5055022C103865006F3040 /* minionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = minionApp.swift; sourceTree = "<group>"; };
 		8C5055042C103865006F3040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -120,7 +118,6 @@
 				8C50552C2C10398A006F3040 /* EquipoView.swift */,
 				8C5055302C103E54006F3040 /* APIService.swift */,
 				8C177ADD2C15AF3900653A6F /* MatchTest.swift */,
-				8C177ADF2C15B21B00653A6F /* MatchDetailsView.swift */,
 				8C5055062C103867006F3040 /* Assets.xcassets */,
 				8C5055082C103867006F3040 /* Preview Content */,
 			);
@@ -220,7 +217,6 @@
 				8C50552F2C103DE9006F3040 /* UserViewModel.swift in Sources */,
 				8C5055112C103888006F3040 /* LoginView.swift in Sources */,
 				8C5055052C103865006F3040 /* ContentView.swift in Sources */,
-				8C177AE02C15B21B00653A6F /* MatchDetailsView.swift in Sources */,
 				8C50552B2C10397D006F3040 /* PerfilView.swift in Sources */,
 				8C5055152C1038A7006F3040 /* ForgotPasswordView.swift in Sources */,
 				8C5055292C10396C006F3040 /* Jugador.swift in Sources */,
