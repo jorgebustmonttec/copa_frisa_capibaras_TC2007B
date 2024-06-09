@@ -9,6 +9,7 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const jugadorRoutes = require('./routes/jugadorRoutes');
 const equipoRoutes = require('./routes/equipoRoutes');
 const publicacionRoutes = require('./routes/publicacionRoutes'); // Add this line
+const partidoRoutes = require('./routes/partidoRoutes');
 
 
 const app = express();
@@ -48,6 +49,7 @@ app.use('/usuarios', usuarioRoutes);
 app.use('/jugadores', jugadorRoutes);
 app.use('/equipos', equipoRoutes);
 app.use('/publicaciones', publicacionRoutes); // Add this line
+app.use('/partidos', partidoRoutes);
 
 app.get('/', (req, res) => res.send('Hello World!'));
 
