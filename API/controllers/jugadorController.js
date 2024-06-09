@@ -7,14 +7,13 @@ const path = require('path');
 const saltRounds = 10;
 
 exports.createJugador = async (req, res) => {
-  const { display_name, correo, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
+  const { display_name, correo, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, posicion } = req.body;
 
-  if (!display_name || !correo || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo) {
+  if (!display_name || !correo || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo || !posicion) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
   try {
-    // Check for unique email and CURP
     const [emailCheckResult] = await db.promise().query('SELECT id_usuario FROM usuarios WHERE correo = ?', [correo]);
     if (emailCheckResult.length > 0) {
       return res.status(400).json({ error: 'El correo ya está en uso' });
@@ -25,21 +24,18 @@ exports.createJugador = async (req, res) => {
       return res.status(400).json({ error: 'El CURP ya está en uso' });
     }
 
-    // Generate unique username
     let username;
     for (let i = 0; i < 50; i++) {
-      const randomNum = Math.floor(100 + Math.random() * 900); // Generate a random 3-digit number
+      const randomNum = Math.floor(100 + Math.random() * 900);
       username = `${nombre[0]}${apellido_p[0]}${randomNum}`;
       const [usernameCheckResult] = await db.promise().query('SELECT id_usuario FROM usuarios WHERE username = ?', [username]);
       if (usernameCheckResult.length === 0) break;
       if (i === 49) return res.status(400).json({ error: 'No se pudo generar un nombre de usuario único' });
     }
 
-    // Generate password using the last 8 digits of CURP
     const password = CURP.slice(-8);
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    // Insert into usuarios table
     const [userResult] = await db.promise().query(
       'INSERT INTO usuarios (username, display_name, correo, password, tipo_usuario, imagen, created_at, first_login) VALUES (?, ?, ?, ?, 2, "NA", NOW(), true)',
       [username, display_name, correo, hashedPassword]
@@ -47,19 +43,16 @@ exports.createJugador = async (req, res) => {
 
     const userId = userResult.insertId;
 
-    // Insert into jugadores table
     await db.promise().query(
-      'INSERT INTO jugadores (fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_usuario, id_equipo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, userId, id_equipo]
+      'INSERT INTO jugadores (fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_usuario, id_equipo, posicion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, userId, id_equipo, posicion]
     );
 
-    // Ensure directory exists
     const userPwdDir = path.join(__dirname, '..', 'storage', 'files', 'userpwd');
     if (!fs.existsSync(userPwdDir)) {
         fs.mkdirSync(userPwdDir, { recursive: true });
     }
 
-    // Write username and password to a file
     const userPwdFilePath = path.join(userPwdDir, `${username}_credentials.txt`);
     const userPwdData = `Username: ${username}\nPassword: ${password}\n`;
     fs.writeFileSync(userPwdFilePath, userPwdData);
@@ -71,9 +64,10 @@ exports.createJugador = async (req, res) => {
   }
 };
 
+
 exports.getAllJugadoresSmall = (req, res) => {
   db.query(
-    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, 
+    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, jugadores.posicion,
             COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
             usuarios.username, usuarios.display_name 
      FROM jugadores 
@@ -89,10 +83,11 @@ exports.getAllJugadoresSmall = (req, res) => {
   );
 };
 
+
 exports.getJugadorSmallById = (req, res) => {
   const { id } = req.params;
   db.query(
-    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, 
+    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo,  jugadores.posicion,
             COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
             usuarios.username, usuarios.display_name 
      FROM jugadores 
@@ -156,7 +151,7 @@ exports.getJugadorById = (req, res) => {
   db.query(
     `SELECT 
         jugadores.id_jugador, jugadores.fecha_nac, jugadores.CURP, jugadores.domicilio, jugadores.telefono, 
-        jugadores.nombre, jugadores.apellido_p, jugadores.apellido_m, jugadores.num_imss, jugadores.id_equipo, 
+        jugadores.nombre, jugadores.apellido_p, jugadores.apellido_m, jugadores.num_imss, jugadores.id_equipo, jugadores.posicion,
         jugadores.doc_carta_responsabilidad, jugadores.doc_curp, jugadores.doc_ine, 
         usuarios.id_usuario, usuarios.username, usuarios.display_name, usuarios.correo, usuarios.tipo_usuario, 
         usuarios.imagen, usuarios.created_at, usuarios.first_login 
@@ -183,7 +178,7 @@ exports.getJugadorByUserId = (req, res) => {
   db.query(
     `SELECT 
         jugadores.id_jugador, jugadores.fecha_nac, jugadores.CURP, jugadores.domicilio, jugadores.telefono, 
-        jugadores.nombre, jugadores.apellido_p, jugadores.apellido_m, jugadores.num_imss, jugadores.id_equipo, 
+        jugadores.nombre, jugadores.apellido_p, jugadores.apellido_m, jugadores.num_imss, jugadores.id_equipo, jugadores.posicion, 
         jugadores.doc_carta_responsabilidad, jugadores.doc_curp, jugadores.doc_ine, 
         usuarios.id_usuario, usuarios.username, usuarios.display_name, usuarios.correo, usuarios.tipo_usuario, 
         usuarios.imagen, usuarios.created_at, usuarios.first_login 
@@ -206,14 +201,13 @@ exports.getJugadorByUserId = (req, res) => {
 
 exports.updateJugador = async (req, res) => {
   const { id } = req.params;
-  const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo } = req.body;
+  const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, posicion } = req.body;
 
-  if (!username || !display_name || !correo || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo) {
+  if (!username || !display_name || !correo || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo || !posicion) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
   }
 
   try {
-    // Check for unique email, CURP, and username
     const [emailCheckResult] = await db.promise().query('SELECT id_usuario FROM usuarios WHERE correo = ? AND id_usuario != (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)', [correo, id]);
     if (emailCheckResult.length > 0) {
       return res.status(400).json({ error: 'El correo ya está en uso' });
@@ -229,22 +223,19 @@ exports.updateJugador = async (req, res) => {
       return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
     }
 
-    // Update password if provided
     let hashedPassword;
     if (password) {
       hashedPassword = await bcrypt.hash(password, saltRounds);
     }
 
-    // Update usuarios table
     const [userUpdateResult] = await db.promise().query(
       'UPDATE usuarios SET username = ?, display_name = ?, correo = ?, password = ?, first_login = false WHERE id_usuario = (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)',
       [username, display_name, correo, hashedPassword || null, id]
     );
 
-    // Update jugadores table
     const [playerUpdateResult] = await db.promise().query(
-      'UPDATE jugadores SET fecha_nac = ?, CURP = ?, domicilio = ?, telefono = ?, nombre = ?, apellido_p = ?, apellido_m = ?, num_imss = ?, id_equipo = ? WHERE id_jugador = ?',
-      [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, id]
+      'UPDATE jugadores SET fecha_nac = ?, CURP = ?, domicilio = ?, telefono = ?, nombre = ?, apellido_p = ?, apellido_m = ?, num_imss = ?, id_equipo = ?, posicion = ? WHERE id_jugador = ?',
+      [fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, posicion, id]
     );
 
     res.status(200).json({ message: 'Jugador actualizado exitosamente' });
@@ -253,6 +244,7 @@ exports.updateJugador = async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar el jugador' });
   }
 };
+
 
 exports.getJugadoresByEquipo = (req, res) => {
   const { id_equipo } = req.params;

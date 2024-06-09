@@ -133,7 +133,7 @@
                 if (!rowData['Nombre Display'] || !rowData['Correo'] ||
                     !rowData['Fecha de nacimiento'] || !rowData['CURP'] || !rowData['Domicilio'] || !rowData['Telefono'] ||
                     !rowData['Nombre'] || !rowData['Apellido Paterno'] || !rowData['Apellido Materno'] || !rowData['Num_IMSS'] ||
-                    !rowData['ID Equipo']) {
+                    !rowData['ID Equipo'] || !rowData['Posicion']) {
                     console.warn(`Skipping row ${rowIndex} due to missing required fields`);
                     return;
                 }
@@ -151,7 +151,8 @@
                     apellido_p: rowData['Apellido Paterno'],
                     apellido_m: rowData['Apellido Materno'],
                     num_imss: rowData['Num_IMSS'],
-                    id_equipo: rowData['ID Equipo']
+                    id_equipo: rowData['ID Equipo'],
+                    posicion: rowData['Posicion']
                 };
 
                 console.log('Data to send:', dataToSend);
