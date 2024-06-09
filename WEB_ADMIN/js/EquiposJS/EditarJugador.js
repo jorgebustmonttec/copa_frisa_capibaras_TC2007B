@@ -24,6 +24,7 @@ async function fetchJugador() {
         document.getElementById('telefono').placeholder = jugador.telefono;
         document.getElementById('num_imss').placeholder = jugador.num_imss;
         document.getElementById('id_equipo').placeholder = jugador.id_equipo;
+        document.getElementById('posicion').placeholder = jugador.posicion;
 
         document.getElementById('nombre').addEventListener('input', handleInputChange);
         document.getElementById('apellido_p').addEventListener('input', handleInputChange);
@@ -37,6 +38,7 @@ async function fetchJugador() {
         document.getElementById('telefono').addEventListener('input', handleInputChange);
         document.getElementById('num_imss').addEventListener('input', handleInputChange);
         document.getElementById('id_equipo').addEventListener('input', handleInputChange);
+        document.getElementById('posicion').addEventListener('input', handleInputChange);
         document.getElementById('password').addEventListener('input', handleInputChange);
     } catch (error) {
         console.error('Error:', error);
