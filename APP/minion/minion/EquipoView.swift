@@ -13,6 +13,8 @@ struct EquipoView: View {
     @State private var jugadores: [APIJugadorEquipo] = []
     @State private var teamShield: UIImage?
     @State private var errorMessage: String = ""
+    @State private var totalGoals: Int = 0
+    @State private var totalPoints: Int = 0
 
     var body: some View {
         if userViewModel.isLoggedIn {
@@ -40,6 +42,15 @@ struct EquipoView: View {
                                         .font(.subheadline)
                                 }
                             }
+
+                            Divider()
+                            
+                            HStack {
+                                StatisticView(label: "Total Goles", value: String(totalGoals))
+                                Spacer()
+                                StatisticView(label: "Total Puntos", value: String(totalPoints))
+                            }
+                            .padding(.vertical, 2)
 
                             Text("Jugadores")
                                 .font(.headline)
@@ -128,7 +139,9 @@ struct EquipoView: View {
                         print("Equipo fetched: \(equipo)")
                         self.equipo = equipo
                         fetchTeamShield(teamId: equipo.id_equipo)
-                        fetchJugadores(equipoId: equipoId)
+                        fetchJugadores(equipoId: equipo.id_equipo)
+                        fetchTotalGoalsByTeam(teamId: equipo.id_equipo)
+                        fetchTotalPointsByTeam(teamId: equipo.id_equipo)
                     case .failure(let error):
                         print("Error fetching equipo: \(error.localizedDescription)")
                         self.errorMessage = error.localizedDescription
@@ -163,6 +176,30 @@ struct EquipoView: View {
                 if let image = UIImage(data: shieldData) {
                     self.teamShield = image
                 }
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTotalGoalsByTeam(teamId: Int) {
+        let url = "https://localhost:3443/puntos/goles/equipo/\(teamId)/total"
+        APIService.shared.fetchTotalGoalsByTeam(url: url) { result in
+            switch result {
+            case .success(let totalGoals):
+                self.totalGoals = totalGoals
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTotalPointsByTeam(teamId: Int) {
+        let url = "https://localhost:3443/partidos/points/\(teamId)"
+        APIService.shared.fetchTotalPointsByTeam(url: url) { result in
+            switch result {
+            case .success(let totalPoints):
+                self.totalPoints = totalPoints
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
