@@ -59,22 +59,15 @@ async function fetchJugadoresA() {
         if (!response.ok) throw new Error('Error al obtener los jugadores del equipo A');
         const jugadores = await response.json();
 
-        const jugadorASelect = document.getElementById('jugadorA');
-        const jugadorAVerdeSelect = document.getElementById('jugadorAVerde');
-        const jugadorAYellowSelect = document.getElementById('jugadorAYellow');
-        const jugadorARedSelect = document.getElementById('jugadorARed');
-        jugadorASelect.innerHTML = '';
-        jugadorAVerdeSelect.innerHTML = '';
-        jugadorAYellowSelect.innerHTML = '';
-        jugadorARedSelect.innerHTML = '';
-        jugadores.forEach(jugador => {
-            const option = document.createElement('option');
-            option.value = jugador.id_jugador;
-            option.text = jugador.nombre;
-            jugadorASelect.appendChild(option);
-            jugadorAVerdeSelect.appendChild(option.cloneNode(true));
-            jugadorAYellowSelect.appendChild(option.cloneNode(true));
-            jugadorARedSelect.appendChild(option.cloneNode(true));
+        ['jugadorA', 'jugadorAVerde', 'jugadorAYellow', 'jugadorARed'].forEach(selector => {
+            const select = document.getElementById(selector);
+            select.innerHTML = ''; // Clear previous options
+            jugadores.forEach(jugador => {
+                const option = document.createElement('option');
+                option.value = jugador.id_jugador;
+                option.text = jugador.nombre;
+                select.appendChild(option);
+            });
         });
     } catch (error) {
         console.error('Error:', error);
@@ -88,34 +81,26 @@ async function fetchJugadoresB() {
         if (!response.ok) throw new Error('Error al obtener los jugadores del equipo B');
         const jugadores = await response.json();
 
-        const jugadorBSelect = document.getElementById('jugadorB');
-        const jugadorBVerdeSelect = document.getElementById('jugadorBVerde');
-        const jugadorBYellowSelect = document.getElementById('jugadorBYellow');
-        const jugadorBRedSelect = document.getElementById('jugadorBRed');
-        jugadorBSelect.innerHTML = '';
-        jugadorBVerdeSelect.innerHTML = '';
-        jugadorBYellowSelect.innerHTML = '';
-        jugadorBRedSelect.innerHTML = '';
-        jugadores.forEach(jugador => {
-            const option = document.createElement('option');
-            option.value = jugador.id_jugador;
-            option.text = jugador.nombre;
-            jugadorBSelect.appendChild(option);
-            jugadorBVerdeSelect.appendChild(option.cloneNode(true));
-            jugadorBYellowSelect.appendChild(option.cloneNode(true));
-            jugadorBRedSelect.appendChild(option.cloneNode(true));
+        ['jugadorB', 'jugadorBVerde', 'jugadorBYellow', 'jugadorBRed'].forEach(selector => {
+            const select = document.getElementById(selector);
+            select.innerHTML = ''; // Clear previous options
+            jugadores.forEach(jugador => {
+                const option = document.createElement('option');
+                option.value = jugador.id_jugador;
+                option.text = jugador.nombre;
+                select.appendChild(option);
+            });
         });
     } catch (error) {
         console.error('Error:', error);
     }
 }
 
-async function agregarPunto(equipo, tipoPunto) {
-    const jugadorSelect = document.getElementById(`jugador${equipo}${tipoPunto === 2 ? 'Verde' : ''}`);
+async function agregarGol(equipo) {
+    const jugadorSelect = document.getElementById(`jugador${equipo}`);
     const jugadorId = jugadorSelect.value;
-    const endpoint = tipoPunto === 2 ? 'green/create' : 'goles/crear';
     try {
-        const response = await fetch(`${apiUrl}/puntos/${endpoint}`, {
+        const response = await fetch(`${apiUrl}/puntos/goles/crear`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -125,9 +110,50 @@ async function agregarPunto(equipo, tipoPunto) {
                 id_partido: id
             })
         });
-        if (!response.ok) throw new Error('Error al agregar el punto');
-        alert('Punto agregado exitosamente');
-        // Consider adding fetchPoints() here if needed
+        if (!response.ok) throw new Error('Error al agregar el gol');
+        alert('Gol agregado exitosamente');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function agregarYellowCard(equipo) {
+    const jugadorSelect = document.getElementById(`jugador${equipo}Yellow`);
+    const jugadorId = jugadorSelect.value;
+    try {
+        const response = await fetch(`${apiUrl}/puntos/yellow/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id_jugador: jugadorId,
+                id_partido: id
+            })
+        });
+        if (!response.ok) throw new Error('Error al agregar la tarjeta amarilla');
+        alert('Tarjeta amarilla agregada exitosamente');
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function agregarRedCard(equipo) {
+    const jugadorSelect = document.getElementById(`jugador${equipo}Red`);
+    const jugadorId = jugadorSelect.value;
+    try {
+        const response = await fetch(`${apiUrl}/puntos/red/create`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id_jugador: jugadorId,
+                id_partido: id
+            })
+        });
+        if (!response.ok) throw new Error('Error al agregar la tarjeta roja');
+        alert('Tarjeta roja agregada exitosamente');
     } catch (error) {
         console.error('Error:', error);
     }
