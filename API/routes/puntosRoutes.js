@@ -773,4 +773,93 @@ router.get('/green/jugador/:playerId/partido/:matchId/total', puntosController.g
 
 
 
+
+// Existing routes...
+
+/**
+ * @swagger
+ * /puntos/players/ordered-by-goals:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener jugadores ordenados por goles
+ *     responses:
+ *       200:
+ *         description: Lista de jugadores ordenados por goles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_jugador:
+ *                     type: integer
+ *                   id_usuario:
+ *                     type: integer
+ *                   nombre:
+ *                     type: string
+ *                   id_equipo:
+ *                     type: integer
+ *                   posicion:
+ *                     type: string
+ *                   nombre_equipo:
+ *                     type: string
+ *                   username:
+ *                     type: string
+ *                   display_name:
+ *                     type: string
+ *                   total_goals:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener jugadores ordenados por goles
+ */
+router.get('/players/ordered-by-goals', puntosController.getPlayersOrderedByGoals);
+
+/**
+ * @swagger
+ * /puntos/players/ordered-by-green-cards:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener jugadores ordenados por tarjetas verdes
+ *     responses:
+ *       200:
+ *         description: Lista de jugadores ordenados por tarjetas verdes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_jugador:
+ *                     type: integer
+ *                   id_usuario:
+ *                     type: integer
+ *                   nombre:
+ *                     type: string
+ *                   id_equipo:
+ *                     type: integer
+ *                   posicion:
+ *                     type: string
+ *                   nombre_equipo:
+ *                     type: string
+ *                   username:
+ *                     type: string
+ *                   display_name:
+ *                     type: string
+ *                   total_green_cards:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener jugadores ordenados por tarjetas verdes
+ */
+router.get('/players/ordered-by-green-cards', puntosController.getPlayersOrderedByGreenCards);
+
+module.exports = router;
+
+
+
+
+
 module.exports = router;

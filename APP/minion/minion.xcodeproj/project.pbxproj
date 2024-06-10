@@ -21,6 +21,8 @@
 		8C31EB152C1702E7004914FB /* APIService+Publicacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB142C1702E7004914FB /* APIService+Publicacion.swift */; };
 		8C31EB172C171D8A004914FB /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB162C171D8A004914FB /* LeaderboardView.swift */; };
 		8C31EB1A2C171F7A004914FB /* PuntosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB192C171F7A004914FB /* PuntosView.swift */; };
+		8C31EB1C2C1729AB004914FB /* GoleoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB1B2C1729AB004914FB /* GoleoView.swift */; };
+		8C31EB1E2C173141004914FB /* FairPlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB1D2C173141004914FB /* FairPlayView.swift */; };
 		8C5055032C103865006F3040 /* minionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055022C103865006F3040 /* minionApp.swift */; };
 		8C5055052C103865006F3040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055042C103865006F3040 /* ContentView.swift */; };
 		8C5055072C103867006F3040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5055062C103867006F3040 /* Assets.xcassets */; };
@@ -62,6 +64,8 @@
 		8C31EB142C1702E7004914FB /* APIService+Publicacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Publicacion.swift"; sourceTree = "<group>"; };
 		8C31EB162C171D8A004914FB /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		8C31EB192C171F7A004914FB /* PuntosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuntosView.swift; sourceTree = "<group>"; };
+		8C31EB1B2C1729AB004914FB /* GoleoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoleoView.swift; sourceTree = "<group>"; };
+		8C31EB1D2C173141004914FB /* FairPlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FairPlayView.swift; sourceTree = "<group>"; };
 		8C5054FF2C103865006F3040 /* minion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5055022C103865006F3040 /* minionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = minionApp.swift; sourceTree = "<group>"; };
 		8C5055042C103865006F3040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 			children = (
 				8C31EB162C171D8A004914FB /* LeaderboardView.swift */,
 				8C31EB192C171F7A004914FB /* PuntosView.swift */,
+				8C31EB1B2C1729AB004914FB /* GoleoView.swift */,
+				8C31EB1D2C173141004914FB /* FairPlayView.swift */,
 			);
 			path = leaderboard;
 			sourceTree = "<group>";
@@ -264,6 +270,7 @@
 				8C5055312C103E54006F3040 /* APIService.swift in Sources */,
 				8C177AF12C166F3500653A6F /* JugadorPerfilView.swift in Sources */,
 				8C177AE92C165FFD00653A6F /* APIService+User.swift in Sources */,
+				8C31EB1C2C1729AB004914FB /* GoleoView.swift in Sources */,
 				8C177AED2C1660BD00653A6F /* APIService+Partido.swift in Sources */,
 				8C177ADE2C15AF3900653A6F /* MatchTest.swift in Sources */,
 				8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */,
@@ -272,6 +279,7 @@
 				8C92D3D22C15679500CEB4B7 /* ChangePasswordSheetView.swift in Sources */,
 				8C50551D2C1038F6006F3040 /* NotaView.swift in Sources */,
 				8C50552D2C10398A006F3040 /* EquipoView.swift in Sources */,
+				8C31EB1E2C173141004914FB /* FairPlayView.swift in Sources */,
 				8C5055272C103962006F3040 /* JugadorView.swift in Sources */,
 				8C177AEB2C1660A300653A6F /* APIService+Equipo.swift in Sources */,
 				8C31EB152C1702E7004914FB /* APIService+Publicacion.swift in Sources */,

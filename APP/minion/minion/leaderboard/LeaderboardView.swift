@@ -26,11 +26,11 @@ struct LeaderboardView: View {
                         .tabItem { Text("Puntos") }
                         .tag(0)
 
-                    Text("Goleo Content")
+                    GoleoView()
                         .tabItem { Text("Goleo") }
                         .tag(1)
 
-                    Text("Fair Play Content")
+                    FairPlayView()
                         .tabItem { Text("Fair Play") }
                         .tag(2)
                 }
