@@ -291,4 +291,147 @@ router.put('/actualizar/:id', partidoController.updatePartido);
 router.get('/lastgamebyuser/:id', partidoController.getLastGameInfoByUserId);
 
 
+/**
+ * @swagger
+ * /partidos/points/{teamId}:
+ *   get:
+ *     tags:
+ *       - Partidos
+ *     summary: Obtener los puntos de un equipo
+ *     parameters:
+ *       - in: path
+ *         name: teamId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Puntos del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 teamId:
+ *                   type: integer
+ *                 totalPoints:
+ *                   type: integer
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener los puntos del equipo
+ */
+router.get('/points/:teamId', partidoController.getPointsByTeamId);
+
+
+/**
+ * @swagger
+ * /partidos/teams/ordered-by-points:
+ *   get:
+ *     tags:
+ *       - Partidos
+ *     summary: Obtener equipos ordenados por puntos
+ *     responses:
+ *       200:
+ *         description: Lista de equipos ordenados por puntos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_equipo:
+ *                     type: integer
+ *                   total_points:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener equipos ordenados por puntos
+ */
+router.get('/teams/ordered-by-points', partidoController.getTeamsOrderedByPoints);
+
+
+/**
+ * @swagger
+ * /partidos/determine-winner/all:
+ *   put:
+ *     tags:
+ *       - Partidos
+ *     summary: Determinar el ganador de todos los partidos pasados
+ *     responses:
+ *       200:
+ *         description: Ganadores determinados exitosamente para todos los partidos pasados
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *       500:
+ *         description: Error al determinar los ganadores
+ */
+router.put('/determine-winner/all', partidoController.determineWinnerForAllMatches);
+
+
+/**
+ * @swagger
+ * /partidos/determine-winner/single/{id}:
+ *   put:
+ *     tags:
+ *       - Partidos
+ *     summary: Determinar el ganador de un partido por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Ganador determinado exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 ganador:
+ *                   type: integer
+ *       404:
+ *         description: Partido no encontrado
+ *       500:
+ *         description: Error al determinar el ganador
+ */
+router.put('/determine-winner/single/:id', partidoController.determineWinnerById);
+
+
+/**
+ * @swagger
+ * /partidos/clear-winner/{id}:
+ *   put:
+ *     tags:
+ *       - Partidos
+ *     summary: Eliminar el resultado del partido
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Resultado del partido eliminado exitosamente
+ *       404:
+ *         description: Partido no encontrado
+ *       500:
+ *         description: Error al eliminar el resultado del partido
+ */
+router.put('/clear-winner/:id', partidoController.clearWinner);
+
+
 module.exports = router;

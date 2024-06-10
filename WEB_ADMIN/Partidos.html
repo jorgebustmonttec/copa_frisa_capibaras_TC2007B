@@ -38,58 +38,53 @@
     <!-- endinject -->
 
 
-<style>
-    /* Estilo base para el formulario */
-.mdl-grid {
-    background-color: #333; /* Color de fondo oscuro */
-    color: white; /* Letras en blanco */
-    padding: 20px; /* Espaciado interior para mejor visibilidad */
-    border-radius: 8px; /* Bordes redondeados para un look moderno */
-}
+    <style>
+        /* Estilo base para el formulario */
+        .mdl-grid {
+            background-color: #333; /* Color de fondo oscuro */
+            color: white; /* Letras en blanco */
+            padding: 20px; /* Espaciado interior para mejor visibilidad */
+            border-radius: 8px; /* Bordes redondeados para un look moderno */
+        }
 
-/* Ajuste de las etiquetas para mejorar la visibilidad */
-label {
-    color: white; /* Color de texto para las etiquetas */
-    font-weight: bold; /* Negrita para mejorar la legibilidad */
-    margin-bottom: 5px; /* Espacio debajo de la etiqueta */
-    display: block; /* Hacer que la etiqueta ocupe toda la línea */
-}
+        /* Ajuste de las etiquetas para mejorar la visibilidad */
+        label {
+            color: white; /* Color de texto para las etiquetas */
+            font-weight: bold; /* Negrita para mejorar la legibilidad */
+            margin-bottom: 5px; /* Espacio debajo de la etiqueta */
+            display: block; /* Hacer que la etiqueta ocupe toda la línea */
+        }
 
-/* Estilos para los selectores y entradas de texto */
-.mdl-textfield__input, select {
-    background-color: #555; /* Fondo más claro que el general para distinguir el input */
-    color: white; /* Texto en blanco */
-    border: none; /* Sin bordes adicionales */
-    border-bottom: 1px solid white; /* Subrayado para indicar el límite del input */
-    border-radius: 4px; /* Bordes ligeramente redondeados */
-    padding: 10px; /* Padding para mayor comodidad al escribir */
-    width: 100%; /* Uso máximo del espacio disponible */
-}
+        /* Estilos para los selectores y entradas de texto */
+        .mdl-textfield__input, select {
+            background-color: #555; /* Fondo más claro que el general para distinguir el input */
+            color: white; /* Texto en blanco */
+            border: none; /* Sin bordes adicionales */
+            border-bottom: 1px solid white; /* Subrayado para indicar el límite del input */
+            border-radius: 4px; /* Bordes ligeramente redondeados */
+            padding: 10px; /* Padding para mayor comodidad al escribir */
+            width: 100%; /* Uso máximo del espacio disponible */
+        }
 
-/* Ajustes para los botones */
-button.mdl-button {
-    background-color: #1976D2; /* Color azul para botón de acción */
-    color: white; /* Texto en blanco */
-    margin-top: 20px; /* Espacio superior para separar del resto del formulario */
-    font-weight: bold; /* Texto en negrita para los botones */
-    letter-spacing: 1px; /* Espaciado de caracteres para mejorar la estética */
-}
+        /* Ajustes para los botones */
+        button.mdl-button {
+            background-color: #1976D2; /* Color azul para botón de acción */
+            color: white; /* Texto en blanco */
+            margin-top: 20px; /* Espacio superior para separar del resto del formulario */
+            font-weight: bold; /* Texto en negrita para los botones */
+            letter-spacing: 1px; /* Espaciado de caracteres para mejorar la estética */
+        }
 
-/* Botón de volver con un estilo diferente para diferenciar */
-button.mdl-button--accent {
-    background-color: #D32F2F; /* Color rojo para el botón de volver */
-}
+        /* Botón de volver con un estilo diferente para diferenciar */
+        button.mdl-button--accent {
+            background-color: #D32F2F; /* Color rojo para el botón de volver */
+        }
 
-/* Estilos para inputs tipo datetime-local */
-input[type='datetime-local'] {
-    cursor: pointer; /* Cambio de cursor para indicar interactividad */
-}
-
-</style>
-
-
-
-
+        /* Estilos para inputs tipo datetime-local */
+        input[type='datetime-local'] {
+            cursor: pointer; /* Cambio de cursor para indicar interactividad */
+        }
+    </style>
 </head>
 <body>
 <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header is-small-screen">
@@ -98,9 +93,6 @@ input[type='datetime-local'] {
             <div class="mdl-layout-spacer"></div>
             <!-- Search-->
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable">
-                
-
-                
             </div>
 
             <div class="material-icons mdl-badge mdl-badge--overlap mdl-button--icon notification" id="notification"
@@ -268,14 +260,13 @@ input[type='datetime-local'] {
                     </span>
                 </li>
                 <a href="loginAdmin.html" onclick="logout(); return false;">
-    <li class="mdl-menu__item mdl-list__item">
-        <span class="mdl-list__item-primary-content">
-            <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>
-            Log out
-        </span>
-    </li>
-</a>
-
+                    <li class="mdl-menu__item mdl-list__item">
+                        <span class="mdl-list__item-primary-content">
+                            <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>
+                            Log out
+                        </span>
+                    </li>
+                </a>
             </ul>
 
             <button id="more"
@@ -309,7 +300,6 @@ input[type='datetime-local'] {
                             Home
                         </a>
                         
-                       
                         <a class="mdl-navigation__link" href="Partidos.html">
                             <i class="material-icons" role="presentation">event</i>
                             Partidos
@@ -342,96 +332,101 @@ input[type='datetime-local'] {
     </div> <!-- a partir de aqui termina la plantilla -->
 
     <main class="mdl-layout__content mdl-color--grey-100">
-    <div class="mdl-grid">
-        <div class="mdl-cell mdl-cell--12-col">
-            <button onclick="fetchAllPartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                Todos los Partidos
-            </button>
-            <button onclick="fetchPastPartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                Partidos Pasados
-            </button>
-            <button onclick="fetchFuturePartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
-                Partidos Futuros
-            </button>
-        </div>
-    </div>
-
-    <div class="mdl-grid ui-tables">
-        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
-            <div class="mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title">
-                    <h1 class="mdl-card__title-text">Partidos</h1>
-                </div>
-                <div class="mdl-card__supporting-text no-padding">
-                    <table class="mdl-data-table mdl-js-data-table" id="partidosTable">
-                        <thead>
-                            <tr>
-                                <th>Equipo A</th>
-                                <th>Escudo A</th>
-                                <th>Goles A</th>
-                                <th>Equipo B</th>
-                                <th>Escudo B</th>
-                                <th>Goles B</th>
-                                <th>Fecha</th>
-                                <th>Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <h2>Crear un nuevo partido</h2>
-    <form id="createPartidoForm" onsubmit="createPartido(event)">
         <div class="mdl-grid">
-            <div class="mdl-cell mdl-cell--6-col">
-                <label for="equipoA">Equipo A:</label>
-                <select id="equipoA" name="equipoA" class="mdl-textfield__input" required></select>
-            </div>
-            <div class="mdl-cell mdl-cell--6-col">
-                <label for="equipoB">Equipo B:</label>
-                <select id="equipoB" name="equipoB" class="mdl-textfield__input" required></select>
-            </div>
-            <div class="mdl-cell mdl-cell--6-col">
-                <label for="fecha">Fecha:</label>
-                <input type="datetime-local" id="fecha" name="fecha" class="mdl-textfield__input" required>
-            </div>
             <div class="mdl-cell mdl-cell--12-col">
-                <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                    Crear Partido
+                <button onclick="fetchAllPartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Todos los Partidos
                 </button>
-                <button type="button" onclick="window.location.href='Partidos.html'" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-                    Volver
+                <button onclick="fetchPastPartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Partidos Pasados
+                </button>
+                <button onclick="fetchFuturePartidos()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Partidos Futuros
+                </button>
+                <button onclick="determineWinnersForAllMatches()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    Determinar Ganadores de Todos los Partidos
                 </button>
             </div>
         </div>
-    </form>
-</main>
+
+        <div class="mdl-grid ui-tables">
+            <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+                <div class="mdl-card mdl-shadow--2dp">
+                    <div class="mdl-card__title">
+                        <h1 class="mdl-card__title-text">Partidos</h1>
+                    </div>
+                    <div class="mdl-card__supporting-text no-padding">
+                        <table class="mdl-data-table mdl-js-data-table" id="partidosTable">
+                            <thead>
+                                <tr>
+                                    <th>Equipo A</th>
+                                    <th>Escudo A</th>
+                                    <th>Goles A</th>
+                                    <th>Equipo B</th>
+                                    <th>Escudo B</th>
+                                    <th>Goles B</th>
+                                    <th>Fecha</th>
+                                    <th>Ganador</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2>Crear un nuevo partido</h2>
+        <form id="createPartidoForm" onsubmit="createPartido(event)">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--6-col">
+                    <label for="equipoA">Equipo A:</label>
+                    <select id="equipoA" name="equipoA" class="mdl-textfield__input" required></select>
+                </div>
+                <div class="mdl-cell mdl-cell--6-col">
+                    <label for="equipoB">Equipo B:</label>
+                    <select id="equipoB" name="equipoB" class="mdl-textfield__input" required></select>
+                </div>
+                <div class="mdl-cell mdl-cell--6-col">
+                    <label for="fecha">Fecha:</label>
+                    <input type="datetime-local" id="fecha" name="fecha" class="mdl-textfield__input" required>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col">
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                        Crear Partido
+                    </button>
+                    <button type="button" onclick="window.location.href='Partidos.html'" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                        Volver
+                    </button>
+                </div>
+            </div>
+        </form>
+    </main>
 
 
 
-<!-- inject:js -->
+    <!-- inject:js -->
 
-<script src="js/PartidosJS/PartidosJSON.js"></script>
-<script src="js/session/sessionManagement.js"></script>
-<script src="js/d3.min.js"></script>
-<script src="js/getmdl-select.min.js"></script>
-<script src="js/material.min.js"></script>
-<script src="js/nv.d3.min.js"></script>
-<script src="js/layout/layout.min.js"></script>
-<script src="js/scroll/scroll.min.js"></script>
-<script src="js/widgets/charts/discreteBarChart.min.js"></script>
-<script src="js/widgets/charts/linePlusBarChart.min.js"></script>
-<script src="js/widgets/charts/stackedBarChart.min.js"></script>
-<script src="js/widgets/employer-form/employer-form.min.js"></script>
-<script src="js/widgets/line-chart/line-charts-nvd3.min.js"></script>
-<script src="js/widgets/map/maps.min.js"></script>
-<script src="js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
-<script src="js/widgets/table/table.min.js"></script>
-<script src="js/widgets/todo/todo.min.js"></script>
-<!-- endinject -->
+    <script src="js/PartidosJS/PartidosJSON.js"></script>
+    <script src="js/session/sessionManagement.js"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/getmdl-select.min.js"></script>
+    <script src="js/material.min.js"></script>
+    <script src="js/nv.d3.min.js"></script>
+    <script src="js/layout/layout.min.js"></script>
+    <script src="js/scroll/scroll.min.js"></script>
+    <script src="js/widgets/charts/discreteBarChart.min.js"></script>
+    <script src="js/widgets/charts/linePlusBarChart.min.js"></script>
+    <script src="js/widgets/charts/stackedBarChart.min.js"></script>
+    <script src="js/widgets/employer-form/employer-form.min.js"></script>
+    <script src="js/widgets/line-chart/line-charts-nvd3.min.js"></script>
+    <script src="js/widgets/map/maps.min.js"></script>
+    <script src="js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
+    <script src="js/widgets/table/table.min.js"></script>
+    <script src="js/widgets/todo/todo.min.js"></script>
+    <!-- endinject -->
 
+    <script src="js/PartidosJS/Partidos.js"></script>
 </body>
 </html>

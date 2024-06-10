@@ -398,3 +398,100 @@ exports.getTotalGoalsByUserId = (req, res) => {
         }
     );
 };
+
+// Add this function to puntosController.js
+exports.getTotalGoalsByPlayerInMatch = (req, res) => {
+    const { playerId, matchId } = req.params;
+    
+    db.query(
+        'SELECT COUNT(*) as total_goals FROM puntos WHERE id_jugador = ? AND id_partido = ? AND tipo_punto = 1',
+        [playerId, matchId],
+        (err, result) => {
+            if (err) {
+                console.error('Error al obtener goles del jugador en el partido:', err);
+                res.status(500).json({ error: 'Error al obtener goles del jugador en el partido' });
+            } else {
+                res.json(result[0]);
+            }
+        }
+    );
+};
+
+exports.getTotalGreenCardsByPlayerInMatch = (req, res) => {
+    const { playerId, matchId } = req.params;
+    
+    db.query(
+        'SELECT COUNT(*) as total_green_cards FROM puntos WHERE id_jugador = ? AND id_partido = ? AND tipo_punto = 2',
+        [playerId, matchId],
+        (err, result) => {
+            if (err) {
+                console.error('Error al obtener tarjetas verdes del jugador en el partido:', err);
+                res.status(500).json({ error: 'Error al obtener tarjetas verdes del jugador en el partido' });
+            } else {
+                res.json(result[0]);
+            }
+        }
+    );
+};
+
+// 1. Get players ordered by total goals
+exports.getPlayersOrderedByGoals = (req, res) => {
+    const query = `
+        SELECT 
+            jugadores.id_jugador, 
+            usuarios.id_usuario, 
+            jugadores.nombre, 
+            jugadores.id_equipo, 
+            jugadores.posicion,
+            COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
+            usuarios.username, 
+            usuarios.display_name,
+            COUNT(puntos.id_punto) AS total_goals
+        FROM jugadores 
+        LEFT JOIN equipos ON jugadores.id_equipo = equipos.id_equipo 
+        JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario
+        LEFT JOIN puntos ON jugadores.id_jugador = puntos.id_jugador AND puntos.tipo_punto = 1
+        GROUP BY jugadores.id_jugador
+        ORDER BY total_goals DESC
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener jugadores ordenados por goles:', err);
+            res.status(500).json({ error: 'Error al obtener jugadores ordenados por goles' });
+        } else {
+            res.json(results);
+        }
+    });
+};
+
+// 2. Get players ordered by total green cards
+exports.getPlayersOrderedByGreenCards = (req, res) => {
+    const query = `
+        SELECT 
+            jugadores.id_jugador, 
+            usuarios.id_usuario, 
+            jugadores.nombre, 
+            jugadores.id_equipo, 
+            jugadores.posicion,
+            COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
+            usuarios.username, 
+            usuarios.display_name,
+            COUNT(puntos.id_punto) AS total_green_cards
+        FROM jugadores 
+        LEFT JOIN equipos ON jugadores.id_equipo = equipos.id_equipo 
+        JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario
+        LEFT JOIN puntos ON jugadores.id_jugador = puntos.id_jugador AND puntos.tipo_punto = 2
+        GROUP BY jugadores.id_jugador
+        ORDER BY total_green_cards DESC
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener jugadores ordenados por tarjetas verdes:', err);
+            res.status(500).json({ error: 'Error al obtener jugadores ordenados por tarjetas verdes' });
+        } else {
+            res.json(results);
+        }
+    });
+};
