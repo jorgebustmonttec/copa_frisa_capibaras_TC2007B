@@ -339,45 +339,49 @@
             <h2>Editar Partido</h2>
             <div class="mdl-card__subtitle">Por favor completa los datos del partido</div>
         </div>
-        <div class="mdl-card__supporting-text">
-            <form id="editPartidoForm" onsubmit="updatePartido(event)">
-                <div class="mdl-grid">
-                    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <select id="equipoA" name="equipoA" class="mdl-textfield__input" required onchange="fetchJugadoresA()">
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <label class="mdl-textfield__label" for="equipoA">Equipo A</label>
-                    </div>
-                    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <select id="equipoB" name="equipoB" class="mdl-textfield__input" required onchange="fetchJugadoresB()">
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <label class="mdl-textfield__label" for="equipoB">Equipo B</label>
-                    </div>
-                    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <input type="datetime-local" id="fecha" name="fecha" class="mdl-textfield__input" required>
-                        <label class="mdl-textfield__label" for="fecha">Fecha y Hora del Partido</label>
-                    </div>
-                    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                        <select id="ganador" name="ganador" class="mdl-textfield__input">
-                            <!-- Options will be populated dynamically -->
-                        </select>
-                        <label class="mdl-textfield__label" for="ganador">Ganador</label>
-                    </div>
-                    <div class="mdl-cell mdl-cell--12-col">
-                        <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                            Actualizar Partido
-                        </button>
-                        <button type="button" onclick="goBack()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
-                            Volver
-                        </button>
-                        
-                    </div>
+<!-- Within the existing <div class="mdl-card__supporting-text"> -->
+    <div class="mdl-card__supporting-text">
+        <form id="editPartidoForm" onsubmit="updatePartido(event)">
+            <div class="mdl-grid">
+                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <select id="equipoA" name="equipoA" class="mdl-textfield__input" required onchange="fetchJugadoresA()">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <label class="mdl-textfield__label" for="equipoA">Equipo A</label>
                 </div>
-            </form>
-             <div class="mdl-card__title">
-            <h2>Agregar Gol</h2>
-        </div>
+                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <select id="equipoB" name="equipoB" class="mdl-textfield__input" required onchange="fetchJugadoresB()">
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <label class="mdl-textfield__label" for="equipoB">Equipo B</label>
+                </div>
+                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <input type="datetime-local" id="fecha" name="fecha" class="mdl-textfield__input" required>
+                    <label class="mdl-textfield__label" for="fecha">Fecha y Hora del Partido</label>
+                </div>
+                <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                    <select id="ganador" name="ganador" class="mdl-textfield__input">
+                        <option value="">Seleccione el ganador</option>
+                        <option value="0">Empate</option>
+                        <!-- Options will be populated dynamically -->
+                    </select>
+                    <label class="mdl-textfield__label" for="ganador">Ganador</label>
+                </div>
+                <div class="mdl-cell mdl-cell--12-col">
+                    <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
+                        Actualizar Partido
+                    </button>
+                    <button type="button" onclick="goBack()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                        Volver
+                    </button>
+                    <button type="button" onclick="clearWinner()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
+                        Eliminar Resultado
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    
             <div class="mdl-grid">
                 <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                     <select id="jugadorA" name="jugadorA" class="mdl-textfield__input">
