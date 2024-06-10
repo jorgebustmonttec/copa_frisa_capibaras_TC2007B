@@ -187,8 +187,81 @@ async function updatePartido(event) {
     }
 }
 
+async function fetchPoints() {
+    try {
+        const response = await fetch(`${apiUrl}/puntos/partido/${id}`);
+        if (!response.ok) throw new Error('Error al obtener los puntos');
+        const points = await response.json();
+
+        const tableBody = document.querySelector('#pointsTable tbody');
+        tableBody.innerHTML = '';
+
+        for (const point of points) {
+            const jugador = await fetchJugador(point.id_jugador);
+            const tipoPunto = await fetchTipoPunto(point.tipo_punto);
+
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${jugador.nombre} ${jugador.apellido_p} ${jugador.apellido_m}</td>
+                <td>${point.id_equipo}</td>
+                <td>${tipoPunto.nombre_punto}</td>
+                <td>${new Date(point.tiempo_punto).toLocaleString()}</td>
+                <td><button onclick="deletePoint(${point.id_punto})">Eliminar</button></td>
+            `;
+            tableBody.appendChild(row);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+async function fetchJugador(id) {
+    try {
+        const response = await fetch(`${apiUrl}/jugadores/single/${id}`);
+        if (!response.ok) throw new Error('Error al obtener el jugador');
+        return await response.json();
+    } catch (error) {
+        console.error('Error:', error);
+        return { nombre: 'N/A', apellido_p: '', apellido_m: '' };
+    }
+}
+
+async function fetchTipoPunto(id) {
+    try {
+        const response = await fetch(`${apiUrl}/tipo_puntos/${id}`);
+        if (!response.ok) throw new Error('Error al obtener el tipo de punto');
+        const tipoPunto = await response.json();
+        return tipoPunto;
+    } catch (error) {
+        console.error('Error:', error);
+        return { nombre_punto: 'N/A' };
+    }
+}
+
+async function deletePoint(id) {
+    if (confirm('¿Estás seguro de que quieres eliminar este punto?')) {
+        try {
+            const response = await fetch(`${apiUrl}/puntos/eliminar/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) throw new Error('Error al eliminar el punto');
+            alert('Punto eliminado exitosamente');
+
+            // Reload the points table
+            fetchPoints();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+}
+
 function goBack() {
     window.location.href = 'partidos.html';
 }
 
 document.addEventListener('DOMContentLoaded', fetchEquipos);
+document.addEventListener('DOMContentLoaded', fetchPoints);
