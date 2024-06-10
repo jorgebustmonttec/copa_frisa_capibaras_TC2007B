@@ -371,9 +371,7 @@
                         <button type="button" onclick="goBack()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">
                             Volver
                         </button>
-                        <button type="button" onclick="editPoints()" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">
-                            Editar Puntos
-                        </button>
+                        
                     </div>
                 </div>
             </form>
@@ -424,7 +422,81 @@
                     <button onclick="agregarPunto('B', 2)" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Agregar Tarjeta Verde</button>
                 </div>
             </div>
+
+            <div class="mdl-card__title">
+    <h2>Agregar Tarjeta Amarilla</h2>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <select id="jugadorAYellow" name="jugadorAYellow" class="mdl-textfield__input">
+            <!-- Opciones dinámicas -->
+        </select>
+        <label for="jugadorAYellow">Jugador de Equipo A:</label>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+        <button onclick="agregarYellowCard('A')" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Agregar Tarjeta Amarilla</button>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <select id="jugadorBYellow" name="jugadorBYellow" class="mdl-textfield__input">
+            <!-- Opciones dinámicas -->
+        </select>
+        <label for="jugadorBYellow">Jugador de Equipo B:</label>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+        <button onclick="agregarYellowCard('B')" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Agregar Tarjeta Amarilla</button>
+    </div>
+</div>
+
+
+<div class="mdl-card__title">
+    <h2>Agregar Tarjeta Roja</h2>
+</div>
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <select id="jugadorARed" name="jugadorARed" class="mdl-textfield__input">
+            <!-- Opciones dinámicas -->
+        </select>
+        <label for="jugadorARed">Jugador de Equipo A:</label>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+        <button onclick="agregarRedCard('A')" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Agregar Tarjeta Roja</button>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <select id="jugadorBRed" name="jugadorBRed" class="mdl-textfield__input">
+            <!-- Opciones dinámicas -->
+        </select>
+        <label for="jugadorBRed">Jugador de Equipo B:</label>
+    </div>
+    <div class="mdl-cell mdl-cell--6-col">
+        <button onclick="agregarRedCard('B')" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored">Agregar Tarjeta Roja</button>
+    </div>
+</div>
+
+
+
+
+
         </div>
+
+<div class="mdl-card__title">
+    <h2>Puntos del Partido</h2>
+</div>
+<table id="pointsTable" class="mdl-data-table mdl-js-data-table mdl-shadow--2dp" style="width:100%;">
+    <thead>
+        <tr>
+            <th>Jugador</th>
+            <th>Equipo</th>
+            <th>Tipo de Punto</th>
+            <th>Tiempo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Los puntos se cargarán dinámicamente aquí -->
+    </tbody>
+</table>
+
+
     </div>
 </main>
 
