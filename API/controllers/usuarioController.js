@@ -17,6 +17,19 @@ exports.getAllUsuarios = (req, res) => {
   });
 };
 
+exports.getUsuarioById = (req, res) => {
+  const { id } = req.params;
+  db.query('SELECT * FROM usuarios WHERE id_usuario = ?', [id], (err, result) => {
+    if (err) {
+      res.status(500).json({ error: 'Error en el servidor' });
+    } else if (result.length === 0) {
+      res.status(404).json({ error: 'Usuario no encontrado' });
+    } else {
+      res.json(result[0]);
+    }
+  });
+};
+
 exports.getProfilePicture = (req, res) => {
   const userId = req.params.id;
 
@@ -222,4 +235,27 @@ exports.changePassword = async (req, res) => {
         console.error('Error:', err);
         res.status(500).json({ error: 'Error al cambiar la contraseña' });
     }
+};
+
+
+// Update user information
+exports.updateUsuario = (req, res) => {
+  const { id } = req.params;
+  const { username, display_name, correo } = req.body;
+
+  if (!username || !display_name || !correo) {
+      return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+  }
+
+  const query = 'UPDATE usuarios SET username = ?, display_name = ?, correo = ? WHERE id_usuario = ?';
+  db.query(query, [username, display_name, correo, id], (err, result) => {
+      if (err) {
+          console.error('Error al actualizar el usuario:', err);
+          res.status(500).json({ error: 'Error al actualizar el usuario' });
+      } else if (result.affectedRows === 0) {
+          res.status(404).json({ error: 'Usuario no encontrado' });
+      } else {
+          res.status(200).json({ message: 'Usuario actualizado exitosamente' });
+      }
+  });
 };

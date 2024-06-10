@@ -78,6 +78,35 @@ router.get('/', usuarioController.getAllUsuarios);
 
 /**
  * @swagger
+ * /usuarios/single/{id}:
+ *   get:
+ *     tags:
+ *       - Usuarios
+ *     summary: Obtener un usuario por ID
+ *     description: Devuelve un usuario por ID
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Un usuario.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Usuario'
+ *       404:
+ *         description: Usuario no encontrado
+ *       500:
+ *         description: Error en el servidor
+ */
+router.get('/single/:id', usuarioController.getUsuarioById);
+
+/**
+ * @swagger
  * /usuarios/perfil/{id}:
  *   get:
  *     tags:
@@ -289,5 +318,13 @@ router.post('/signup', usuarioController.signup);
  *         description: Error en el servidor
  */
 router.put('/changePassword', usuarioController.changePassword);
+
+
+
+
+
+
+router.put('/update/:id', usuarioController.updateUsuario);
+
 
 module.exports = router;
