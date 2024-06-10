@@ -13,6 +13,7 @@
 		8C177AD32C15A2FE00653A6F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C177AD22C15A2FE00653A6F /* Preview Assets.xcassets */; };
 		8C177ADA2C15A31300653A6F /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AD92C15A31300653A6F /* APIService.swift */; };
 		8C177ADC2C15A34500653A6F /* MatchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177ADB2C15A34500653A6F /* MatchTest.swift */; };
+		8C31EB132C1701C1004914FB /* NotificacionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB122C1701C1004914FB /* NotificacionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		8C177AD22C15A2FE00653A6F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		8C177AD92C15A31300653A6F /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		8C177ADB2C15A34500653A6F /* MatchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTest.swift; sourceTree = "<group>"; };
+		8C31EB122C1701C1004914FB /* NotificacionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificacionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +59,7 @@
 			children = (
 				8C177ACB2C15A2FB00653A6F /* grrrrrrApp.swift */,
 				8C177ACD2C15A2FB00653A6F /* ContentView.swift */,
+				8C31EB122C1701C1004914FB /* NotificacionView.swift */,
 				8C177AD92C15A31300653A6F /* APIService.swift */,
 				8C177ADB2C15A34500653A6F /* MatchTest.swift */,
 				8C177ACF2C15A2FE00653A6F /* Assets.xcassets */,
@@ -146,6 +149,7 @@
 				8C177ACE2C15A2FB00653A6F /* ContentView.swift in Sources */,
 				8C177ADA2C15A31300653A6F /* APIService.swift in Sources */,
 				8C177ACC2C15A2FB00653A6F /* grrrrrrApp.swift in Sources */,
+				8C31EB132C1701C1004914FB /* NotificacionView.swift in Sources */,
 				8C177ADC2C15A34500653A6F /* MatchTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

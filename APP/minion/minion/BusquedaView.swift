@@ -156,7 +156,7 @@ struct PartidosView: View {
                     .padding()
             } else {
                 List(filteredPartidos, id: \.id_partido) { partido in
-                    NavigationLink(destination: Stats().navigationBarHidden(true)) {
+                    NavigationLink(destination: PartidoDetailView(partido: partido)) {
                         VStack(alignment: .leading) {
                             Text(matchTitle(for: partido))
                                 .font(.headline)
@@ -165,6 +165,7 @@ struct PartidosView: View {
                                 .foregroundColor(.secondary)
                         }
                     }
+
                 }
             }
         }
