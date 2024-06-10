@@ -21,17 +21,20 @@ struct LeaderboardView: View {
                 .pickerStyle(SegmentedPickerStyle())
                 .padding()
 
-                if selectedTab == 0 {
-                    Text("Puntos Content")
-                } else if selectedTab == 1 {
-                    Text("Goleo Content")
-                } else if selectedTab == 2 {
-                    Text("Fair Play Content")
-                }
+                TabView(selection: $selectedTab) {
+                    PuntosView()
+                        .tabItem { Text("Puntos") }
+                        .tag(0)
 
-                Spacer()
+                    Text("Goleo Content")
+                        .tabItem { Text("Goleo") }
+                        .tag(1)
+
+                    Text("Fair Play Content")
+                        .tabItem { Text("Fair Play") }
+                        .tag(2)
+                }
             }
-            .navigationTitle("Leaderboard")
         }
     }
 }

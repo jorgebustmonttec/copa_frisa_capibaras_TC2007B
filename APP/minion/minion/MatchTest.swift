@@ -5,6 +5,7 @@
 //  Created by Jorge Bustamante on 09/06/24.
 //
 
+// MatchTest.swift
 import SwiftUI
 
 struct MatchTest: View {
@@ -15,58 +16,62 @@ struct MatchTest: View {
     @State private var errorMessage: String = ""
 
     var body: some View {
-        VStack {
-            Image("copa")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 130)
-
-            if !errorMessage.isEmpty {
-                Text(errorMessage)
-                    .foregroundColor(.red)
-                    .padding()
-            }
-
+        NavigationView {
             VStack {
-                Text("Partidos Pasados")
-                    .font(.headline)
-                    .padding()
-                ScrollView {
-                    ForEach(pastPartidos) { partido in
-                        NavigationLink(destination: PartidoDetailView(partido: partido)) {
-                            partidoCard(partido: partido)
-                        }
-                        .buttonStyle(PlainButtonStyle()) // Remove blue text link style
-                    }
+                NavigationLink(destination: LeaderboardView()) {
+                    Image("copa")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(height: 130)
                 }
-                .frame(height: 200) // Slightly taller scroll view
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(10)
-            }
-            .padding()
 
-            VStack {
-                Text("Partidos Futuros")
-                    .font(.headline)
-                    .padding()
-                ScrollView {
-                    ForEach(futurePartidos) { partido in
-                        NavigationLink(destination: PartidoDetailView(partido: partido)) {
-                            partidoCard(partido: partido)
-                        }
-                        .buttonStyle(PlainButtonStyle()) // Remove blue text link style
-                    }
+                if !errorMessage.isEmpty {
+                    Text(errorMessage)
+                        .foregroundColor(.red)
+                        .padding()
                 }
-                .frame(height: 200) // Slightly taller scroll view
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(10)
+
+                VStack {
+                    Text("Partidos Pasados")
+                        .font(.headline)
+                        .padding()
+                    ScrollView {
+                        ForEach(pastPartidos) { partido in
+                            NavigationLink(destination: PartidoDetailView(partido: partido)) {
+                                partidoCard(partido: partido)
+                            }
+                            .buttonStyle(PlainButtonStyle()) // Remove blue text link style
+                        }
+                    }
+                    .frame(height: 200) // Slightly taller scroll view
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                }
+                .padding()
+
+                VStack {
+                    Text("Partidos Futuros")
+                        .font(.headline)
+                        .padding()
+                    ScrollView {
+                        ForEach(futurePartidos) { partido in
+                            NavigationLink(destination: PartidoDetailView(partido: partido)) {
+                                partidoCard(partido: partido)
+                            }
+                            .buttonStyle(PlainButtonStyle()) // Remove blue text link style
+                        }
+                    }
+                    .frame(height: 200) // Slightly taller scroll view
+                    .background(Color.gray.opacity(0.1))
+                    .cornerRadius(10)
+                }
+                .padding()
             }
-            .padding()
-        }
-        .onAppear {
-            fetchEquipos()
-            fetchPastPartidos()
-            fetchFuturePartidos()
+            .onAppear {
+                fetchEquipos()
+                fetchPastPartidos()
+                fetchFuturePartidos()
+            }
         }
     }
 

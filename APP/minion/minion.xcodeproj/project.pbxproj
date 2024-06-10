@@ -20,6 +20,7 @@
 		8C31EB112C16D05A004914FB /* PartidoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB102C16D05A004914FB /* PartidoDetailView.swift */; };
 		8C31EB152C1702E7004914FB /* APIService+Publicacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB142C1702E7004914FB /* APIService+Publicacion.swift */; };
 		8C31EB172C171D8A004914FB /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB162C171D8A004914FB /* LeaderboardView.swift */; };
+		8C31EB1A2C171F7A004914FB /* PuntosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB192C171F7A004914FB /* PuntosView.swift */; };
 		8C5055032C103865006F3040 /* minionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055022C103865006F3040 /* minionApp.swift */; };
 		8C5055052C103865006F3040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055042C103865006F3040 /* ContentView.swift */; };
 		8C5055072C103867006F3040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5055062C103867006F3040 /* Assets.xcassets */; };
@@ -60,6 +61,7 @@
 		8C31EB102C16D05A004914FB /* PartidoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartidoDetailView.swift; sourceTree = "<group>"; };
 		8C31EB142C1702E7004914FB /* APIService+Publicacion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Publicacion.swift"; sourceTree = "<group>"; };
 		8C31EB162C171D8A004914FB /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
+		8C31EB192C171F7A004914FB /* PuntosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PuntosView.swift; sourceTree = "<group>"; };
 		8C5054FF2C103865006F3040 /* minion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5055022C103865006F3040 /* minionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = minionApp.swift; sourceTree = "<group>"; };
 		8C5055042C103865006F3040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -114,6 +116,15 @@
 			path = "New Group";
 			sourceTree = "<group>";
 		};
+		8C31EB182C171F4D004914FB /* leaderboard */ = {
+			isa = PBXGroup;
+			children = (
+				8C31EB162C171D8A004914FB /* LeaderboardView.swift */,
+				8C31EB192C171F7A004914FB /* PuntosView.swift */,
+			);
+			path = leaderboard;
+			sourceTree = "<group>";
+		};
 		8C5054F62C103865006F3040 = {
 			isa = PBXGroup;
 			children = (
@@ -158,12 +169,12 @@
 				8C177AF02C166F3500653A6F /* JugadorPerfilView.swift */,
 				8C50552C2C10398A006F3040 /* EquipoView.swift */,
 				8C31EB0C2C1698D5004914FB /* EquipoDetailView.swift */,
+				8C31EB182C171F4D004914FB /* leaderboard */,
 				8C177AE32C165ED200653A6F /* New Group */,
 				8C177AE12C16224F00653A6F /* APIService2.swift */,
 				8C177ADD2C15AF3900653A6F /* MatchTest.swift */,
 				8C5055062C103867006F3040 /* Assets.xcassets */,
 				8C5055082C103867006F3040 /* Preview Content */,
-				8C31EB162C171D8A004914FB /* LeaderboardView.swift */,
 			);
 			path = minion;
 			sourceTree = "<group>";
@@ -249,6 +260,7 @@
 				8C5055132C103894006F3040 /* SignupView.swift in Sources */,
 				8C31EB112C16D05A004914FB /* PartidoDetailView.swift in Sources */,
 				8C92D3D02C1565E100CEB4B7 /* SheetView.swift in Sources */,
+				8C31EB1A2C171F7A004914FB /* PuntosView.swift in Sources */,
 				8C5055312C103E54006F3040 /* APIService.swift in Sources */,
 				8C177AF12C166F3500653A6F /* JugadorPerfilView.swift in Sources */,
 				8C177AE92C165FFD00653A6F /* APIService+User.swift in Sources */,
