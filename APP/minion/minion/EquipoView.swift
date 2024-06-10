@@ -11,6 +11,7 @@ struct EquipoView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var equipo: APIEquipo?
     @State private var jugadores: [APIJugadorEquipo] = []
+    @State private var teamShield: UIImage?
     @State private var errorMessage: String = ""
 
     var body: some View {
@@ -19,10 +20,17 @@ struct EquipoView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     if let equipo = equipo {
                         HStack {
-                            Image(systemName: "shield.lefthalf.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 60, height: 60)
+                            if let shield = teamShield {
+                                Image(uiImage: shield)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 5)
+                            } else {
+                                ProgressView()
+                                    .frame(width: 60, height: 60)
+                            }
                             VStack(alignment: .leading) {
                                 Text(equipo.nombre_equipo)
                                     .font(.title)
@@ -59,7 +67,7 @@ struct EquipoView: View {
             }
         } else {
             VStack {
-                Text("No has iniciado sesion.")
+                Text("No has iniciado sesión.")
                     .padding()
                 NavigationLink(destination: BusquedaView()) {
                     Text("Buscar Equipos")
@@ -104,6 +112,7 @@ struct EquipoView: View {
                     case .success(let equipo):
                         print("Equipo fetched: \(equipo)")
                         self.equipo = equipo
+                        fetchTeamShield(teamId: equipo.id_equipo)
                         fetchJugadores(equipoId: equipoId)
                     case .failure(let error):
                         print("Error fetching equipo: \(error.localizedDescription)")
@@ -127,6 +136,19 @@ struct EquipoView: View {
                 self.jugadores = jugadores
             case .failure(let error):
                 print("Error fetching jugadores: \(error.localizedDescription)")
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTeamShield(teamId: Int) {
+        APIService.shared.fetchEquipoShield(by: teamId) { result in
+            switch result {
+            case .success(let shieldData):
+                if let image = UIImage(data: shieldData) {
+                    self.teamShield = image
+                }
+            case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
         }

@@ -98,6 +98,25 @@ extension APIService {
         }
         task.resume()
     }
+    
+    func fetchEquipoShield(by teamId: Int, completion: @escaping (Result<Data, APIError>) -> Void) {
+        let url = "https://localhost:3443/equipos/single/\(teamId)/escudo"
+        var request = URLRequest(url: URL(string: url)!)
+        request.httpMethod = "GET"
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+            guard let data = data else {
+                completion(.failure(.requestFailed))
+                return
+            }
+            completion(.success(data))
+        }
+        task.resume()
+    }
 
     func fetchJugadores(url: String, completion: @escaping (Result<[APIJugador], APIError>) -> Void) {
         guard let url = URL(string: url) else {

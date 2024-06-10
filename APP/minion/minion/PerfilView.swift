@@ -13,74 +13,62 @@ struct PerfilView: View {
     @State private var equipo: APIEquipo?
     @State private var lastGameInfo: APILastGameInfo?
     @State private var greenCards: Int = 0
+    @State private var totalGoals: Int = 0
     @State private var errorMessage: String = ""
 
     var body: some View {
         if userViewModel.isLoggedIn {
-            if userViewModel.userType == 2 {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 10) {
-                        if let jugador = jugador, let equipo = equipo {
-                            Spacer(minLength: 20)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 10) {
+                    if let jugador = jugador, let equipo = equipo {
+                        Spacer(minLength: 20)
+                        
+                        HStack(spacing: 16) {
+                            Image(systemName: "person.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 90, height: 90)
+                                .clipShape(Circle())
+                                .shadow(radius: 5)
                             
-                            HStack(spacing: 16) {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 90, height: 90)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
-                                
-                                VStack(alignment: .leading) {
-                                    Text(jugador.display_name)
-                                        .font(.title2)
-                                        .fontWeight(.bold)
+                            VStack(alignment: .leading) {
+                                Text(jugador.display_name)
+                                    .font(.title2)
+                                    .fontWeight(.bold)
+                                NavigationLink(destination: EquipoDetailView(equipoId: jugador.id_equipo)) {
                                     Text(equipo.nombre_equipo)
                                         .font(.subheadline)
-                                        .foregroundColor(.secondary)
+                                        .foregroundColor(.blue) // Set the team name color to blue
                                 }
                             }
-
-                            Divider()
-                            
-                            Group {
-                                StatisticView(label: "Goles", value: String(jugador.goles ?? 0))
-                                StatisticView(label: "Posición", value: jugador.posicion)
-                                StatisticView(label: "Tarjetas Verdes", value: String(greenCards))
-                                if let lastGameInfo = lastGameInfo {
-                                    StatisticView(label: "Último Juego", value: formatDate(lastGameInfo.date))
-                                    StatisticView(label: "Resultado", value: lastGameInfo.result)
-                                }
-                            }
-                            .padding(.vertical, 2)
-                        } else if !errorMessage.isEmpty {
-                            Text(errorMessage)
-                                .foregroundColor(.red)
-                                .padding()
-                        } else {
-                            ProgressView("Cargando datos...")
-                                .padding()
                         }
-                    }
-                    .padding()
-                }
-                .navigationBarTitle("Perfil del Jugador", displayMode: .inline)
-                .onAppear {
-                    fetchJugadorData()
-                }
-            } else {
-                VStack {
-                    Text("No eres un jugador, pero puedes buscar otros jugadores.")
-                        .padding()
-                    NavigationLink(destination: BusquedaView()) {
-                        Text("Ir a Buscar")
-                            .foregroundColor(.white)
+
+                        Divider()
+                        
+                        Group {
+                            StatisticView(label: "Goles", value: String(totalGoals))
+                            StatisticView(label: "Posición", value: jugador.posicion)
+                            StatisticView(label: "Tarjetas Verdes", value: String(greenCards))
+                            if let lastGameInfo = lastGameInfo {
+                                StatisticView(label: "Último Juego", value: formatDate(lastGameInfo.date))
+                                StatisticView(label: "Resultado", value: lastGameInfo.result)
+                            }
+                        }
+                        .padding(.vertical, 2)
+                    } else if !errorMessage.isEmpty {
+                        Text(errorMessage)
+                            .foregroundColor(.red)
                             .padding()
-                            .background(Color.blue)
-                            .cornerRadius(8)
+                    } else {
+                        ProgressView("Cargando datos...")
+                            .padding()
                     }
-                    .padding()
                 }
+                .padding()
+            }
+            .navigationBarTitle("Perfil del Jugador", displayMode: .inline)
+            .onAppear {
+                fetchJugadorData()
             }
         } else {
             VStack {
@@ -124,6 +112,7 @@ struct PerfilView: View {
                 fetchEquipoData(teamId: jugador.id_equipo)
                 fetchLastGameInfo(userId: userId)
                 fetchGreenCardsData(playerId: jugador.id_jugador)
+                fetchGoalsData(userId: userId)
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
@@ -166,6 +155,18 @@ struct PerfilView: View {
         }
     }
 
+    private func fetchGoalsData(userId: Int) {
+        let url = "https://localhost:3443/puntos/goles/usuario/\(userId)/total"
+        APIService.shared.fetchGoals(url: url) { result in
+            switch result {
+            case .success(let goals):
+                self.totalGoals = goals.total_goals
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
     private func formatDate(_ dateStr: String) -> String {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
@@ -201,4 +202,3 @@ struct PerfilView_Previews: PreviewProvider {
         PerfilView().environmentObject(UserViewModel())
     }
 }
-

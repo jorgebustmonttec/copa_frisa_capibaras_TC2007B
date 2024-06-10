@@ -368,3 +368,33 @@ exports.getAllRedCards = (req, res) => {
         }
     });
 };
+
+exports.getTotalGoalsByUserId = (req, res) => {
+    const { userId } = req.params;
+    db.query(
+        'SELECT id_jugador FROM jugadores WHERE id_usuario = ?',
+        [userId],
+        (err, result) => {
+            if (err) {
+                console.error('Error al obtener el jugador:', err);
+                return res.status(500).json({ error: 'Error al obtener el jugador' });
+            }
+            if (result.length === 0) {
+                return res.status(404).json({ error: 'Jugador no encontrado' });
+            }
+            const playerId = result[0].id_jugador;
+            db.query(
+                'SELECT COUNT(*) as total_goals FROM puntos WHERE id_jugador = ? AND tipo_punto = 1',
+                [playerId],
+                (err, result) => {
+                    if (err) {
+                        console.error('Error al obtener total de goles del jugador:', err);
+                        res.status(500).json({ error: 'Error al obtener total de goles del jugador' });
+                    } else {
+                        res.json(result[0]);
+                    }
+                }
+            );
+        }
+    );
+};
