@@ -205,11 +205,11 @@ router.post('/goles/crear', puntosController.createGoalPoint);
 
 /**
  * @swagger
- * /puntos/goles/eliminar/{id}:
+ * /puntos/eliminar/{id}:
  *   delete:
  *     tags:
  *       - Puntos
- *     summary: Eliminar un punto de gol por ID
+ *     summary: Eliminar un punto  por ID
  *     parameters:
  *       - in: path
  *         name: id
@@ -225,7 +225,7 @@ router.post('/goles/crear', puntosController.createGoalPoint);
  *       500:
  *         description: Error al eliminar el punto
  */
-router.delete('/goles/eliminar/:id', puntosController.removeGoal);
+router.delete('/eliminar/:id', puntosController.removeGoal);
 
 /**
  * @swagger
@@ -421,5 +421,250 @@ router.get('/green/team/:id', puntosController.getTotalGreenCardsByTeam);
  *         description: Error al crear la tarjeta verde
  */
 router.post('/green/create', puntosController.createGreenCardPoint);
+
+/**
+ * @swagger
+ * /puntos/yellow/create:
+ *   post:
+ *     tags:
+ *       - Puntos
+ *     summary: Crear una tarjeta amarilla
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_partido:
+ *                 type: integer
+ *               id_jugador:
+ *                 type: integer
+ *             example:
+ *               id_partido: 1
+ *               id_jugador: 1
+ *     responses:
+ *       201:
+ *         description: Tarjeta amarilla creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id_punto:
+ *                   type: integer
+ *       400:
+ *         description: Faltan campos obligatorios
+ *       500:
+ *         description: Error al crear la tarjeta amarilla
+ */
+router.post('/yellow/create', puntosController.addYellowCard);
+
+/**
+ * @swagger
+ * /puntos/red/create:
+ *   post:
+ *     tags:
+ *       - Puntos
+ *     summary: Crear una tarjeta roja directa
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               id_partido:
+ *                 type: integer
+ *               id_jugador:
+ *                 type: integer
+ *             example:
+ *               id_partido: 1
+ *               id_jugador: 1
+ *     responses:
+ *       201:
+ *         description: Tarjeta roja directa creada exitosamente
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id_punto:
+ *                   type: integer
+ *       400:
+ *         description: Faltan campos obligatorios
+ *       500:
+ *         description: Error al crear la tarjeta roja directa
+ */
+router.post('/red/create', puntosController.addRedCard);
+
+/**
+ * @swagger
+ * /puntos/yellow/player/{id}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas amarillas por ID de jugador
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas amarillas del jugador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_yellow_cards:
+ *                   type: integer
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas amarillas del jugador
+ */
+router.get('/yellow/player/:id/total', puntosController.getTotalYellowCardsByPlayer);
+
+/**
+ * @swagger
+ * /puntos/red/player/{id}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas rojas por ID de jugador
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas rojas del jugador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_red_cards:
+ *                   type: integer
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas rojas del jugador
+ */
+router.get('/red/player/:id/total', puntosController.getTotalRedCardsByPlayer);
+
+/**
+ * @swagger
+ * /puntos/yellow/team/{id}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas amarillas por ID de equipo
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas amarillas del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_yellow_cards:
+ *                   type: integer
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas amarillas del equipo
+ */
+router.get('/yellow/team/:id/total', puntosController.getTotalYellowCardsByTeam);
+
+/**
+ * @swagger
+ * /puntos/red/team/{id}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas rojas por ID de equipo
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas rojas del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_red_cards:
+ *                   type: integer
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas rojas del equipo
+ */
+router.get('/red/team/:id/total', puntosController.getTotalRedCardsByTeam);
+
+/**
+ * @swagger
+ * /puntos/yellow:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener todas las tarjetas amarillas
+ *     responses:
+ *       200:
+ *         description: Lista de todas las tarjetas amarillas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Punto'
+ *       500:
+ *         description: Error al obtener las tarjetas amarillas
+ */
+router.get('/yellow', puntosController.getAllYellowCards);
+
+/**
+ * @swagger
+ * /puntos/red:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener todas las tarjetas rojas
+ *     responses:
+ *       200:
+ *         description: Lista de todas las tarjetas rojas
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Punto'
+ *       500:
+ *         description: Error al obtener las tarjetas rojas
+ */
+router.get('/red', puntosController.getAllRedCards);
+
+module.exports = router;
+
 
 module.exports = router;
