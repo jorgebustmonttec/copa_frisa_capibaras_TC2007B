@@ -17,6 +17,20 @@ struct ChangePasswordSheetView: View {
 
     var body: some View {
         VStack {
+            HStack {
+                Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    HStack {
+                        Image(systemName: "chevron.left")
+                        Text("Volver")
+                    }
+                }
+                .foregroundColor(.blue)
+                .padding()
+                Spacer()
+            }
+
             Text("Cambio de Contraseña")
                 .font(.title)
                 .padding()
