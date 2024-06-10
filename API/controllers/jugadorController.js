@@ -67,7 +67,7 @@ exports.createJugador = async (req, res) => {
 
 exports.getAllJugadoresSmall = (req, res) => {
   db.query(
-    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, jugadores.posicion,
+    `SELECT jugadores.id_jugador, usuarios.id_usuario, jugadores.nombre, jugadores.id_equipo, jugadores.posicion,
             COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
             usuarios.username, usuarios.display_name 
      FROM jugadores 
@@ -252,7 +252,7 @@ exports.getJugadoresByEquipo = (req, res) => {
   db.query(
     `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, 
             COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
-            usuarios.username, usuarios.display_name 
+            usuarios.username, usuarios.display_name , usuarios.id_usuario
      FROM jugadores 
      LEFT JOIN equipos ON jugadores.id_equipo = equipos.id_equipo 
      JOIN usuarios ON jugadores.id_usuario = usuarios.id_usuario 

@@ -22,7 +22,7 @@ struct HomePageView: View {
                 ScrollView {
                     VStack {
                         Text("Próximos partidos")
-                            .font(.title)
+                             
                             .fontWeight(.bold)
                             .padding()
                         

@@ -3,202 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Partido</title>
+    <title>Editar Puntos</title>
 </head>
 <body>
-    <h1>Editar Partido</h1>
-    <form id="editPartidoForm" onsubmit="updatePartido(event)">
-        <label for="equipoA">Equipo A:</label>
-        <select id="equipoA" name="equipoA" required onchange="fetchJugadoresA()">
-            <!-- Options will be populated dynamically -->
-        </select>
-        <br>
-        <label for="equipoB">Equipo B:</label>
-        <select id="equipoB" name="equipoB" required onchange="fetchJugadoresB()">
-            <!-- Options will be populated dynamically -->
-        </select>
-        <br>
-        <label for="fecha">Fecha:</label>
-        <input type="datetime-local" id="fecha" name="fecha" required>
-        <br>
-        <label for="ganador">Ganador:</label>
-        <select id="ganador" name="ganador">
-            <!-- Options will be populated dynamically -->
-        </select>
-        <br>
-        <button type="submit">Actualizar Partido</button>
-        <button type="button" onclick="goBack()">Volver</button>
-        <button type="button" onclick="editPoints()">Editar Puntos</button>
-    </form>
-    
-    <h2>Agregar Gol</h2>
-    <label for="jugadorA">Jugador de Equipo A:</label>
-    <select id="jugadorA" name="jugadorA">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <button onclick="agregarGol('A')">Agregar Gol</button>
-    <br>
-    <label for="jugadorB">Jugador de Equipo B:</label>
-    <select id="jugadorB" name="jugadorB">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <button onclick="agregarGol('B')">Agregar Gol</button>
-    
+    <h1>Editar Puntos</h1>
+    <table id="pointsTable" border="1">
+        <thead>
+            <tr>
+                <th>Jugador</th>
+                <th>Equipo</th>
+                <th>Tipo de Punto</th>
+                <th>Tiempo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
     <script>
         const apiUrl = 'https://localhost:3443';
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id');
 
-        async function fetchEquipos() {
+        async function fetchPoints() {
             try {
-                const response = await fetch(`${apiUrl}/equipos`);
-                if (!response.ok) throw new Error('Error al obtener los equipos');
-                const equipos = await response.json();
+                const response = await fetch(`${apiUrl}/puntos/partido/${id}`);
+                if (!response.ok) throw new Error('Error al obtener los puntos');
+                const points = await response.json();
 
-                const equipoASelect = document.getElementById('equipoA');
-                const equipoBSelect = document.getElementById('equipoB');
-                const ganadorSelect = document.getElementById('ganador');
-                equipos.forEach(equipo => {
-                    const optionA = document.createElement('option');
-                    optionA.value = equipo.id_equipo;
-                    optionA.text = equipo.nombre_equipo;
-                    equipoASelect.appendChild(optionA);
+                const tableBody = document.querySelector('#pointsTable tbody');
+                tableBody.innerHTML = '';
 
-                    const optionB = document.createElement('option');
-                    optionB.value = equipo.id_equipo;
-                    optionB.text = equipo.nombre_equipo;
-                    equipoBSelect.appendChild(optionB);
+                for (const point of points) {
+                    const jugador = await fetchJugador(point.id_jugador);
+                    const tipoPunto = await fetchTipoPunto(point.tipo_punto);
 
-                    const optionG = document.createElement('option');
-                    optionG.value = equipo.id_equipo;
-                    optionG.text = equipo.nombre_equipo;
-                    ganadorSelect.appendChild(optionG);
-                });
-
-                await fetchPartido(id);
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${jugador.nombre} ${jugador.apellido_p} ${jugador.apellido_m}</td>
+                        <td>${point.id_equipo}</td>
+                        <td>${tipoPunto.nombre_punto}</td>
+                        <td>${new Date(point.tiempo_punto).toLocaleString()}</td>
+                        <td><button onclick="deletePoint(${point.id_punto})">Eliminar</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
             } catch (error) {
                 console.error('Error:', error);
             }
         }
 
-        async function fetchPartido(id) {
+        async function fetchJugador(id) {
             try {
-                const response = await fetch(`${apiUrl}/partidos/single/${id}`);
-                if (!response.ok) throw new Error('Error al obtener el partido');
-                const partido = await response.json();
-
-                document.getElementById('equipoA').value = partido.equipo_a;
-                document.getElementById('equipoB').value = partido.equipo_b;
-                document.getElementById('fecha').value = new Date(partido.fecha).toISOString().slice(0, 16);
-                document.getElementById('ganador').value = partido.ganador || '';
-
-                fetchJugadoresA();
-                fetchJugadoresB();
+                const response = await fetch(`${apiUrl}/jugadores/single/${id}`);
+                if (!response.ok) throw new Error('Error al obtener el jugador');
+                return await response.json();
             } catch (error) {
                 console.error('Error:', error);
+                return { nombre: 'N/A', apellido_p: '', apellido_m: '' };
             }
         }
 
-        async function fetchJugadoresA() {
-            const equipoAId = document.getElementById('equipoA').value;
+        async function fetchTipoPunto(id) {
             try {
-                const response = await fetch(`${apiUrl}/jugadores/equipo/${equipoAId}`);
-                if (!response.ok) throw new Error('Error al obtener los jugadores del equipo A');
-                const jugadores = await response.json();
-
-                const jugadorASelect = document.getElementById('jugadorA');
-                jugadorASelect.innerHTML = '';
-                jugadores.forEach(jugador => {
-                    const option = document.createElement('option');
-                    option.value = jugador.id_jugador;
-                    option.text = jugador.nombre;
-                    jugadorASelect.appendChild(option);
-                });
+                const response = await fetch(`${apiUrl}/tipo_puntos/${id}`);
+                if (!response.ok) throw new Error('Error al obtener el tipo de punto');
+                const tipoPunto = await response.json();
+                return tipoPunto;
             } catch (error) {
                 console.error('Error:', error);
+                return { nombre_punto: 'N/A' };
             }
         }
 
-        async function fetchJugadoresB() {
-            const equipoBId = document.getElementById('equipoB').value;
-            try {
-                const response = await fetch(`${apiUrl}/jugadores/equipo/${equipoBId}`);
-                if (!response.ok) throw new Error('Error al obtener los jugadores del equipo B');
-                const jugadores = await response.json();
+        async function deletePoint(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este punto?')) {
+                try {
+                    const response = await fetch(`${apiUrl}/puntos/eliminar/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
-                const jugadorBSelect = document.getElementById('jugadorB');
-                jugadorBSelect.innerHTML = '';
-                jugadores.forEach(jugador => {
-                    const option = document.createElement('option');
-                    option.value = jugador.id_jugador;
-                    option.text = jugador.nombre;
-                    jugadorBSelect.appendChild(option);
-                });
-            } catch (error) {
-                console.error('Error:', error);
+                    if (!response.ok) throw new Error('Error al eliminar el punto');
+                    alert('Punto eliminado exitosamente');
+
+                    // Reload the points table
+                    fetchPoints();
+                } catch (error) {
+                    console.error('Error:', error);
+                }
             }
         }
 
-        async function agregarGol(equipo) {
-            const jugadorSelect = document.getElementById(`jugador${equipo}`);
-            const jugadorId = jugadorSelect.value;
-            const idPartido = id;
-            try {
-                const response = await fetch(`${apiUrl}/puntos/goles/crear`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id_jugador: jugadorId,
-                        id_partido: idPartido
-                    })
-                });
-                if (!response.ok) throw new Error('Error al agregar el gol');
-                alert('Gol agregado exitosamente');
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-        async function updatePartido(event) {
-            event.preventDefault();
-            try {
-                const form = document.getElementById('editPartidoForm');
-                const formData = new FormData(form);
-
-                const dataToSend = {
-                    equipo_a: formData.get('equipoA'),
-                    equipo_b: formData.get('equipoB'),
-                    fecha: formData.get('fecha'),
-                    ganador: formData.get('ganador') || null
-                };
-
-                const response = await fetch(`${apiUrl}/partidos/actualizar/${id}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(dataToSend)
-                });
-
-                if (!response.ok) throw new Error('Error al actualizar el partido');
-                alert('Partido actualizado exitosamente');
-                window.location.href = 'partidos.html';
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-        function goBack() {
-            window.location.href = 'partidos.html';
-        }
-
-        function editPoints() {
-            window.location.href = `editPoints.html?id=${id}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', fetchEquipos);
+        document.addEventListener('DOMContentLoaded', fetchPoints);
     </script>
 </body>
 </html>

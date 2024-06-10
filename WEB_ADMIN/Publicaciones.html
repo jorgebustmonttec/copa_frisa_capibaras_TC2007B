@@ -297,9 +297,9 @@
                         </a>
                         
                        
-                        <a class="mdl-navigation__link" href="forms.html">
-                            <i class="material-icons" role="presentation">account_box</i>
-                            Cuenta
+                        <a class="mdl-navigation__link" href="Partidos.html">
+                            <i class="material-icons" role="presentation">event</i>
+                            Partidos
                         </a>
                         <a class="mdl-navigation__link" href="Equipos.html">
                             <i class="material-icons" role="accessibility">map</i>
@@ -327,79 +327,31 @@
         </div>
     </div>
 
-        <main class="mdl-layout__content">
-            <div class="mdl-grid mdl-grid--no-spacing dashboard">
-                <div class="mdl-grid mdl-cell mdl-cell--9-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone mdl-cell--top">
-                    <!-- Pie chart-->
-                    <!-- Weather widget-->
-                    <!-- Trending widget-->
-                    <!-- Cotoneaster card-->
-                    <!-- Table-->
-                </div>
+        <main class="mdl-layout__content mdl-color--grey-100">
+    <div class="mdl-card mdl-shadow--2dp employer-form">
+        <div class="mdl-card__title">
+            <h2>Publicaciones</h2>
+            <button class="mdl-button mdl-js-button mdl-button--raised" onclick="fetchPosts()">
+                Cargar Publicaciones
+            </button>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="window.location.href='Crear_Publicacion.html'">
+                Crear Nota
+            </button>
+        </div>
 
-                <div class="mdl-grid ui-cards">
-    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
-        <h3>Publicaciones</h3>
-    </div>
-
-    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-        <div class="mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text" id="publicationTitle">Titulo</h2>
-            </div>
-            <div class="mdl-card__supporting-text">
-                <small id="publicationAuthor">Autor</small>
-                <p id="publicationDescription">Istanbul is a major city in Turkey that straddles Europe and Asia across the Bosphorus Strait.
-                Its Old City reflects cultural influences of the many empires that once ruled here.
-                In the Sultanahmet district, the open-air, Roman-era Hippodrome was for centuries the site of chariot races,
-                and Egyptian obelisks also remain.
-                The iconic Byzantine Hagia Sophia features a soaring 6th-century dome and rare Christian mosaics.</p>
-                <br>
-                <b>Fecha de publicacion</b> <span id="publicationDate">12°C, Wind S at 13 km/h, 71% Humidity</span>
-                <br>
-                <b></b> <span id="publicationPlace">Friday 4:00 PM</span>
-                <br>
-                <div id="publicationPhoto"></div>
+        <div class="mdl-card__supporting-text">
+            <div id="publicaciones-container" class="mdl-grid">
+                <!-- Las publicaciones se cargarán aquí -->
             </div>
         </div>
     </div>
-
-    <!-- Modified Create Post Button -->
-    <div class="mdl-cell mdl-cell--4-col-desktop mdl-cell--4-col-tablet mdl-cell--2-col-phone">
-        <button class="create-post-container" onclick="window.location.href='Crear_publicacion.html'">
-            <div class="create-post-text">Crear publicación</div>
-            <i class="material-icons create-post-icon">add_circle</i>
-        </button>
-    </div>
-</div>
-<!-- ToDo_widget-->
-</div>
 </main>
 
-<!-- In Publicaciones.html, add this right before the closing </body> tag -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const publicationData = JSON.parse(localStorage.getItem('publication'));
-    const photoData = localStorage.getItem('publicationPhoto');
 
-    if (publicationData) {
-        document.getElementById('publicationTitle').textContent = publicationData.title;
-        document.getElementById('publicationDescription').textContent = publicationData.description;
-        document.getElementById('publicationAuthor').textContent = publicationData.author;
-        document.getElementById('publicationDate').textContent = publicationData.date;
-        document.getElementById('publicationPlace').textContent = publicationData.place;
-    }
 
-    if (photoData) {
-        const img = document.createElement('img');
-        img.src = photoData;
-        img.style.maxWidth = '100%'; // Ensures the image fits within the card
-        document.getElementById('publicationPhoto').appendChild(img);
-    }
-});
-</script>
 
 <!-- inject:js -->
+<script src="js/EquiposJS/PublicacionesJSON.js"></script>
 <script src="js/session/sessionManagement.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>

@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		8C177ADE2C15AF3900653A6F /* MatchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177ADD2C15AF3900653A6F /* MatchTest.swift */; };
 		8C177AE22C16224F00653A6F /* APIService2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AE12C16224F00653A6F /* APIService2.swift */; };
+		8C177AE72C165FD500653A6F /* APIService+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AE62C165FD500653A6F /* APIService+Auth.swift */; };
+		8C177AE92C165FFD00653A6F /* APIService+User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AE82C165FFD00653A6F /* APIService+User.swift */; };
+		8C177AEB2C1660A300653A6F /* APIService+Equipo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AEA2C1660A300653A6F /* APIService+Equipo.swift */; };
+		8C177AED2C1660BD00653A6F /* APIService+Partido.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AEC2C1660BD00653A6F /* APIService+Partido.swift */; };
+		8C177AEF2C1660D400653A6F /* APIService+Puntos.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AEE2C1660D400653A6F /* APIService+Puntos.swift */; };
+		8C177AF12C166F3500653A6F /* JugadorPerfilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AF02C166F3500653A6F /* JugadorPerfilView.swift */; };
+		8C31EB0D2C1698D5004914FB /* EquipoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB0C2C1698D5004914FB /* EquipoDetailView.swift */; };
+		8C31EB0F2C16AC9D004914FB /* APIService+Jugador.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB0E2C16AC9D004914FB /* APIService+Jugador.swift */; };
 		8C5055032C103865006F3040 /* minionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055022C103865006F3040 /* minionApp.swift */; };
 		8C5055052C103865006F3040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055042C103865006F3040 /* ContentView.swift */; };
 		8C5055072C103867006F3040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5055062C103867006F3040 /* Assets.xcassets */; };
@@ -38,6 +46,14 @@
 /* Begin PBXFileReference section */
 		8C177ADD2C15AF3900653A6F /* MatchTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTest.swift; sourceTree = "<group>"; };
 		8C177AE12C16224F00653A6F /* APIService2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService2.swift; sourceTree = "<group>"; };
+		8C177AE62C165FD500653A6F /* APIService+Auth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Auth.swift"; sourceTree = "<group>"; };
+		8C177AE82C165FFD00653A6F /* APIService+User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+User.swift"; sourceTree = "<group>"; };
+		8C177AEA2C1660A300653A6F /* APIService+Equipo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Equipo.swift"; sourceTree = "<group>"; };
+		8C177AEC2C1660BD00653A6F /* APIService+Partido.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Partido.swift"; sourceTree = "<group>"; };
+		8C177AEE2C1660D400653A6F /* APIService+Puntos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Puntos.swift"; sourceTree = "<group>"; };
+		8C177AF02C166F3500653A6F /* JugadorPerfilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JugadorPerfilView.swift; sourceTree = "<group>"; };
+		8C31EB0C2C1698D5004914FB /* EquipoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoDetailView.swift; sourceTree = "<group>"; };
+		8C31EB0E2C16AC9D004914FB /* APIService+Jugador.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Jugador.swift"; sourceTree = "<group>"; };
 		8C5054FF2C103865006F3040 /* minion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5055022C103865006F3040 /* minionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = minionApp.swift; sourceTree = "<group>"; };
 		8C5055042C103865006F3040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -77,6 +93,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C177AE32C165ED200653A6F /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				8C5055302C103E54006F3040 /* APIService.swift */,
+				8C177AE62C165FD500653A6F /* APIService+Auth.swift */,
+				8C177AE82C165FFD00653A6F /* APIService+User.swift */,
+				8C31EB0E2C16AC9D004914FB /* APIService+Jugador.swift */,
+				8C177AEA2C1660A300653A6F /* APIService+Equipo.swift */,
+				8C177AEC2C1660BD00653A6F /* APIService+Partido.swift */,
+				8C177AEE2C1660D400653A6F /* APIService+Puntos.swift */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		8C5054F62C103865006F3040 = {
 			isa = PBXGroup;
 			children = (
@@ -117,8 +147,10 @@
 				8C5055262C103962006F3040 /* JugadorView.swift */,
 				8C5055282C10396C006F3040 /* Jugador.swift */,
 				8C50552A2C10397D006F3040 /* PerfilView.swift */,
+				8C177AF02C166F3500653A6F /* JugadorPerfilView.swift */,
 				8C50552C2C10398A006F3040 /* EquipoView.swift */,
-				8C5055302C103E54006F3040 /* APIService.swift */,
+				8C31EB0C2C1698D5004914FB /* EquipoDetailView.swift */,
+				8C177AE32C165ED200653A6F /* New Group */,
 				8C177AE12C16224F00653A6F /* APIService2.swift */,
 				8C177ADD2C15AF3900653A6F /* MatchTest.swift */,
 				8C5055062C103867006F3040 /* Assets.xcassets */,
@@ -208,22 +240,30 @@
 				8C5055132C103894006F3040 /* SignupView.swift in Sources */,
 				8C92D3D02C1565E100CEB4B7 /* SheetView.swift in Sources */,
 				8C5055312C103E54006F3040 /* APIService.swift in Sources */,
+				8C177AF12C166F3500653A6F /* JugadorPerfilView.swift in Sources */,
+				8C177AE92C165FFD00653A6F /* APIService+User.swift in Sources */,
+				8C177AED2C1660BD00653A6F /* APIService+Partido.swift in Sources */,
 				8C177ADE2C15AF3900653A6F /* MatchTest.swift in Sources */,
 				8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */,
 				8C5055192C1038CE006F3040 /* AplicacionView.swift in Sources */,
+				8C177AEF2C1660D400653A6F /* APIService+Puntos.swift in Sources */,
 				8C92D3D22C15679500CEB4B7 /* ChangePasswordSheetView.swift in Sources */,
 				8C50551D2C1038F6006F3040 /* NotaView.swift in Sources */,
 				8C50552D2C10398A006F3040 /* EquipoView.swift in Sources */,
 				8C5055272C103962006F3040 /* JugadorView.swift in Sources */,
+				8C177AEB2C1660A300653A6F /* APIService+Equipo.swift in Sources */,
 				8C50551B2C1038E2006F3040 /* NotificacionView.swift in Sources */,
 				8C50551F2C103927006F3040 /* BusquedaView.swift in Sources */,
 				8C50552F2C103DE9006F3040 /* UserViewModel.swift in Sources */,
+				8C31EB0D2C1698D5004914FB /* EquipoDetailView.swift in Sources */,
 				8C5055112C103888006F3040 /* LoginView.swift in Sources */,
 				8C5055052C103865006F3040 /* ContentView.swift in Sources */,
+				8C31EB0F2C16AC9D004914FB /* APIService+Jugador.swift in Sources */,
 				8C50552B2C10397D006F3040 /* PerfilView.swift in Sources */,
 				8C5055152C1038A7006F3040 /* ForgotPasswordView.swift in Sources */,
 				8C177AE22C16224F00653A6F /* APIService2.swift in Sources */,
 				8C5055292C10396C006F3040 /* Jugador.swift in Sources */,
+				8C177AE72C165FD500653A6F /* APIService+Auth.swift in Sources */,
 				8C5055232C103946006F3040 /* StatsView.swift in Sources */,
 				8C5055252C103953006F3040 /* Partido.swift in Sources */,
 				8C5055172C1038BA006F3040 /* HomePageView.swift in Sources */,

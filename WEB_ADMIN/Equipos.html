@@ -264,9 +264,9 @@
                         </a>
                         
                        
-                        <a class="mdl-navigation__link" href="forms.html">
-                            <i class="material-icons" role="presentation">account_box</i>
-                            Cuenta
+                        <a class="mdl-navigation__link" href="Partidos.html">
+                            <i class="material-icons" role="presentation">event</i>
+                            Partidos
                         </a>
                         <a class="mdl-navigation__link" href="Equipos.html">
                             <i class="material-icons" role="accessibility">map</i>
@@ -304,23 +304,36 @@
             <button class="search-button">
                 <i class="material-icons">search</i>
             </button>
+             
         </div>
     </div>
 </div>
     
 
 
-<!-- Sección para la Tabla de Jugadores que usa datos estáticos JSON -->
+
+<!-- Botón Agregar Nuevo -->
+            <button id="add-new-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Agregar Nuevo Equipo
+            </button>
+
 <div class="mdl-grid ui-tables">
     <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
         <div class="mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
                 <h1 class="mdl-card__title-text">Tabla de Equipos</h1>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="fetchEquipos()">Cargar Equipos</button>
             </div>
             <div class="mdl-card__supporting-text no-padding">
-                <table class="mdl-data-table mdl-js-data-table" id="static-json-team-table">
+                <table class="mdl-data-table mdl-js-data-table" id="equipos-table">
                     <thead>
-                        <tr></tr>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre del Equipo</th>
+                            <th>Escuela</th>
+                            <th>Escudo</th>
+                            <th>Editar</th>
+                        </tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -328,6 +341,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Entrada para cargar archivos Excel -->
 
@@ -342,6 +356,24 @@
 </div>
 
 <!-- inject:js -->
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var editButtons = document.querySelectorAll('.edit-button');
+    editButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            window.location.href = 'Edit_Equipo.html';
+        });
+    });
+
+    // Controlador para el botón Agregar Nuevo
+    document.getElementById('add-new-button').addEventListener('click', function() {
+        window.location.href = 'Crear_Equipo.html'; // Asegúrate de que la URL es correcta
+    });
+});
+
+</script>
 
 
 <script>
