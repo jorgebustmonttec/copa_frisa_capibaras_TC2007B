@@ -8,6 +8,7 @@
 <body>
     <h1>Editar Puntos</h1>
     <button type="button" onclick="goBack()">Volver</button>
+    
     <h2>Agregar Gol</h2>
     <label for="jugadorA">Jugador de Equipo A:</label>
     <select id="jugadorA" name="jugadorA">
@@ -34,6 +35,32 @@
     </select>
     <button onclick="agregarPunto('B', 2)">Agregar Tarjeta Verde</button>
     
+    <h2>Agregar Tarjeta Amarilla</h2>
+    <label for="jugadorAYellow">Jugador de Equipo A:</label>
+    <select id="jugadorAYellow" name="jugadorAYellow">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarYellowCard('A')">Agregar Tarjeta Amarilla</button>
+    <br>
+    <label for="jugadorBYellow">Jugador de Equipo B:</label>
+    <select id="jugadorBYellow" name="jugadorBYellow">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarYellowCard('B')">Agregar Tarjeta Amarilla</button>
+
+    <h2>Agregar Tarjeta Roja</h2>
+    <label for="jugadorARed">Jugador de Equipo A:</label>
+    <select id="jugadorARed" name="jugadorARed">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarRedCard('A')">Agregar Tarjeta Roja</button>
+    <br>
+    <label for="jugadorBRed">Jugador de Equipo B:</label>
+    <select id="jugadorBRed" name="jugadorBRed">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarRedCard('B')">Agregar Tarjeta Roja</button>
+
     <table id="pointsTable" border="1">
         <thead>
             <tr>
@@ -148,6 +175,50 @@
             }
         }
 
+        async function agregarYellowCard(equipo) {
+            const jugadorSelect = document.getElementById(`jugador${equipo}Yellow`);
+            const jugadorId = jugadorSelect.value;
+            try {
+                const response = await fetch(`${apiUrl}/puntos/yellow/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_jugador: jugadorId,
+                        id_partido: idPartido
+                    })
+                });
+                if (!response.ok) throw new Error('Error al agregar la tarjeta amarilla');
+                alert('Tarjeta amarilla agregada exitosamente');
+                fetchPoints();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function agregarRedCard(equipo) {
+            const jugadorSelect = document.getElementById(`jugador${equipo}Red`);
+            const jugadorId = jugadorSelect.value;
+            try {
+                const response = await fetch(`${apiUrl}/puntos/red/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_jugador: jugadorId,
+                        id_partido: idPartido
+                    })
+                });
+                if (!response.ok) throw new Error('Error al agregar la tarjeta roja');
+                alert('Tarjeta roja agregada exitosamente');
+                fetchPoints();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
         function goBack() {
             window.location.href = `editPartido.html?id=${idPartido}`;
         }
@@ -165,14 +236,20 @@
 
                 const jugadorASelect = document.getElementById('jugadorA');
                 const jugadorAVerdeSelect = document.getElementById('jugadorAVerde');
+                const jugadorAYellowSelect = document.getElementById('jugadorAYellow');
+                const jugadorARedSelect = document.getElementById('jugadorARed');
                 jugadorASelect.innerHTML = '';
                 jugadorAVerdeSelect.innerHTML = '';
+                jugadorAYellowSelect.innerHTML = '';
+                jugadorARedSelect.innerHTML = '';
                 jugadores.forEach(jugador => {
                     const option = document.createElement('option');
                     option.value = jugador.id_jugador;
                     option.text = jugador.nombre;
                     jugadorASelect.appendChild(option);
                     jugadorAVerdeSelect.appendChild(option.cloneNode(true));
+                    jugadorAYellowSelect.appendChild(option.cloneNode(true));
+                    jugadorARedSelect.appendChild(option.cloneNode(true));
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -188,14 +265,20 @@
 
                 const jugadorBSelect = document.getElementById('jugadorB');
                 const jugadorBVerdeSelect = document.getElementById('jugadorBVerde');
+                const jugadorBYellowSelect = document.getElementById('jugadorBYellow');
+                const jugadorBRedSelect = document.getElementById('jugadorBRed');
                 jugadorBSelect.innerHTML = '';
                 jugadorBVerdeSelect.innerHTML = '';
+                jugadorBYellowSelect.innerHTML = '';
+                jugadorBRedSelect.innerHTML = '';
                 jugadores.forEach(jugador => {
                     const option = document.createElement('option');
                     option.value = jugador.id_jugador;
                     option.text = jugador.nombre;
                     jugadorBSelect.appendChild(option);
                     jugadorBVerdeSelect.appendChild(option.cloneNode(true));
+                    jugadorBYellowSelect.appendChild(option.cloneNode(true));
+                    jugadorBRedSelect.appendChild(option.cloneNode(true));
                 });
             } catch (error) {
                 console.error('Error:', error);
