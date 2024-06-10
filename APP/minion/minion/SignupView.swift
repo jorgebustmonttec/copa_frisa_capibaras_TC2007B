@@ -70,8 +70,6 @@ struct SignupView: View {
                         .disableAutocorrection(true)
                         .textContentType(.none)
                         .keyboardType(.asciiCapable)
-
-
                     
                     TextField("Correo", text: $email)
                         .padding()
@@ -124,6 +122,12 @@ struct SignupView: View {
             return
         }
         
+        guard isValidPassword(password) else {
+            alertMessage = "La contraseña debe tener al menos 8 caracteres, incluir un número, un carácter especial y no ser igual al nombre de usuario."
+            showAlert = true
+            return
+        }
+        
         APIService.shared.signup(username: username, displayName: username, email: email, password: password) { result in
             switch result {
             case .success(let response):
@@ -143,6 +147,12 @@ struct SignupView: View {
         let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format:"SELF MATCHES %@", emailFormat)
         return emailPredicate.evaluate(with: email)
+    }
+    
+    private func isValidPassword(_ password: String) -> Bool {
+        let passwordFormat = "^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$"
+        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordFormat)
+        return passwordPredicate.evaluate(with: password) && password != username
     }
 }
 
