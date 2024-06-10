@@ -44,6 +44,11 @@ struct ChangePasswordSheetView: View {
                     .foregroundColor(.red)
                     .padding()
             }
+            
+            Text("Asegúrese de que la contraseña tenga al menos 8 caracteres, incluya un número y un carácter especial. Debe ser diferente a la contraseña actual.")
+                .font(.footnote)
+                .foregroundColor(.secondary)
+                .padding()
 
             Button(action: {
                 changePassword()
@@ -84,6 +89,11 @@ struct ChangePasswordSheetView: View {
             return
         }
 
+        guard isValidPassword(newPassword) else {
+            errorMessage = "La nueva contraseña debe tener al menos 8 caracteres, incluir un número y un carácter especial."
+            return
+        }
+
         isLoading = true
         errorMessage = ""
 
@@ -99,6 +109,12 @@ struct ChangePasswordSheetView: View {
                 }
             }
         }
+    }
+    
+    private func isValidPassword(_ password: String) -> Bool {
+        let passwordFormat = "^(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}$"
+        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordFormat)
+        return passwordPredicate.evaluate(with: password)
     }
 }
 

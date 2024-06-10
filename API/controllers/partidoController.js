@@ -2,7 +2,7 @@
 const db = require('../utils/db');
 
 exports.getAllPartidos = (req, res) => {
-    db.query('SELECT * FROM partidos', (err, results) => {
+    db.query('SELECT * FROM partidos ORDER BY fecha ASC', (err, results) => {
         if (err) {
             console.error('Error al obtener partidos:', err);
             res.status(500).json({ error: 'Error al obtener partidos' });
@@ -25,9 +25,8 @@ exports.getPartidoById = (req, res) => {
         }
     });
 };
-
 exports.getPastPartidos = (req, res) => {
-    db.query('SELECT * FROM partidos WHERE fecha < now()', (err, results) => {
+    db.query('SELECT * FROM partidos WHERE fecha < now() ORDER BY fecha DESC', (err, results) => {
         if (err) {
             console.error('Error al obtener partidos pasados:', err);
             res.status(500).json({ error: 'Error al obtener partidos pasados' });
@@ -38,7 +37,7 @@ exports.getPastPartidos = (req, res) => {
 };
 
 exports.getFuturePartidos = (req, res) => {
-    db.query('SELECT * FROM partidos WHERE fecha >= now()', (err, results) => {
+    db.query('SELECT * FROM partidos WHERE fecha >= now() ORDER BY fecha ASC', (err, results) => {
         if (err) {
             console.error('Error al obtener partidos futuros:', err);
             res.status(500).json({ error: 'Error al obtener partidos futuros' });
