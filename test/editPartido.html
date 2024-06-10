@@ -30,32 +30,6 @@
         <button type="button" onclick="goBack()">Volver</button>
         <button type="button" onclick="editPoints()">Editar Puntos</button>
     </form>
-    
-    <h2>Agregar Gol</h2>
-    <label for="jugadorA">Jugador de Equipo A:</label>
-    <select id="jugadorA" name="jugadorA">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <button onclick="agregarPunto('A', 1)">Agregar Gol</button>
-    <br>
-    <label for="jugadorB">Jugador de Equipo B:</label>
-    <select id="jugadorB" name="jugadorB">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <button onclick="agregarPunto('B', 1)">Agregar Gol</button>
-    
-    <h2>Agregar Tarjeta Verde</h2>
-    <label for="jugadorAVerde">Jugador de Equipo A:</label>
-    <select id="jugadorAVerde" name="jugadorAVerde">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <button onclick="agregarPunto('A', 2)">Agregar Tarjeta Verde</button>
-    <br>
-    <label for="jugadorBVerde">Jugador de Equipo B:</label>
-    <select id="jugadorBVerde" name="jugadorBVerde">
-        <!-- Options will be populated dynamically -->
-    </select>
-    <button onclick="agregarPunto('B', 2)">Agregar Tarjeta Verde</button>
 
     <script>
         const apiUrl = 'https://localhost:3443';
@@ -153,29 +127,6 @@
                     jugadorBSelect.appendChild(option);
                     jugadorBVerdeSelect.appendChild(option.cloneNode(true));
                 });
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-
-        async function agregarPunto(equipo, tipoPunto) {
-            const jugadorSelect = document.getElementById(`jugador${equipo}${tipoPunto === 2 ? 'Verde' : ''}`);
-            const jugadorId = jugadorSelect.value;
-            const idPartido = id;
-            const endpoint = tipoPunto === 2 ? 'green/create' : 'goles/crear';
-            try {
-                const response = await fetch(`${apiUrl}/puntos/${endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        id_jugador: jugadorId,
-                        id_partido: idPartido
-                    })
-                });
-                if (!response.ok) throw new Error('Error al agregar el punto');
-                alert('Punto agregado exitosamente');
             } catch (error) {
                 console.error('Error:', error);
             }
