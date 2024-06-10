@@ -58,7 +58,9 @@ struct APIPartido: Codable, Identifiable {
     var equipo_a: Int
     var equipo_b: Int
     var fecha: String
+    var ganador: Int?
 }
+
 
 struct APIEquipo: Codable {
     var id_equipo: Int
@@ -116,7 +118,7 @@ class APIService {
 
 }
 
-struct APIJugadorEquipo: Codable {
+struct APIJugadorEquipo: Codable, Identifiable {
     var id_jugador: Int
     var nombre: String
     var id_equipo: Int
@@ -124,8 +126,9 @@ struct APIJugadorEquipo: Codable {
     var username: String
     var display_name: String
     var id_usuario: Int
+    
+    var id: Int { id_jugador }
 }
-
 
 class SelfSignedCertificateDelegate: NSObject, URLSessionDelegate {
     func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {

@@ -40,38 +40,7 @@ extension APIService {
         task.resume()
     }
 
-    func fetchJugador(url: String, completion: @escaping (Result<APIJugador, APIError>) -> Void) {
-        guard let url = URL(string: url) else {
-            completion(.failure(.invalidURL))
-            return
-        }
 
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-
-        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
-        let task = session.dataTask(with: request) { data, response, error in
-            if let error = error {
-                completion(.failure(.requestFailed))
-                return
-            }
-
-            guard let data = data else {
-                completion(.failure(.requestFailed))
-                return
-            }
-
-            do {
-                let jugador = try JSONDecoder().decode(APIJugador.self, from: data)
-                DispatchQueue.main.async {
-                    completion(.success(jugador))
-                }
-            } catch {
-                completion(.failure(.decodingFailed("Failed to decode jugador response.")))
-            }
-        }
-        task.resume()
-    }
 
     func fetchGreenCards(url: String, completion: @escaping (Result<APIGreenCards, APIError>) -> Void) {
         guard let url = URL(string: url) else {

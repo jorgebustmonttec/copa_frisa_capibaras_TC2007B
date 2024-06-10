@@ -696,7 +696,170 @@ router.get('/yellow', puntosController.getAllYellowCards);
  */
 router.get('/red', puntosController.getAllRedCards);
 
+// Add these routes to puntosRoutes.js
+/**
+ * @swagger
+ * /puntos/goles/jugador/{playerId}/partido/{matchId}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de goles de un jugador en un partido
+ *     parameters:
+ *       - in: path
+ *         name: playerId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *       - in: path
+ *         name: matchId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Total de goles del jugador en el partido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_goals:
+ *                   type: integer
+ *       404:
+ *         description: Jugador o partido no encontrado
+ *       500:
+ *         description: Error al obtener el total de goles del jugador en el partido
+ */
+router.get('/goles/jugador/:playerId/partido/:matchId/total', puntosController.getTotalGoalsByPlayerInMatch);
+
+/**
+ * @swagger
+ * /puntos/green/jugador/{playerId}/partido/{matchId}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas verdes de un jugador en un partido
+ *     parameters:
+ *       - in: path
+ *         name: playerId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *       - in: path
+ *         name: matchId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas verdes del jugador en el partido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_green_cards:
+ *                   type: integer
+ *       404:
+ *         description: Jugador o partido no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas verdes del jugador en el partido
+ */
+router.get('/green/jugador/:playerId/partido/:matchId/total', puntosController.getTotalGreenCardsByPlayerInMatch);
+
+
+
+
+// Existing routes...
+
+/**
+ * @swagger
+ * /puntos/players/ordered-by-goals:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener jugadores ordenados por goles
+ *     responses:
+ *       200:
+ *         description: Lista de jugadores ordenados por goles
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_jugador:
+ *                     type: integer
+ *                   id_usuario:
+ *                     type: integer
+ *                   nombre:
+ *                     type: string
+ *                   id_equipo:
+ *                     type: integer
+ *                   posicion:
+ *                     type: string
+ *                   nombre_equipo:
+ *                     type: string
+ *                   username:
+ *                     type: string
+ *                   display_name:
+ *                     type: string
+ *                   total_goals:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener jugadores ordenados por goles
+ */
+router.get('/players/ordered-by-goals', puntosController.getPlayersOrderedByGoals);
+
+/**
+ * @swagger
+ * /puntos/players/ordered-by-green-cards:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener jugadores ordenados por tarjetas verdes
+ *     responses:
+ *       200:
+ *         description: Lista de jugadores ordenados por tarjetas verdes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_jugador:
+ *                     type: integer
+ *                   id_usuario:
+ *                     type: integer
+ *                   nombre:
+ *                     type: string
+ *                   id_equipo:
+ *                     type: integer
+ *                   posicion:
+ *                     type: string
+ *                   nombre_equipo:
+ *                     type: string
+ *                   username:
+ *                     type: string
+ *                   display_name:
+ *                     type: string
+ *                   total_green_cards:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener jugadores ordenados por tarjetas verdes
+ */
+router.get('/players/ordered-by-green-cards', puntosController.getPlayersOrderedByGreenCards);
+
 module.exports = router;
+
+
+
 
 
 module.exports = router;
