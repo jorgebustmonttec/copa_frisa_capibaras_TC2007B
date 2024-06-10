@@ -16,53 +16,68 @@ struct EquipoView: View {
 
     var body: some View {
         if userViewModel.isLoggedIn {
-            NavigationView {
-                VStack(alignment: .leading, spacing: 20) {
-                    if let equipo = equipo {
-                        HStack {
-                            if let shield = teamShield {
-                                Image(uiImage: shield)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 60, height: 60)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
-                            } else {
-                                ProgressView()
-                                    .frame(width: 60, height: 60)
+            if userViewModel.userType == 2 {
+                NavigationView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        if let equipo = equipo {
+                            HStack {
+                                if let shield = teamShield {
+                                    Image(uiImage: shield)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 60, height: 60)
+                                        .clipShape(Circle())
+                                        .shadow(radius: 5)
+                                } else {
+                                    ProgressView()
+                                        .frame(width: 60, height: 60)
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(equipo.nombre_equipo)
+                                        .font(.title)
+                                        .bold()
+                                    Text(equipo.escuela)
+                                        .font(.subheadline)
+                                }
                             }
-                            VStack(alignment: .leading) {
-                                Text(equipo.nombre_equipo)
-                                    .font(.title)
-                                    .bold()
-                                Text(equipo.escuela)
-                                    .font(.subheadline)
-                            }
-                        }
 
-                        Text("Jugadores")
-                            .font(.headline)
+                            Text("Jugadores")
+                                .font(.headline)
 
-                        List(jugadores, id: \.id_jugador) { jugador in
-                            NavigationLink(destination: JugadorPerfilView(userId: jugador.id_usuario)) {
-                                Text(jugador.nombre)
+                            List(jugadores, id: \.id_jugador) { jugador in
+                                NavigationLink(destination: JugadorPerfilView(userId: jugador.id_usuario)) {
+                                    Text(jugador.nombre)
+                                }
                             }
+                            
+                            Spacer()
+                        } else if !errorMessage.isEmpty {
+                            Text(errorMessage)
+                                .foregroundColor(.red)
+                                .padding()
+                        } else {
+                            ProgressView("Cargando datos...")
+                                .padding()
                         }
-                        
-                        Spacer()
-                    } else if !errorMessage.isEmpty {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .padding()
-                    } else {
-                        ProgressView("Cargando datos...")
-                            .padding()
+                    }
+                    .padding()
+                    .navigationBarTitle("Detalles del Equipo", displayMode: .inline)
+                    .onAppear {
+                        fetchEquipoData()
                     }
                 }
-                .padding()
-                .navigationBarTitle("Detalles del Equipo", displayMode: .inline)
-                .onAppear {
-                    fetchEquipoData()
+            } else {
+                VStack {
+                    Text("No eres jugador pero puedes buscar otros equipos.")
+                        .padding()
+                    NavigationLink(destination: BusquedaView()) {
+                        Text("Buscar Equipos")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                    }
+                    .padding()
                 }
             }
         } else {
