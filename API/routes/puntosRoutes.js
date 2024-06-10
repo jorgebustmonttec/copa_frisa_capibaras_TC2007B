@@ -696,7 +696,81 @@ router.get('/yellow', puntosController.getAllYellowCards);
  */
 router.get('/red', puntosController.getAllRedCards);
 
-module.exports = router;
+// Add these routes to puntosRoutes.js
+/**
+ * @swagger
+ * /puntos/goles/jugador/{playerId}/partido/{matchId}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de goles de un jugador en un partido
+ *     parameters:
+ *       - in: path
+ *         name: playerId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *       - in: path
+ *         name: matchId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Total de goles del jugador en el partido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_goals:
+ *                   type: integer
+ *       404:
+ *         description: Jugador o partido no encontrado
+ *       500:
+ *         description: Error al obtener el total de goles del jugador en el partido
+ */
+router.get('/goles/jugador/:playerId/partido/:matchId/total', puntosController.getTotalGoalsByPlayerInMatch);
+
+/**
+ * @swagger
+ * /puntos/green/jugador/{playerId}/partido/{matchId}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de tarjetas verdes de un jugador en un partido
+ *     parameters:
+ *       - in: path
+ *         name: playerId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del jugador
+ *       - in: path
+ *         name: matchId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del partido
+ *     responses:
+ *       200:
+ *         description: Total de tarjetas verdes del jugador en el partido
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_green_cards:
+ *                   type: integer
+ *       404:
+ *         description: Jugador o partido no encontrado
+ *       500:
+ *         description: Error al obtener el total de tarjetas verdes del jugador en el partido
+ */
+router.get('/green/jugador/:playerId/partido/:matchId/total', puntosController.getTotalGreenCardsByPlayerInMatch);
+
 
 
 module.exports = router;

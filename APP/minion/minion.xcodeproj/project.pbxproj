@@ -17,6 +17,7 @@
 		8C177AF12C166F3500653A6F /* JugadorPerfilView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C177AF02C166F3500653A6F /* JugadorPerfilView.swift */; };
 		8C31EB0D2C1698D5004914FB /* EquipoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB0C2C1698D5004914FB /* EquipoDetailView.swift */; };
 		8C31EB0F2C16AC9D004914FB /* APIService+Jugador.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB0E2C16AC9D004914FB /* APIService+Jugador.swift */; };
+		8C31EB112C16D05A004914FB /* PartidoDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C31EB102C16D05A004914FB /* PartidoDetailView.swift */; };
 		8C5055032C103865006F3040 /* minionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055022C103865006F3040 /* minionApp.swift */; };
 		8C5055052C103865006F3040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055042C103865006F3040 /* ContentView.swift */; };
 		8C5055072C103867006F3040 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8C5055062C103867006F3040 /* Assets.xcassets */; };
@@ -54,6 +55,7 @@
 		8C177AF02C166F3500653A6F /* JugadorPerfilView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JugadorPerfilView.swift; sourceTree = "<group>"; };
 		8C31EB0C2C1698D5004914FB /* EquipoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EquipoDetailView.swift; sourceTree = "<group>"; };
 		8C31EB0E2C16AC9D004914FB /* APIService+Jugador.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "APIService+Jugador.swift"; sourceTree = "<group>"; };
+		8C31EB102C16D05A004914FB /* PartidoDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartidoDetailView.swift; sourceTree = "<group>"; };
 		8C5054FF2C103865006F3040 /* minion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = minion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C5055022C103865006F3040 /* minionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = minionApp.swift; sourceTree = "<group>"; };
 		8C5055042C103865006F3040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 				8C5055202C103939006F3040 /* PartidoView.swift */,
 				8C5055222C103946006F3040 /* StatsView.swift */,
 				8C5055242C103953006F3040 /* Partido.swift */,
+				8C31EB102C16D05A004914FB /* PartidoDetailView.swift */,
 				8C5055262C103962006F3040 /* JugadorView.swift */,
 				8C5055282C10396C006F3040 /* Jugador.swift */,
 				8C50552A2C10397D006F3040 /* PerfilView.swift */,
@@ -238,6 +241,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C5055132C103894006F3040 /* SignupView.swift in Sources */,
+				8C31EB112C16D05A004914FB /* PartidoDetailView.swift in Sources */,
 				8C92D3D02C1565E100CEB4B7 /* SheetView.swift in Sources */,
 				8C5055312C103E54006F3040 /* APIService.swift in Sources */,
 				8C177AF12C166F3500653A6F /* JugadorPerfilView.swift in Sources */,

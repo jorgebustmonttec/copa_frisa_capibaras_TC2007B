@@ -4,9 +4,8 @@
 //
 //  Created by Jorge Bustamante on 09/06/24.
 //
+
 import SwiftUI
-
-
 
 struct MatchTest: View {
     @State private var pastPartidos: [APIPartido] = []
@@ -16,51 +15,54 @@ struct MatchTest: View {
     @State private var errorMessage: String = ""
 
     var body: some View {
-//        ScrollView {
-            VStack {
-                Image("copa")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(height: 130)
-                    //.padding(.top)
+        VStack {
+            Image("copa")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(height: 130)
 
-                if !errorMessage.isEmpty {
-                    Text(errorMessage)
-                        .foregroundColor(.red)
-                        .padding()
-                }
-
-                VStack {
-                    Text("Partidos Pasados")
-                        .font(.headline)
-                        .padding()
-                    ScrollView {
-                        ForEach(pastPartidos) { partido in
-                            partidoView(partido: partido)
-                        }
-                    }
-                    .frame(height: 150)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-                }
-                .padding()
-
-                VStack {
-                    Text("Partidos Futuros")
-                        .font(.headline)
-                        .padding()
-                    ScrollView {
-                        ForEach(futurePartidos) { partido in
-                            partidoView(partido: partido)
-                        }
-                    }
-                    .frame(height: 150)
-                    .background(Color.gray.opacity(0.1))
-                    .cornerRadius(10)
-                }
-                .padding()
+            if !errorMessage.isEmpty {
+                Text(errorMessage)
+                    .foregroundColor(.red)
+                    .padding()
             }
-        //}
+
+            VStack {
+                Text("Partidos Pasados")
+                    .font(.headline)
+                    .padding()
+                ScrollView {
+                    ForEach(pastPartidos) { partido in
+                        NavigationLink(destination: PartidoDetailView(partido: partido)) {
+                            partidoCard(partido: partido)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Remove blue text link style
+                    }
+                }
+                .frame(height: 200) // Slightly taller scroll view
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+            }
+            .padding()
+
+            VStack {
+                Text("Partidos Futuros")
+                    .font(.headline)
+                    .padding()
+                ScrollView {
+                    ForEach(futurePartidos) { partido in
+                        NavigationLink(destination: PartidoDetailView(partido: partido)) {
+                            partidoCard(partido: partido)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Remove blue text link style
+                    }
+                }
+                .frame(height: 200) // Slightly taller scroll view
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(10)
+            }
+            .padding()
+        }
         .onAppear {
             fetchEquipos()
             fetchPastPartidos()
@@ -69,33 +71,62 @@ struct MatchTest: View {
     }
 
     @ViewBuilder
-    private func partidoView(partido: APIPartido) -> some View {
-        VStack(alignment: .leading) {
-            Text("Fecha: \(formatDate(partido.fecha))")
-            HStack {
-                if let equipoA = getEquipo(by: partido.equipo_a) {
-                    if let escudoData = equipoA.escudo, let escudo = UIImage(data: escudoData) {
-                        Image(uiImage: escudo)
-                            .resizable()
-                            .frame(width: 50, height: 50)
+    private func partidoCard(partido: APIPartido) -> some View {
+        VStack {
+            if let equipoA = getEquipo(by: partido.equipo_a), let equipoB = getEquipo(by: partido.equipo_b) {
+                HStack {
+                    VStack {
+                        if let escudoData = equipoA.escudo, let escudo = UIImage(data: escudoData) {
+                            Image(uiImage: escudo)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                        } else {
+                            Image(systemName: "photo")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                        }
+                        Text(equipoA.nombre_equipo)
+                            .font(.subheadline)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(width: 80) // Fixed width to force text wrap
                     }
-                    Text(" \(equipoA.nombre_equipo)")
-                }
-                Text("- \(goals["\(partido.id_partido)_\(partido.equipo_a)"] ?? 0)")
-            }
-            HStack {
-                if let equipoB = getEquipo(by: partido.equipo_b) {
-                    if let escudoData = equipoB.escudo, let escudo = UIImage(data: escudoData) {
-                        Image(uiImage: escudo)
-                            .resizable()
-                            .frame(width: 50, height: 50)
+                    Spacer()
+                    VStack {
+                        Text("\(goals["\(partido.id_partido)_\(partido.equipo_a)"] ?? 0) - \(goals["\(partido.id_partido)_\(partido.equipo_b)"] ?? 0)")
+                            .font(.title)
+                            .bold()
                     }
-                    Text(" \(equipoB.nombre_equipo)")
+                    Spacer()
+                    VStack {
+                        if let escudoData = equipoB.escudo, let escudo = UIImage(data: escudoData) {
+                            Image(uiImage: escudo)
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                        } else {
+                            Image(systemName: "photo")
+                                .resizable()
+                                .frame(width: 40, height: 40)
+                        }
+                        Text(equipoB.nombre_equipo)
+                            .font(.subheadline)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(width: 80) // Fixed width to force text wrap
+                    }
                 }
-                Text("- \(goals["\(partido.id_partido)_\(partido.equipo_b)"] ?? 0)")
+                .padding()
+                Text(formatDate(partido.fecha))
+                    .font(.subheadline)
+                    .padding(.top, 10)
+            } else {
+                ProgressView()
+                    .padding()
             }
         }
-        .padding()
+        .padding(.vertical, 10)
         .background(Color.white)
         .cornerRadius(10)
         .shadow(radius: 3)

@@ -398,3 +398,38 @@ exports.getTotalGoalsByUserId = (req, res) => {
         }
     );
 };
+
+// Add this function to puntosController.js
+exports.getTotalGoalsByPlayerInMatch = (req, res) => {
+    const { playerId, matchId } = req.params;
+    
+    db.query(
+        'SELECT COUNT(*) as total_goals FROM puntos WHERE id_jugador = ? AND id_partido = ? AND tipo_punto = 1',
+        [playerId, matchId],
+        (err, result) => {
+            if (err) {
+                console.error('Error al obtener goles del jugador en el partido:', err);
+                res.status(500).json({ error: 'Error al obtener goles del jugador en el partido' });
+            } else {
+                res.json(result[0]);
+            }
+        }
+    );
+};
+
+exports.getTotalGreenCardsByPlayerInMatch = (req, res) => {
+    const { playerId, matchId } = req.params;
+    
+    db.query(
+        'SELECT COUNT(*) as total_green_cards FROM puntos WHERE id_jugador = ? AND id_partido = ? AND tipo_punto = 2',
+        [playerId, matchId],
+        (err, result) => {
+            if (err) {
+                console.error('Error al obtener tarjetas verdes del jugador en el partido:', err);
+                res.status(500).json({ error: 'Error al obtener tarjetas verdes del jugador en el partido' });
+            } else {
+                res.json(result[0]);
+            }
+        }
+    );
+};
