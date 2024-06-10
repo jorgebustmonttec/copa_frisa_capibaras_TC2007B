@@ -72,4 +72,37 @@ extension APIService {
         }
         task.resume()
     }
+    
+    func fetchTotalGoals(url: String, completion: @escaping (Result<APIGoals, APIError>) -> Void) {
+        guard let url = URL(string: url) else {
+            completion(.failure(.invalidURL))
+            return
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+
+        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            guard let data = data else {
+                completion(.failure(.requestFailed))
+                return
+            }
+
+            do {
+                let goals = try JSONDecoder().decode(APIGoals.self, from: data)
+                DispatchQueue.main.async {
+                    completion(.success(goals))
+                }
+            } catch {
+                completion(.failure(.decodingFailed("Failed to decode goals response.")))
+            }
+        }
+        task.resume()
+    }
 }

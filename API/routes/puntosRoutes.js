@@ -131,6 +131,38 @@ router.get('/goles/jugador/:id/total', puntosController.getTotalGoalsByPlayer);
 
 /**
  * @swagger
+ * /puntos/goles/usuario/{userId}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de goles de un jugador por ID de usuario
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del usuario
+ *     responses:
+ *       200:
+ *         description: Total de goles del jugador
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_goals:
+ *                   type: integer
+ *       404:
+ *         description: Jugador no encontrado
+ *       500:
+ *         description: Error al obtener el total de goles del jugador
+ */
+router.get('/goles/usuario/:userId/total', puntosController.getTotalGoalsByUserId);
+
+
+/**
+ * @swagger
  * /puntos/goles/equipo/{teamId}/partido/{matchId}:
  *   get:
  *     tags:

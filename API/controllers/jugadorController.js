@@ -67,7 +67,7 @@ exports.createJugador = async (req, res) => {
 
 exports.getAllJugadoresSmall = (req, res) => {
   db.query(
-    `SELECT jugadores.id_jugador, jugadores.nombre, jugadores.id_equipo, jugadores.posicion,
+    `SELECT jugadores.id_jugador, usuarios.id_usuario, jugadores.nombre, jugadores.id_equipo, jugadores.posicion,
             COALESCE(equipos.nombre_equipo, 'Sin Equipo') AS nombre_equipo, 
             usuarios.username, usuarios.display_name 
      FROM jugadores 
