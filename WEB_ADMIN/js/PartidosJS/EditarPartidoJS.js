@@ -206,7 +206,8 @@ async function fetchPoints() {
                 <td>${point.id_equipo}</td>
                 <td>${tipoPunto.nombre_punto}</td>
                 <td>${new Date(point.tiempo_punto).toLocaleString()}</td>
-                <td><button onclick="deletePoint(${point.id_punto})">Eliminar</button></td>
+                <td><button onclick="deletePoint(${point.id_punto})"class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Delete</button>
+                        </td>
             `;
             tableBody.appendChild(row);
         }
