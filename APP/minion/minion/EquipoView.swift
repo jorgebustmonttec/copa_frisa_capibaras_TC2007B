@@ -15,6 +15,7 @@ struct EquipoView: View {
     @State private var errorMessage: String = ""
     @State private var totalGoals: Int = 0
     @State private var totalPoints: Int = 0
+    @State private var totalWins: Int = 0
 
     var body: some View {
         if userViewModel.isLoggedIn {
@@ -49,6 +50,8 @@ struct EquipoView: View {
                                 StatisticView(label: "Total Goles", value: String(totalGoals))
                                 Spacer()
                                 StatisticView(label: "Total Puntos", value: String(totalPoints))
+                                Spacer()
+                                StatisticView(label: "Total Victorias", value: String(totalWins))
                             }
                             .padding(.vertical, 2)
 
@@ -142,6 +145,7 @@ struct EquipoView: View {
                         fetchJugadores(equipoId: equipo.id_equipo)
                         fetchTotalGoalsByTeam(teamId: equipo.id_equipo)
                         fetchTotalPointsByTeam(teamId: equipo.id_equipo)
+                        fetchTotalWinsByTeam(teamId: equipo.id_equipo)
                     case .failure(let error):
                         print("Error fetching equipo: \(error.localizedDescription)")
                         self.errorMessage = error.localizedDescription
@@ -200,6 +204,18 @@ struct EquipoView: View {
             switch result {
             case .success(let totalPoints):
                 self.totalPoints = totalPoints
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTotalWinsByTeam(teamId: Int) {
+        let url = "https://localhost:3443/partidos/wins/\(teamId)"
+        APIService.shared.fetchTotalWinsByTeam(url: url) { result in
+            switch result {
+            case .success(let totalWins):
+                self.totalWins = totalWins
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }

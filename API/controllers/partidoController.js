@@ -357,3 +357,17 @@ exports.clearWinner = (req, res) => {
     );
 };
 
+
+exports.getTotalWinsByTeam = (req, res) => {
+    const { teamId } = req.params;
+    const query = 'SELECT COUNT(*) as total_wins FROM partidos WHERE ganador = ?';
+
+    db.query(query, [teamId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el total de victorias del equipo:', err);
+            res.status(500).json({ error: 'Error al obtener el total de victorias del equipo' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};

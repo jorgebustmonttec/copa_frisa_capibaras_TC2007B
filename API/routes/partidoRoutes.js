@@ -433,5 +433,36 @@ router.put('/determine-winner/single/:id', partidoController.determineWinnerById
  */
 router.put('/clear-winner/:id', partidoController.clearWinner);
 
+/**
+ * @swagger
+ * /partidos/wins/{teamId}:
+ *   get:
+ *     tags:
+ *       - Partidos
+ *     summary: Obtener el total de victorias de un equipo
+ *     parameters:
+ *       - in: path
+ *         name: teamId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Total de victorias del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_wins:
+ *                   type: integer
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el total de victorias del equipo
+ */
+router.get('/wins/:teamId', partidoController.getTotalWinsByTeam);
+
 
 module.exports = router;

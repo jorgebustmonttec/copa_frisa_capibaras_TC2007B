@@ -6,6 +6,11 @@
 //
 import Foundation
 
+struct TotalTeamPoints: Codable {
+    var teamId: String
+    var totalPoints: Int
+}
+
 extension APIService {
     func fetchEquipos(completion: @escaping (Result<[APIEquipo], APIError>) -> Void) {
         guard let url = URL(string: "https://localhost:3443/equipos") else {
@@ -218,37 +223,67 @@ extension APIService {
     }
     
     
-    
     func fetchTotalPointsByTeam(url: String, completion: @escaping (Result<Int, APIError>) -> Void) {
-        guard let url = URL(string: url) else {
-            completion(.failure(.invalidURL))
-            return
-        }
-        
-        let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
-        session.dataTask(with: url) { data, response, error in
-                   if let error = error {
-                       completion(.failure(.requestFailed))
-                       print(error.localizedDescription)
-                       return
-                   }
+         guard let url = URL(string: url) else {
+             completion(.failure(.invalidURL))
+             return
+         }
 
-                   guard let data = data else {
-                       completion(.failure(.requestFailed))
-                       return
-                   }
+         let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+         session.dataTask(with: url) { data, response, error in
+             if let error = error {
+                 completion(.failure(.requestFailed))
+                 print("Request failed with error: \(error.localizedDescription)")
+                 return
+             }
 
-                   do {
-                       let result = try JSONDecoder().decode([String: Int].self, from: data)
-                       if let totalPoints = result["totalPoints"] {
-                           completion(.success(totalPoints))
-                       } else {
-                           completion(.failure(.decodingFailed("Missing totalPoints key")))
-                       }
-                   } catch {
-                       completion(.failure(.decodingFailed(error.localizedDescription)))
-                   }
-               }.resume()
+             guard let data = data else {
+                 completion(.failure(.requestFailed))
+                 print("No data received")
+                 return
+             }
+
+             do {
+                 let result = try JSONDecoder().decode(TotalTeamPoints.self, from: data)
+                 print("Decoded result for points: \(result)")
+                 completion(.success(result.totalPoints))
+             } catch {
+                 completion(.failure(.decodingFailed(error.localizedDescription)))
+                 print("Decoding failed with error: \(error.localizedDescription)")
+             }
+         }.resume()
+     }
+    
+    func fetchTotalWinsByTeam(url: String, completion: @escaping (Result<Int, APIError>) -> Void) {
+           guard let url = URL(string: url) else {
+               completion(.failure(.invalidURL))
+               return
            }
+
+           let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+           session.dataTask(with: url) { data, response, error in
+               if let error = error {
+                   completion(.failure(.requestFailed))
+                   print(error.localizedDescription)
+                   return
+               }
+
+               guard let data = data else {
+                   completion(.failure(.requestFailed))
+                   return
+               }
+
+               do {
+                   let result = try JSONDecoder().decode([String: Int].self, from: data)
+                   if let totalWins = result["total_wins"] {
+                       completion(.success(totalWins))
+                   } else {
+                       completion(.failure(.decodingFailed("Failed to decode total wins")))
+                   }
+               } catch {
+                   completion(.failure(.decodingFailed(error.localizedDescription)))
+               }
+           }.resume()
+       }
     }
     
