@@ -291,4 +291,66 @@ router.put('/actualizar/:id', partidoController.updatePartido);
 router.get('/lastgamebyuser/:id', partidoController.getLastGameInfoByUserId);
 
 
+/**
+ * @swagger
+ * /partidos/points/{teamId}:
+ *   get:
+ *     tags:
+ *       - Partidos
+ *     summary: Obtener los puntos de un equipo
+ *     parameters:
+ *       - in: path
+ *         name: teamId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Puntos del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 teamId:
+ *                   type: integer
+ *                 totalPoints:
+ *                   type: integer
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener los puntos del equipo
+ */
+router.get('/points/:teamId', partidoController.getPointsByTeamId);
+
+
+/**
+ * @swagger
+ * /partidos/teams/ordered-by-points:
+ *   get:
+ *     tags:
+ *       - Partidos
+ *     summary: Obtener equipos ordenados por puntos
+ *     responses:
+ *       200:
+ *         description: Lista de equipos ordenados por puntos
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id_equipo:
+ *                     type: integer
+ *                   total_points:
+ *                     type: integer
+ *       500:
+ *         description: Error al obtener equipos ordenados por puntos
+ */
+router.get('/teams/ordered-by-points', partidoController.getTeamsOrderedByPoints);
+
+
+
 module.exports = router;

@@ -182,3 +182,50 @@ exports.getLastGameInfoByUserId = (req, res) => {
         });
     });
 };
+
+// New method to fetch points for a specific team
+exports.getPointsByTeamId = (req, res) => {
+    const { teamId } = req.params;
+    
+    const query = `
+        SELECT 
+            IF(ganador = ?, 3, IF(ganador = 0, 1, 0)) AS points
+        FROM partidos
+        WHERE equipo_a = ? OR equipo_b = ?
+    `;
+
+    db.query(query, [teamId, teamId, teamId], (err, results) => {
+        if (err) {
+            console.error('Error al obtener puntos del equipo:', err);
+            res.status(500).json({ error: 'Error al obtener puntos del equipo' });
+        } else {
+            const totalPoints = results.reduce((sum, row) => sum + row.points, 0);
+            res.json({ teamId, totalPoints });
+        }
+    });
+};
+
+// New method to fetch teams ordered by points
+exports.getTeamsOrderedByPoints = (req, res) => {
+    const query = `
+        SELECT 
+            id_equipo,
+            SUM(IF(ganador = id_equipo, 3, IF(ganador = 0, 1, 0))) AS total_points
+        FROM (
+            SELECT equipo_a AS id_equipo, ganador FROM partidos
+            UNION ALL
+            SELECT equipo_b AS id_equipo, ganador FROM partidos
+        ) AS all_teams
+        GROUP BY id_equipo
+        ORDER BY total_points DESC
+    `;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener equipos ordenados por puntos:', err);
+            res.status(500).json({ error: 'Error al obtener equipos ordenados por puntos' });
+        } else {
+            res.json(results);
+        }
+    });
+};
