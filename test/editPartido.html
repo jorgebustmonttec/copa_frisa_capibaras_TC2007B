@@ -28,7 +28,6 @@
         <br>
         <button type="submit">Actualizar Partido</button>
         <button type="button" onclick="goBack()">Volver</button>
-        <button type="button" onclick="editPoints()">Editar Puntos</button>
     </form>
     
     <h2>Agregar Gol</h2>
@@ -56,6 +55,47 @@
         <!-- Options will be populated dynamically -->
     </select>
     <button onclick="agregarPunto('B', 2)">Agregar Tarjeta Verde</button>
+    
+    <h2>Agregar Tarjeta Amarilla</h2>
+    <label for="jugadorAYellow">Jugador de Equipo A:</label>
+    <select id="jugadorAYellow" name="jugadorAYellow">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarYellowCard('A')">Agregar Tarjeta Amarilla</button>
+    <br>
+    <label for="jugadorBYellow">Jugador de Equipo B:</label>
+    <select id="jugadorBYellow" name="jugadorBYellow">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarYellowCard('B')">Agregar Tarjeta Amarilla</button>
+
+    <h2>Agregar Tarjeta Roja</h2>
+    <label for="jugadorARed">Jugador de Equipo A:</label>
+    <select id="jugadorARed" name="jugadorARed">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarRedCard('A')">Agregar Tarjeta Roja</button>
+    <br>
+    <label for="jugadorBRed">Jugador de Equipo B:</label>
+    <select id="jugadorBRed" name="jugadorBRed">
+        <!-- Options will be populated dynamically -->
+    </select>
+    <button onclick="agregarRedCard('B')">Agregar Tarjeta Roja</button>
+
+    <h1>Editar Puntos</h1>
+    <table id="pointsTable" border="1">
+        <thead>
+            <tr>
+                <th>Jugador</th>
+                <th>Equipo</th>
+                <th>Tipo de Punto</th>
+                <th>Tiempo</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
 
     <script>
         const apiUrl = 'https://localhost:3443';
@@ -121,14 +161,20 @@
 
                 const jugadorASelect = document.getElementById('jugadorA');
                 const jugadorAVerdeSelect = document.getElementById('jugadorAVerde');
+                const jugadorAYellowSelect = document.getElementById('jugadorAYellow');
+                const jugadorARedSelect = document.getElementById('jugadorARed');
                 jugadorASelect.innerHTML = '';
                 jugadorAVerdeSelect.innerHTML = '';
+                jugadorAYellowSelect.innerHTML = '';
+                jugadorARedSelect.innerHTML = '';
                 jugadores.forEach(jugador => {
                     const option = document.createElement('option');
                     option.value = jugador.id_jugador;
                     option.text = jugador.nombre;
                     jugadorASelect.appendChild(option);
                     jugadorAVerdeSelect.appendChild(option.cloneNode(true));
+                    jugadorAYellowSelect.appendChild(option.cloneNode(true));
+                    jugadorARedSelect.appendChild(option.cloneNode(true));
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -144,14 +190,20 @@
 
                 const jugadorBSelect = document.getElementById('jugadorB');
                 const jugadorBVerdeSelect = document.getElementById('jugadorBVerde');
+                const jugadorBYellowSelect = document.getElementById('jugadorBYellow');
+                const jugadorBRedSelect = document.getElementById('jugadorBRed');
                 jugadorBSelect.innerHTML = '';
                 jugadorBVerdeSelect.innerHTML = '';
+                jugadorBYellowSelect.innerHTML = '';
+                jugadorBRedSelect.innerHTML = '';
                 jugadores.forEach(jugador => {
                     const option = document.createElement('option');
                     option.value = jugador.id_jugador;
                     option.text = jugador.nombre;
                     jugadorBSelect.appendChild(option);
                     jugadorBVerdeSelect.appendChild(option.cloneNode(true));
+                    jugadorBYellowSelect.appendChild(option.cloneNode(true));
+                    jugadorBRedSelect.appendChild(option.cloneNode(true));
                 });
             } catch (error) {
                 console.error('Error:', error);
@@ -176,6 +228,51 @@
                 });
                 if (!response.ok) throw new Error('Error al agregar el punto');
                 alert('Punto agregado exitosamente');
+                fetchPoints();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function agregarYellowCard(equipo) {
+            const jugadorSelect = document.getElementById(`jugador${equipo}Yellow`);
+            const jugadorId = jugadorSelect.value;
+            try {
+                const response = await fetch(`${apiUrl}/puntos/yellow/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_jugador: jugadorId,
+                        id_partido: id
+                    })
+                });
+                if (!response.ok) throw new Error('Error al agregar la tarjeta amarilla');
+                alert('Tarjeta amarilla agregada exitosamente');
+                fetchPoints();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function agregarRedCard(equipo) {
+            const jugadorSelect = document.getElementById(`jugador${equipo}Red`);
+            const jugadorId = jugadorSelect.value;
+            try {
+                const response = await fetch(`${apiUrl}/puntos/red/create`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        id_jugador: jugadorId,
+                        id_partido: id
+                    })
+                });
+                if (!response.ok) throw new Error('Error al agregar la tarjeta roja');
+                alert('Tarjeta roja agregada exitosamente');
+                fetchPoints();
             } catch (error) {
                 console.error('Error:', error);
             }
@@ -210,15 +307,84 @@
             }
         }
 
+        async function fetchPoints() {
+            try {
+                const response = await fetch(`${apiUrl}/puntos/partido/${id}`);
+                if (!response.ok) throw new Error('Error al obtener los puntos');
+                const points = await response.json();
+
+                const tableBody = document.querySelector('#pointsTable tbody');
+                tableBody.innerHTML = '';
+
+                for (const point of points) {
+                    const jugador = await fetchJugador(point.id_jugador);
+                    const tipoPunto = await fetchTipoPunto(point.tipo_punto);
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${jugador.nombre} ${jugador.apellido_p} ${jugador.apellido_m}</td>
+                        <td>${point.id_equipo}</td>
+                        <td>${tipoPunto.nombre_punto}</td>
+                        <td>${new Date(point.tiempo_punto).toLocaleString()}</td>
+                        <td><button onclick="deletePoint(${point.id_punto})">Eliminar</button></td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function fetchJugador(id) {
+            try {
+                const response = await fetch(`${apiUrl}/jugadores/single/${id}`);
+                if (!response.ok) throw new Error('Error al obtener el jugador');
+                return await response.json();
+            } catch (error) {
+                console.error('Error:', error);
+                return { nombre: 'N/A', apellido_p: '', apellido_m: '' };
+            }
+        }
+
+        async function fetchTipoPunto(id) {
+            try {
+                const response = await fetch(`${apiUrl}/tipo_puntos/${id}`);
+                if (!response.ok) throw new Error('Error al obtener el tipo de punto');
+                const tipoPunto = await response.json();
+                return tipoPunto;
+            } catch (error) {
+                console.error('Error:', error);
+                return { nombre_punto: 'N/A' };
+            }
+        }
+
+        async function deletePoint(id) {
+            if (confirm('¿Estás seguro de que quieres eliminar este punto?')) {
+                try {
+                    const response = await fetch(`${apiUrl}/puntos/eliminar/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) throw new Error('Error al eliminar el punto');
+                    alert('Punto eliminado exitosamente');
+
+                    // Reload the points table
+                    fetchPoints();
+                } catch (error) {
+                    console.error('Error:', error);
+                }
+            }
+        }
+
         function goBack() {
             window.location.href = 'partidos.html';
         }
 
-        function editPoints() {
-            window.location.href = `editPoints.html?id=${id}`;
-        }
-
         document.addEventListener('DOMContentLoaded', fetchEquipos);
+        document.addEventListener('DOMContentLoaded', fetchPoints);
     </script>
 </body>
 </html>

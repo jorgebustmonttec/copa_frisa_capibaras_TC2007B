@@ -219,3 +219,152 @@ exports.getAllGreenCards = (req, res) => {
         }
     });
 };
+
+
+// 10. Add a yellow card
+// 10. Add a yellow card
+exports.addYellowCard = (req, res) => {
+    const { id_partido, id_jugador } = req.body;
+
+    if (!id_partido || !id_jugador) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+    db.query('SELECT COUNT(*) as yellow_card_count FROM puntos WHERE id_jugador = ? AND id_partido = ? AND tipo_punto IN (3, 4)', [id_jugador, id_partido], (err, result) => {
+        if (err) {
+            console.error('Error al obtener tarjetas amarillas:', err);
+            return res.status(500).json({ error: 'Error al obtener tarjetas amarillas' });
+        }
+
+        const yellowCardCount = result[0].yellow_card_count;
+
+        if (yellowCardCount < 1) {
+            // Add first yellow card
+            db.query('INSERT INTO puntos (id_partido, id_jugador, id_equipo, tipo_punto) VALUES (?, ?, (SELECT id_equipo FROM jugadores WHERE id_jugador = ?), 3)', [id_partido, id_jugador, id_jugador], (err, result) => {
+                if (err) {
+                    console.error('Error al agregar la tarjeta amarilla:', err);
+                    res.status(500).json({ error: 'Error al agregar la tarjeta amarilla' });
+                } else {
+                    res.status(201).json({ id_punto: result.insertId });
+                }
+            });
+        } else if (yellowCardCount === 1) {
+            // Add second yellow card (indirect red)
+            db.query('INSERT INTO puntos (id_partido, id_jugador, id_equipo, tipo_punto) VALUES (?, ?, (SELECT id_equipo FROM jugadores WHERE id_jugador = ?), 4)', [id_partido, id_jugador, id_jugador], (err, result) => {
+                if (err) {
+                    console.error('Error al agregar la tarjeta roja indirecta:', err);
+                    res.status(500).json({ error: 'Error al agregar la tarjeta roja indirecta' });
+                } else {
+                    res.status(201).json({ id_punto: result.insertId });
+                }
+            });
+        } else if (yellowCardCount === 2) {
+            // Add direct red card for third yellow card
+            db.query('INSERT INTO puntos (id_partido, id_jugador, id_equipo, tipo_punto) VALUES (?, ?, (SELECT id_equipo FROM jugadores WHERE id_jugador = ?), 5)', [id_partido, id_jugador, id_jugador], (err, result) => {
+                if (err) {
+                    console.error('Error al agregar la tarjeta roja directa:', err);
+                    res.status(500).json({ error: 'Error al agregar la tarjeta roja directa' });
+                } else {
+                    res.status(201).json({ id_punto: result.insertId });
+                }
+            });
+        } else {
+            res.status(400).json({ error: 'El jugador ya tiene una tarjeta roja en este partido' });
+        }
+    });
+};
+
+
+// 11. Add a direct red card
+exports.addRedCard = (req, res) => {
+    const { id_partido, id_jugador } = req.body;
+
+    if (!id_partido || !id_jugador) {
+        return res.status(400).json({ error: 'Faltan campos obligatorios' });
+    }
+
+    db.query('INSERT INTO puntos (id_partido, id_jugador, id_equipo, tipo_punto) VALUES (?, ?, (SELECT id_equipo FROM jugadores WHERE id_jugador = ?), 5)', [id_partido, id_jugador, id_jugador], (err, result) => {
+        if (err) {
+            console.error('Error al agregar la tarjeta roja directa:', err);
+            res.status(500).json({ error: 'Error al agregar la tarjeta roja directa' });
+        } else {
+            res.status(201).json({ id_punto: result.insertId });
+        }
+    });
+};
+
+// 12. Get total yellow cards by player
+exports.getTotalYellowCardsByPlayer = (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT COUNT(*) as total_yellow_cards FROM puntos WHERE id_jugador = ? AND tipo_punto = 3', [id], (err, result) => {
+        if (err) {
+            console.error('Error al obtener total de tarjetas amarillas del jugador:', err);
+            res.status(500).json({ error: 'Error al obtener total de tarjetas amarillas del jugador' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};
+
+// 13. Get total red cards by player
+exports.getTotalRedCardsByPlayer = (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT COUNT(*) as total_red_cards FROM puntos WHERE id_jugador = ? AND tipo_punto IN (4, 5)', [id], (err, result) => {
+        if (err) {
+            console.error('Error al obtener total de tarjetas rojas del jugador:', err);
+            res.status(500).json({ error: 'Error al obtener total de tarjetas rojas del jugador' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};
+
+// 14. Get total yellow cards by team
+exports.getTotalYellowCardsByTeam = (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT COUNT(*) as total_yellow_cards FROM puntos WHERE id_equipo = ? AND tipo_punto = 3', [id], (err, result) => {
+        if (err) {
+            console.error('Error al obtener total de tarjetas amarillas del equipo:', err);
+            res.status(500).json({ error: 'Error al obtener total de tarjetas amarillas del equipo' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};
+
+// 15. Get total red cards by team
+exports.getTotalRedCardsByTeam = (req, res) => {
+    const { id } = req.params;
+    db.query('SELECT COUNT(*) as total_red_cards FROM puntos WHERE id_equipo = ? AND tipo_punto IN (4, 5)', [id], (err, result) => {
+        if (err) {
+            console.error('Error al obtener total de tarjetas rojas del equipo:', err);
+            res.status(500).json({ error: 'Error al obtener total de tarjetas rojas del equipo' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};
+
+// 16. Get all yellow cards
+exports.getAllYellowCards = (req, res) => {
+    db.query('SELECT * FROM puntos WHERE tipo_punto = 3', (err, results) => {
+        if (err) {
+            console.error('Error al obtener tarjetas amarillas:', err);
+            res.status(500).json({ error: 'Error al obtener tarjetas amarillas' });
+        } else {
+            res.json(results);
+        }
+    });
+};
+
+// 17. Get all red cards
+exports.getAllRedCards = (req, res) => {
+    db.query('SELECT * FROM puntos WHERE tipo_punto IN (4, 5)', (err, results) => {
+        if (err) {
+            console.error('Error al obtener tarjetas rojas:', err);
+            res.status(500).json({ error: 'Error al obtener tarjetas rojas' });
+        } else {
+            res.json(results);
+        }
+    });
+};
