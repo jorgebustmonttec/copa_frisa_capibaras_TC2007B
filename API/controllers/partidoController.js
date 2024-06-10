@@ -229,3 +229,132 @@ exports.getTeamsOrderedByPoints = (req, res) => {
         }
     });
 };
+
+
+exports.determineWinnerById = (req, res) => {
+    const { id } = req.params;
+
+    db.query(
+        'SELECT id_equipo, COUNT(*) as total_goals FROM puntos WHERE id_partido = ? AND tipo_punto = 1 GROUP BY id_equipo',
+        [id],
+        (err, results) => {
+            if (err) {
+                console.error('Error al obtener los goles del partido:', err);
+                return res.status(500).json({ error: 'Error al obtener los goles del partido' });
+            }
+
+            let ganador = null;
+            if (results.length > 0) {
+                const equipoA = results.find(r => r.id_equipo === partido.equipo_a) || { total_goals: 0 };
+                const equipoB = results.find(r => r.id_equipo === partido.equipo_b) || { total_goals: 0 };
+
+                if (equipoA.total_goals > equipoB.total_goals) {
+                    ganador = partido.equipo_a;
+                } else if (equipoA.total_goals < equipoB.total_goals) {
+                    ganador = partido.equipo_b;
+                } else {
+                    ganador = 0; // It's a tie
+                }
+            } else {
+                ganador = 0; // No goals scored, it's a tie
+            }
+
+            db.query(
+                'UPDATE partidos SET ganador = ? WHERE id_partido = ?',
+                [ganador, id],
+                (err, result) => {
+                    if (err) {
+                        console.error('Error al actualizar el ganador del partido:', err);
+                        return res.status(500).json({ error: 'Error al actualizar el ganador del partido' });
+                    }
+
+                    res.json({ message: 'Ganador determinado exitosamente', ganador });
+                }
+            );
+        }
+    );
+};
+
+exports.determineWinnerForAllMatches = (req, res) => {
+    db.query(
+        'SELECT * FROM partidos WHERE fecha < NOW()',
+        (err, partidos) => {
+            if (err) {
+                console.error('Error al obtener partidos pasados:', err);
+                return res.status(500).json({ error: 'Error al obtener partidos pasados' });
+            }
+
+            const updatePromises = partidos.map(partido => {
+                return new Promise((resolve, reject) => {
+                    db.query(
+                        'SELECT id_equipo, COUNT(*) as total_goals FROM puntos WHERE id_partido = ? AND tipo_punto = 1 GROUP BY id_equipo',
+                        [partido.id_partido],
+                        (err, results) => {
+                            if (err) {
+                                console.error('Error al obtener los goles del partido:', err);
+                                return reject('Error al obtener los goles del partido');
+                            }
+
+                            let ganador = null;
+                            if (results.length > 0) {
+                                const equipoA = results.find(r => r.id_equipo === partido.equipo_a) || { total_goals: 0 };
+                                const equipoB = results.find(r => r.id_equipo === partido.equipo_b) || { total_goals: 0 };
+
+                                if (equipoA.total_goals > equipoB.total_goals) {
+                                    ganador = partido.equipo_a;
+                                } else if (equipoA.total_goals < equipoB.total_goals) {
+                                    ganador = partido.equipo_b;
+                                } else {
+                                    ganador = 0; // It's a tie
+                                }
+                            } else {
+                                ganador = 0; // No goals scored, it's a tie
+                            }
+
+                            db.query(
+                                'UPDATE partidos SET ganador = ? WHERE id_partido = ?',
+                                [ganador, partido.id_partido],
+                                (err, result) => {
+                                    if (err) {
+                                        console.error('Error al actualizar el ganador del partido:', err);
+                                        return reject('Error al actualizar el ganador del partido');
+                                    }
+
+                                    resolve();
+                                }
+                            );
+                        }
+                    );
+                });
+            });
+
+            Promise.all(updatePromises)
+                .then(() => {
+                    res.json({ message: 'Ganadores determinados exitosamente para todos los partidos pasados' });
+                })
+                .catch(error => {
+                    res.status(500).json({ error });
+                });
+        }
+    );
+};
+
+exports.clearWinner = (req, res) => {
+    const { id } = req.params;
+
+    db.query(
+        'UPDATE partidos SET ganador = NULL WHERE id_partido = ?',
+        [id],
+        (err, result) => {
+            if (err) {
+                console.error('Error al eliminar el resultado del partido:', err);
+                return res.status(500).json({ error: 'Error al eliminar el resultado del partido' });
+            } else if (result.affectedRows === 0) {
+                return res.status(404).json({ error: 'Partido no encontrado' });
+            } else {
+                return res.status(200).json({ message: 'Resultado del partido eliminado exitosamente' });
+            }
+        }
+    );
+};
+

@@ -30,6 +30,8 @@
         <br>
         <button type="submit">Actualizar Partido</button>
         <button type="button" onclick="goBack()">Volver</button>
+        <button type="button" onclick="clearWinner()">Eliminar Resultado</button>
+
     </form>
     
     <h2>Agregar Gol</h2>
@@ -145,7 +147,7 @@
                 document.getElementById('equipoA').value = partido.equipo_a;
                 document.getElementById('equipoB').value = partido.equipo_b;
                 document.getElementById('fecha').value = new Date(partido.fecha).toISOString().slice(0, 16);
-                document.getElementById('ganador').value = partido.ganador || '';
+                document.getElementById('ganador').value = partido.ganador !== null ? partido.ganador : '';
 
                 fetchJugadoresA();
                 fetchJugadoresB();
@@ -290,7 +292,7 @@
                     equipo_a: formData.get('equipoA'),
                     equipo_b: formData.get('equipoB'),
                     fecha: formData.get('fecha'),
-                    ganador: formData.get('ganador') || null
+                    ganador: formData.get('ganador') !== "" ? formData.get('ganador') : null // Handle tie case
                 };
 
                 const response = await fetch(`${apiUrl}/partidos/actualizar/${id}`, {
@@ -308,6 +310,23 @@
                 console.error('Error:', error);
             }
         }
+
+        async function clearWinner() {
+        try {
+            const response = await fetch(`${apiUrl}/partidos/clear-winner/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) throw new Error('Error al eliminar el resultado del partido');
+            alert('Resultado del partido eliminado exitosamente');
+            document.getElementById('ganador').value = '';
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
 
         async function fetchPoints() {
             try {
