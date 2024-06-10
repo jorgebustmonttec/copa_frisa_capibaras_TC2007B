@@ -9,45 +9,48 @@ import SwiftUI
 
 struct NotificacionView: View {
     var body: some View {
-        VStack {
-            // Barra de navegación personalizada
-            HStack {
-                Text("Notificaciones")
-                    .font(.largeTitle)
-                    .bold()
-                Spacer()
-            }
-            .padding()
-
-            ScrollView {
-                VStack(spacing: 20) {
-                    // Tarjeta para "Reglas"
-                    NotificationCard(
-                        title: "Reglamento del Juego",
-                        imageName: "REGLAS",
-                        message: "Las reglas de juego "
-                    )
-
-                    // Tarjeta para "Premios"
-                    NotificationCard(
-                        title: "Premios",
-                        imageName: "PREMIOS",
-                        message: "Categorias y premios "
-                    )
-
-                    // Ejemplo de otra tarjeta
-                    NotificationCard(
-                        title: "Frisa",
-                        imageName: "FRISA", // Cambiar según sea necesario
-                        message: "Nuestro proposito como asosiación"
-                    )
+        NavigationView {
+            VStack {
+                HStack {
+                    Text("Notificaciones")
+                        .font(.largeTitle)
+                        .bold()
+                    Spacer()
                 }
                 .padding()
+
+                ScrollView {
+                    VStack(spacing: 20) {
+                        NavigationLink(destination: NotaView(title: "Reglamento del Juego", imageName: "REGLAS", message: "Las reglas de juego")) {
+                            NotificationCard(
+                                title: "Reglamento del Juego",
+                                imageName: "REGLAS",
+                                message: "Las reglas de juego"
+                            )
+                        }
+
+                        NavigationLink(destination: NotaView(title: "Premios", imageName: "PREMIOS", message: "Categorias y premios")) {
+                            NotificationCard(
+                                title: "Premios",
+                                imageName: "PREMIOS",
+                                message: "Categorias y premios"
+                            )
+                        }
+
+                        NavigationLink(destination: NotaView(title: "Frisa", imageName: "FRISA", message: "Nuestro propósito como asociación")) {
+                            NotificationCard(
+                                title: "Frisa",
+                                imageName: "FRISA",
+                                message: "Nuestro propósito como asociación"
+                            )
+                        }
+                    }
+                    .padding()
+                }
             }
-            .font(.title)
-            .padding()
+            .padding(.horizontal)
+            .navigationBarHidden(true)
         }
-        .padding(.horizontal)
     }
 }
 

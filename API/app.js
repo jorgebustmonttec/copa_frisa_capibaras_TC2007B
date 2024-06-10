@@ -8,6 +8,13 @@ const swaggerJSDoc = require('swagger-jsdoc');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const jugadorRoutes = require('./routes/jugadorRoutes');
 const equipoRoutes = require('./routes/equipoRoutes');
+const publicacionRoutes = require('./routes/publicacionRoutes'); // Add this line
+const partidoRoutes = require('./routes/partidoRoutes');
+const puntosRoutes = require('./routes/puntosRoutes');
+const tipoPuntosRoutes = require('./routes/tipoPuntosRoutes');
+
+
+
 
 const app = express();
 //const port = 3000;
@@ -45,6 +52,11 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 app.use('/usuarios', usuarioRoutes);
 app.use('/jugadores', jugadorRoutes);
 app.use('/equipos', equipoRoutes);
+app.use('/publicaciones', publicacionRoutes); // Add this line
+app.use('/partidos', partidoRoutes);
+app.use('/puntos', puntosRoutes);
+app.use('/tipo_puntos', tipoPuntosRoutes);
+
 
 app.get('/', (req, res) => res.send('Hello World!'));
 

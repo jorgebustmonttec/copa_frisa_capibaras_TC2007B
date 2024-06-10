@@ -8,13 +8,14 @@ import SwiftUI
 
 struct LoginView: View {
     @Environment(\.presentationMode) var presentationMode
+    @EnvironmentObject var userViewModel: UserViewModel
     @State private var username: String = ""
     @State private var password: String = ""
     @State private var showForgotPassword: Bool = false
     @State private var showSignup: Bool = false
-    @State private var navigateToHome: Bool = false
     @State private var showAlert: Bool = false
     @State private var errorMessage: String = ""
+    @State private var showSheet: Bool = false
 
     var body: some View {
         NavigationView {
@@ -32,7 +33,7 @@ struct LoginView: View {
                     }
                     Spacer()
                 }
-                .padding(.top, 20) // Ajuste de la distancia desde la parte superior
+                .padding(.top, 20)
                 .padding(.leading, 5)
                 
                 Image("copa")
@@ -51,11 +52,15 @@ struct LoginView: View {
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     SecureField("Contraseña", text: $password)
                         .padding()
                         .background(Color(.secondarySystemBackground))
                         .cornerRadius(10)
+                        .textInputAutocapitalization(.never)
+                        .autocorrectionDisabled()
 
                     NavigationLink(destination: ForgotPasswordView(), isActive: $showForgotPassword) {
                         Button("Olvidé mi contraseña") {
@@ -71,17 +76,15 @@ struct LoginView: View {
                         .foregroundColor(.green)
                     }
 
-                    NavigationLink(destination: AplicacionView(), isActive: $navigateToHome) {
-                        Button(action: {
-                            login()
-                        }) {
-                            Text("Iniciar Sesión")
-                                .foregroundColor(.white)
-                                .padding()
-                                .frame(maxWidth: .infinity)
-                                .background(Color.blue)
-                                .cornerRadius(10)
-                        }
+                    Button(action: {
+                        login()
+                    }) {
+                        Text("Iniciar Sesión")
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(Color.blue)
+                            .cornerRadius(10)
                     }
                 }
                 .padding(.horizontal, 30)
@@ -93,14 +96,21 @@ struct LoginView: View {
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
             }
+            .sheet(isPresented: $showSheet, content: {
+                ChangePasswordSheetView()
+            })
         }
     }
 
     private func login() {
-        APIService.shared.login(username: username, password: password) { result in
+        userViewModel.login(username: username, password: password) { result in
             switch result {
             case .success(let response):
-                navigateToHome = true
+                if response.userType == 2 && userViewModel.firstLogin {
+                    showSheet = true // Show the sheet for user type 2 (players) if it's their first login
+                } else {
+                    userViewModel.isLoggedIn = true
+                }
             case .failure(let error):
                 errorMessage = error.localizedDescription
                 showAlert = true
@@ -109,9 +119,8 @@ struct LoginView: View {
     }
 }
 
-
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
-        LoginView()
+        LoginView().environmentObject(UserViewModel())
     }
 }

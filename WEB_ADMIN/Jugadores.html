@@ -220,14 +220,18 @@
                         Settings
                     </span>
                 </li>
-                <a href="loginAdmin.html">
-                    <li class="mdl-menu__item mdl-list__item">
-                        <span class="mdl-list__item-primary-content">
-                            <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>
-                            Log out
-                        </span>
-                    </li>
-                </a>
+
+                
+                <a href="loginAdmin.html" onclick="logout(); return false;">
+            <li class="mdl-menu__item mdl-list__item">
+             <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>
+            Log out
+                 </span>
+             </li>
+                    </a>
+
+
             </ul>
 
             <button id="more"
@@ -262,9 +266,9 @@
                         </a>
                         
                        
-                        <a class="mdl-navigation__link" href="forms.html">
-                            <i class="material-icons" role="presentation">account_box</i>
-                            Cuenta
+                        <a class="mdl-navigation__link" href="Partidos.html">
+                            <i class="material-icons" role="presentation">event</i>
+                            Partidos
                         </a>
                         <a class="mdl-navigation__link" href="Equipos.html">
                             <i class="material-icons" role="accessibility">map</i>
@@ -307,31 +311,82 @@
 </div>
     
 
-<div class = "container py-4">
-    <div class = "row mb-4">
-        <div class = "col-12 col-md-4">
-            <input type="file" class = "form-control" id="excel-input">
+
+
+  <!-- Botón para cargar jugadores -->
+    <div class="mdl-grid">
+        <div class="mdl-cell mdl-cell--12-col">
+            <button id="loadJugadores" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                Cargar Jugadores
+            </button>
+        </div>
+    </div>
+
+    <!-- Tabla para mostrar los jugadores cargados -->
+    <div class="mdl-grid ui-tables">
+        <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+            <div class="mdl-card mdl-shadow--2dp">
+                <div class="mdl-card__title">
+                    <h1 class="mdl-card__title-text">Jugadores</h1>
+                </div>
+                <div class="mdl-card__supporting-text no-padding">
+                    <table class="mdl-data-table mdl-js-data-table" id="jugadoresTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>ID Equipo</th>
+                                <th>Nombre Equipo</th>
+                                <th>Username</th>
+                                <th>Display Name</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<!-- Entrada para cargar archivos Excel -->
+<div class="container py-4">
+    <div class="row mb-4">
+        <div class="col-12 col-md-4">
+            <input type="file" class="form-control" id="fileInput">
         </div>
     </div>
 </div>
 
+<!-- Sección para la Tabla que maneja datos de Excel -->
 <div class="mdl-grid ui-tables">
     <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
         <div class="mdl-card mdl-shadow--2dp">
             <div class="mdl-card__title">
-                <h1 class="mdl-card__title-text">Tabla de jugadores</h1>
+                <h1 class="mdl-card__title-text">Crear Jugador desde Excel</h1>
             </div>
             <div class="mdl-card__supporting-text no-padding">
-                <table class="mdl-data-table mdl-js-data-table" id="excel-table">
-                    <thead>
-                        <tr></tr>
-                    </thead>
+                <table class="mdl-data-table mdl-js-data-table" id="excelTable">
+                    <thead><tr></tr></thead>
                     <tbody></tbody>
                 </table>
+            </div>
+            <div class="mdl-card__actions">
+                <button id="cancel-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">
+                    Cancelar
+                </button>
+                <button id="uploadButton" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored">
+                    Subir
+                </button>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 
 
@@ -340,20 +395,7 @@
 </div>
 
 <!-- inject:js -->
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var editButtons = document.querySelectorAll('.edit-button');
-        editButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                window.location.href = 'Edit_Jugador.html';
-            });
-        });
-    });
-</script>
-
-
+<script src="js/session/sessionManagement.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>
 <script src="js/material.min.js"></script>
@@ -369,9 +411,14 @@
 <script src="js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
 <script src="js/widgets/table/table.min.js"></script>
 <script src="js/widgets/todo/todo.min.js"></script>
-<script src="js/Excel/Jugadores.js"></script>
+<script src="js/Excel/JugadoresJSON.js"></script>
 
-<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
+
+
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.15.6/xlsx.full.min.js"></script>
+
+
+
 <!-- endinject -->
 
 </body>

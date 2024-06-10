@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Publicaciones</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Publicaciones</h1>
+    <button onclick="fetchPosts()">Load Publicaciones</button>
+    <table id="publicaciones-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Autor</th>
+                <th>Fecha</th>
+                <th>Título</th>
+                <th>Contenido</th>
+                <th>Imagen</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <h2>Crear una nueva publicación</h2>
+    <form id="create-post-form" onsubmit="createPost(event)">
+        <label for="autor">Autor (ID):</label>
+        <input type="number" id="autor" name="autor" required>
+        <br>
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required>
+        <br>
+        <label for="contenido">Contenido:</label>
+        <textarea id="contenido" name="contenido"></textarea>
+        <br>
+        <label for="imagen">Subir Imagen:</label>
+        <input type="file" id="imagen" name="imagen" accept="image/*">
+        <br>
+        <button type="submit">Crear Publicación</button>
+    </form>
+
+    <script>
+        const apiUrl = 'https://localhost:3443';
+
+        async function fetchPosts() {
+            try {
+                const response = await fetch(`${apiUrl}/publicaciones`);
+                if (!response.ok) throw new Error('Error al obtener las publicaciones');
+                const publicaciones = await response.json();
+
+                const tableBody = document.querySelector('#publicaciones-table tbody');
+                tableBody.innerHTML = '';
+
+                for (const publicacion of publicaciones) {
+                    const imagenResponse = await fetch(`${apiUrl}/publicaciones/${publicacion.id_post}/imagen`);
+                    const imagenBlob = await imagenResponse.blob();
+                    const imagenUrl = URL.createObjectURL(imagenBlob);
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${publicacion.id_post}</td>
+                        <td>${publicacion.autor}</td>
+                        <td>${new Date(publicacion.fecha).toLocaleString()}</td>
+                        <td>${publicacion.titulo}</td>
+                        <td>${publicacion.contenido || ''}</td>
+                        <td><img src="${imagenUrl}" alt="Imagen" style="width:50px;"></td>
+                        <td>
+                            <button onclick="editPost(${publicacion.id_post})">Edit</button>
+                            <button onclick="deletePost(${publicacion.id_post})">Delete</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function createPost(event) {
+            event.preventDefault();
+            try {
+                const form = document.getElementById('create-post-form');
+                const formData = new FormData(form);
+
+                const response = await fetch(`${apiUrl}/publicaciones/crear`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        autor: formData.get('autor'),
+                        titulo: formData.get('titulo'),
+                        contenido: formData.get('contenido')
+                    })
+                });
+
+                if (!response.ok) throw new Error('Error al crear la publicación');
+                const result = await response.json();
+                const id = result.id_post;
+
+                // Now upload the image
+                const imagenFormData = new FormData();
+                imagenFormData.append('imagen', formData.get('imagen'));
+
+                const imagenResponse = await fetch(`${apiUrl}/publicaciones/${id}/imagen`, {
+                    method: 'POST',
+                    body: imagenFormData
+                });
+
+                if (!imagenResponse.ok) throw new Error('Error al subir la imagen');
+                alert('Publicación creada exitosamente');
+
+                // Clear the form
+                form.reset();
+
+                // Reload the posts table
+                fetchPosts();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        async function deletePost(id) {
+            if (!confirm('¿Estás seguro de que deseas eliminar esta publicación?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${apiUrl}/publicaciones/eliminar/${id}`, {
+                    method: 'DELETE'
+                });
+
+                if (!response.ok) throw new Error('Error al eliminar la publicación');
+                alert('Publicación eliminada exitosamente');
+
+                // Reload the posts table
+                fetchPosts();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function editPost(id) {
+            window.location.href = `editPost.html?id=${id}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchPosts);
+    </script>
+</body>
+</html>

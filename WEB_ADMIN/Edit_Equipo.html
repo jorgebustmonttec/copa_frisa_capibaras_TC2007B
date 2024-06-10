@@ -220,14 +220,18 @@
                         Settings
                     </span>
                 </li>
-                <a href="loginAdmin.html">
-                    <li class="mdl-menu__item mdl-list__item">
-                        <span class="mdl-list__item-primary-content">
-                            <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>
-                            Log out
-                        </span>
-                    </li>
-                </a>
+
+                
+                <a href="loginAdmin.html" onclick="logout(); return false;">
+            <li class="mdl-menu__item mdl-list__item">
+             <span class="mdl-list__item-primary-content">
+            <i class="material-icons mdl-list__item-icon text-color--secondary">exit_to_app</i>
+            Log out
+                 </span>
+             </li>
+                    </a>
+
+
             </ul>
 
             <button id="more"
@@ -262,9 +266,9 @@
                         </a>
                         
                        
-                        <a class="mdl-navigation__link" href="forms.html">
-                            <i class="material-icons" role="presentation">account_box</i>
-                            Cuenta
+                        <a class="mdl-navigation__link" href="Partidos.html">
+                            <i class="material-icons" role="presentation">event</i>
+                            Partidos
                         </a>
                         <a class="mdl-navigation__link" href="Equipos.html">
                             <i class="material-icons" role="accessibility">map</i>
@@ -290,63 +294,57 @@
             </div>
             <div class='scroller__bar' id="scroller__bar"></div>
         </div>
-    </div> <!--Termina plantilla -->
+    </div>
 
-    <main class="mdl-layout__content ">
+     <main class="mdl-layout__content mdl-color--grey-100">
+    <div class="mdl-card mdl-shadow--2dp employer-form">
+        <div class="mdl-card__title">
+            <h2>Editar Equipo</h2>
+            <div class="mdl-card__subtitle">Por favor completa los datos</div>
+        </div>
 
+        <div class="mdl-card__supporting-text">
+            <form action="#" id="edit-equipo-form" onsubmit="updateEquipo(event)">
+                <input type="hidden" id="id_equipo">
+                <div class="form__article">
+                    <h3>Datos del Equipo</h3>
 
-        <div class="mdl-grid">
-    <div class="mdl-cell mdl-cell--12-col">
-        <div class="search-bar">
-            <input type="text" placeholder="Buscar..." id="searchInput">
-            <button class="search-button">
-                <i class="material-icons">search</i>
-            </button>
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="nombre_equipo" name="nombre_equipo"/>
+                            <label class="mdl-textfield__label" for="nombre_equipo">Nombre del equipo</label>
+                        </div>
+
+                        <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="escuela" name="escuela"/>
+                            <label class="mdl-textfield__label" for="escuela">Nombre de la escuela</label>
+                        </div>
+                    </div>
+
+                    <div class="mdl-grid">
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <input type="file" class="form-control" id="escudo" name="escudo" accept="image/*">
+                            <img id="current-escudo" src="" alt="Current Escudo" style="width: 100px; height: auto;">
+                            <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="removeUploadedImage()">Remove Uploaded Image</button>
+                        </div>
+                    </div>
+
+                    <div class="form__action">
+                        <button type="submit" id="update-button" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" disabled>Actualizar Equipo</button>
+                        <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="window.location.href='Equipos.html'">
+                        Volver
+                    </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-</div>
-    
+</main>
 
-
-<div class="mdl-grid ui-tables">
-    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
-        <div class="mdl-card mdl-shadow--2dp">
-            <div class="mdl-card__title">
-                <h1 class="mdl-card__title-text">Tabla de jugadores</h1>
-            </div>
-            <div class="mdl-card__supporting-text no-padding">
-                <table class="mdl-data-table mdl-js-data-table" id="excel-table">
-                    <thead>
-                        <tr></tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-        
-    </main>
-</div>
 
 <!-- inject:js -->
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var editButtons = document.querySelectorAll('.edit-button');
-        editButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                window.location.href = 'Edit_Jugador.html';
-            });
-        });
-    });
-</script>
-
-
+<script src="js/session/sessionManagement.js"></script>
+<script src ="js/EquiposJS/EditarEquipo.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/getmdl-select.min.js"></script>
 <script src="js/material.min.js"></script>
@@ -362,9 +360,6 @@
 <script src="js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
 <script src="js/widgets/table/table.min.js"></script>
 <script src="js/widgets/todo/todo.min.js"></script>
-<script src="js/Excel/JugadoresJSON.js"></script>
-
-<script src="https://unpkg.com/read-excel-file@5.x/bundle/read-excel-file.min.js"></script>
 <!-- endinject -->
 
 </body>
