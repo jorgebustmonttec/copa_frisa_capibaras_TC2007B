@@ -138,6 +138,30 @@ async function agregarYellowCard(equipo) {
     }
 }
 
+async function agregarPunto(equipo, tipoPunto) {
+    const jugadorSelect = document.getElementById(`jugador${equipo}${tipoPunto === 2 ? 'Verde' : ''}`);
+    const jugadorId = jugadorSelect.value;
+    const idPartido = id;
+    const endpoint = tipoPunto === 2 ? 'green/create' : 'goles/crear';
+    try {
+        const response = await fetch(`${apiUrl}/puntos/${endpoint}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                id_jugador: jugadorId,
+                id_partido: idPartido
+            })
+        });
+        if (!response.ok) throw new Error('Error al agregar el punto');
+        alert('Punto agregado exitosamente');
+        fetchPoints();
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
 async function agregarRedCard(equipo) {
     const jugadorSelect = document.getElementById(`jugador${equipo}Red`);
     const jugadorId = jugadorSelect.value;
@@ -159,23 +183,6 @@ async function agregarRedCard(equipo) {
     }
 }
 
-async function clearWinner() {
-    try {
-        const response = await fetch(`${apiUrl}/partidos/clear-winner/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!response.ok) throw new Error('Error al eliminar el resultado del partido');
-        alert('Resultado del partido eliminado exitosamente');
-        document.getElementById('ganador').value = '';
-    } catch (error) {
-        console.error('Error:', error);
-    }
-}
-
 async function updatePartido(event) {
     event.preventDefault();
     try {
@@ -185,7 +192,7 @@ async function updatePartido(event) {
             equipo_a: formData.get('equipoA'),
             equipo_b: formData.get('equipoB'),
             fecha: formData.get('fecha'),
-            ganador: formData.get('ganador') !== "" ? formData.get('ganador') : null
+            ganador: formData.get('ganador') || null
         };
 
         const response = await fetch(`${apiUrl}/partidos/actualizar/${id}`, {
@@ -203,7 +210,6 @@ async function updatePartido(event) {
         console.error('Error:', error);
     }
 }
-
 
 async function fetchPoints() {
     try {
@@ -224,7 +230,8 @@ async function fetchPoints() {
                 <td>${point.id_equipo}</td>
                 <td>${tipoPunto.nombre_punto}</td>
                 <td>${new Date(point.tiempo_punto).toLocaleString()}</td>
-                <td><button onclick="deletePoint(${point.id_punto})">Eliminar</button></td>
+                <td><button onclick="deletePoint(${point.id_punto})"class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent">Delete</button>
+                        </td>
             `;
             tableBody.appendChild(row);
         }
