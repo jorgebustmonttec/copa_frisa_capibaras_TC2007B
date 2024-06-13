@@ -1,9 +1,3 @@
-//  AplicacionView.swift
-//  App
-//
-//  Created by Miguel Ponce on 04/06/24.
-//
-
 import SwiftUI
 
 struct AplicacionView: View {
@@ -28,7 +22,7 @@ struct AplicacionView: View {
                 
                 MatchTest() // Enlaza a HomePageView aquí
                     .tabItem {
-                        Image(systemName: "trophy.fill")
+                        Image(systemName: "house.fill")
                         Text("Inicio")
                     }
                     .tag(2)
@@ -40,10 +34,10 @@ struct AplicacionView: View {
                     }
                     .tag(3)
                 
-                EquipoView() // Enlaza a EquipoView aquí
+                LeaderboardView() // Enlaza a LeaderboardView aquí
                     .tabItem {
-                        Image(systemName: "person.3.fill")
-                        Text("Equipo")
+                        Image(systemName: "trophy.fill")
+                        Text("Clasificacion")
                     }
                     .tag(4)
             }

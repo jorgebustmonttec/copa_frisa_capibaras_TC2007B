@@ -17,7 +17,7 @@ struct SignupView: View {
     @State private var alertMessage: String = ""
     
     var body: some View {
-        NavigationView {
+ 
             VStack {
                 HStack {
                     Button(action: {
@@ -101,7 +101,7 @@ struct SignupView: View {
                 Alert(title: Text("Signup"), message: Text(alertMessage), dismissButton: .default(Text("OK")))
             }
         }
-    }
+    
     
     private func signUp() {
         guard !username.isEmpty, !password.isEmpty, !confirmPassword.isEmpty, !email.isEmpty else {
@@ -131,17 +131,25 @@ struct SignupView: View {
         APIService.shared.signup(username: username, displayName: username, email: email, password: password) { result in
             switch result {
             case .success(let response):
-                alertMessage = response.message
+                alertMessage = response.message ?? "Cuenta de usuario creada exitosamente"
                 showAlert = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                     presentationMode.wrappedValue.dismiss()
                 }
             case .failure(let error):
-                alertMessage = error.localizedDescription
+                switch error {
+                case .serverError(let message):
+                    alertMessage = message
+                case .decodingFailed(let message):
+                    alertMessage = message
+                default:
+                    alertMessage = "Error en el servidor."
+                }
                 showAlert = true
             }
         }
     }
+
     
     private func isValidEmail(_ email: String) -> Bool {
         let emailFormat = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"

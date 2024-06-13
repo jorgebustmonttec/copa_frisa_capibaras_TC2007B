@@ -42,8 +42,11 @@ async function fetchJugador() {
         document.getElementById('password').addEventListener('input', handleInputChange);
     } catch (error) {
         console.error('Error:', error);
+        alert('Error al obtener el jugador: ' + error.message);
     }
 }
+
+
 
 function handleInputChange() {
     const inputs = document.querySelectorAll('input');
@@ -67,7 +70,6 @@ function handleInputChange() {
         updateButton.disabled = true;
     }
 }
-
 async function updateJugador(event) {
     event.preventDefault();
     try {
@@ -84,8 +86,10 @@ async function updateJugador(event) {
             telefono: document.getElementById('telefono').value || jugadorData.telefono,
             num_imss: document.getElementById('num_imss').value || jugadorData.num_imss,
             id_equipo: document.getElementById('id_equipo').value || jugadorData.id_equipo,
-            password: document.getElementById('password').value
+            posicion: document.getElementById('posicion').value || jugadorData.posicion
         };
+
+        const password = document.getElementById('password').value;
 
         const response = await fetch(`${apiUrl}/jugadores/update/${id}`, {
             method: 'PUT',
@@ -95,13 +99,35 @@ async function updateJugador(event) {
             body: JSON.stringify(dataToUpdate)
         });
 
-        if (!response.ok) throw new Error('Error al actualizar el jugador');
+        if (!response.ok) {
+            const errorResponse = await response.json();
+            throw new Error(errorResponse.error || 'Error al actualizar el jugador');
+        }
+
+        if (password) {
+            const passwordResponse = await fetch(`${apiUrl}/usuarios/changePassword`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ userId: jugadorData.id_usuario, newPassword: password })
+            });
+
+            if (!passwordResponse.ok) {
+                const passwordErrorResponse = await passwordResponse.json();
+                throw new Error(passwordErrorResponse.error || 'Error al cambiar la contraseña');
+            }
+        }
+
         alert('Jugador actualizado exitosamente');
-        window.location.href = 'Jugadores.html';  
+        window.location.href = 'Jugadores.html';
     } catch (error) {
         console.error('Error:', error);
+        alert('Error al actualizar el jugador: ' + error.message);
     }
 }
+
+
 
 function goBack() {
     window.history.back();
