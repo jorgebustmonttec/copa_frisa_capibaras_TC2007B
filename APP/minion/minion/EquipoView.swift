@@ -13,56 +13,85 @@ struct EquipoView: View {
     @State private var jugadores: [APIJugadorEquipo] = []
     @State private var teamShield: UIImage?
     @State private var errorMessage: String = ""
+    @State private var totalGoals: Int = 0
+    @State private var totalPoints: Int = 0
+    @State private var totalWins: Int = 0
 
     var body: some View {
         if userViewModel.isLoggedIn {
-            NavigationView {
-                VStack(alignment: .leading, spacing: 20) {
-                    if let equipo = equipo {
-                        HStack {
-                            if let shield = teamShield {
-                                Image(uiImage: shield)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 60, height: 60)
-                                    .clipShape(Circle())
-                                    .shadow(radius: 5)
-                            } else {
-                                ProgressView()
-                                    .frame(width: 60, height: 60)
+            if userViewModel.userType == 2 {
+                NavigationView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        if let equipo = equipo {
+                            HStack {
+                                if let shield = teamShield {
+                                    Image(uiImage: shield)
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 60, height: 60)
+                                        .clipShape(Circle())
+                                        .shadow(radius: 5)
+                                } else {
+                                    ProgressView()
+                                        .frame(width: 60, height: 60)
+                                }
+                                VStack(alignment: .leading) {
+                                    Text(equipo.nombre_equipo)
+                                        .font(.title)
+                                        .bold()
+                                    Text(equipo.escuela)
+                                        .font(.subheadline)
+                                }
                             }
-                            VStack(alignment: .leading) {
-                                Text(equipo.nombre_equipo)
-                                    .font(.title)
-                                    .bold()
-                                Text(equipo.escuela)
-                                    .font(.subheadline)
-                            }
-                        }
 
-                        Text("Jugadores")
-                            .font(.headline)
-
-                        List(jugadores, id: \.id_jugador) { jugador in
-                            NavigationLink(destination: JugadorPerfilView(userId: jugador.id_usuario)) {
-                                Text(jugador.nombre)
+                            Divider()
+                            
+                            HStack {
+                                StatisticView(label: "Total Goles", value: String(totalGoals))
+                                Spacer()
+                                StatisticView(label: "Total Puntos", value: String(totalPoints))
+                                Spacer()
+                                StatisticView(label: "Total Victorias", value: String(totalWins))
                             }
+                            .padding(.vertical, 2)
+
+                            Text("Jugadores")
+                                .font(.headline)
+
+                            List(jugadores, id: \.id_jugador) { jugador in
+                                NavigationLink(destination: JugadorPerfilView(userId: jugador.id_usuario)) {
+                                    Text(jugador.nombre)
+                                }
+                            }
+                            
+                            Spacer()
+                        } else if !errorMessage.isEmpty {
+                            Text(errorMessage)
+                                .foregroundColor(.red)
+                                .padding()
+                        } else {
+                            ProgressView("Cargando datos...")
+                                .padding()
                         }
-                        
-                        Spacer()
-                    } else if !errorMessage.isEmpty {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .padding()
-                    } else {
-                        ProgressView("Cargando datos...")
-                            .padding()
+                    }
+                    .padding()
+                    .navigationBarTitle("Detalles del Equipo", displayMode: .inline)
+                    .onAppear {
+                        fetchEquipoData()
                     }
                 }
-                .padding()
-                .navigationBarTitle("Detalles del Equipo", displayMode: .inline)
-                .onAppear {
-                    fetchEquipoData()
+            } else {
+                VStack {
+                    Text("No eres jugador pero puedes buscar otros equipos.")
+                        .padding()
+                    NavigationLink(destination: BusquedaView()) {
+                        Text("Buscar Equipos")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                    }
+                    .padding()
                 }
             }
         } else {
@@ -113,7 +142,10 @@ struct EquipoView: View {
                         print("Equipo fetched: \(equipo)")
                         self.equipo = equipo
                         fetchTeamShield(teamId: equipo.id_equipo)
-                        fetchJugadores(equipoId: equipoId)
+                        fetchJugadores(equipoId: equipo.id_equipo)
+                        fetchTotalGoalsByTeam(teamId: equipo.id_equipo)
+                        fetchTotalPointsByTeam(teamId: equipo.id_equipo)
+                        fetchTotalWinsByTeam(teamId: equipo.id_equipo)
                     case .failure(let error):
                         print("Error fetching equipo: \(error.localizedDescription)")
                         self.errorMessage = error.localizedDescription
@@ -148,6 +180,42 @@ struct EquipoView: View {
                 if let image = UIImage(data: shieldData) {
                     self.teamShield = image
                 }
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTotalGoalsByTeam(teamId: Int) {
+        let url = "https://localhost:3443/puntos/goles/equipo/\(teamId)/total"
+        APIService.shared.fetchTotalGoalsByTeam(url: url) { result in
+            switch result {
+            case .success(let totalGoals):
+                self.totalGoals = totalGoals
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTotalPointsByTeam(teamId: Int) {
+        let url = "https://localhost:3443/partidos/points/\(teamId)"
+        APIService.shared.fetchTotalPointsByTeam(url: url) { result in
+            switch result {
+            case .success(let totalPoints):
+                self.totalPoints = totalPoints
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func fetchTotalWinsByTeam(teamId: Int) {
+        let url = "https://localhost:3443/partidos/wins/\(teamId)"
+        APIService.shared.fetchTotalWinsByTeam(url: url) { result in
+            switch result {
+            case .success(let totalWins):
+                self.totalWins = totalWins
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }

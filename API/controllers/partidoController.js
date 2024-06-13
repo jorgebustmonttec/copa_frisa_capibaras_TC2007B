@@ -2,7 +2,7 @@
 const db = require('../utils/db');
 
 exports.getAllPartidos = (req, res) => {
-    db.query('SELECT * FROM partidos', (err, results) => {
+    db.query('SELECT * FROM partidos ORDER BY fecha ASC', (err, results) => {
         if (err) {
             console.error('Error al obtener partidos:', err);
             res.status(500).json({ error: 'Error al obtener partidos' });
@@ -25,9 +25,8 @@ exports.getPartidoById = (req, res) => {
         }
     });
 };
-
 exports.getPastPartidos = (req, res) => {
-    db.query('SELECT * FROM partidos WHERE fecha < now()', (err, results) => {
+    db.query('SELECT * FROM partidos WHERE fecha < now() ORDER BY fecha DESC', (err, results) => {
         if (err) {
             console.error('Error al obtener partidos pasados:', err);
             res.status(500).json({ error: 'Error al obtener partidos pasados' });
@@ -38,7 +37,7 @@ exports.getPastPartidos = (req, res) => {
 };
 
 exports.getFuturePartidos = (req, res) => {
-    db.query('SELECT * FROM partidos WHERE fecha >= now()', (err, results) => {
+    db.query('SELECT * FROM partidos WHERE fecha >= now() ORDER BY fecha ASC', (err, results) => {
         if (err) {
             console.error('Error al obtener partidos futuros:', err);
             res.status(500).json({ error: 'Error al obtener partidos futuros' });
@@ -234,46 +233,66 @@ exports.getTeamsOrderedByPoints = (req, res) => {
 exports.determineWinnerById = (req, res) => {
     const { id } = req.params;
 
+    // First, fetch the match details to get the team IDs
     db.query(
-        'SELECT id_equipo, COUNT(*) as total_goals FROM puntos WHERE id_partido = ? AND tipo_punto = 1 GROUP BY id_equipo',
+        'SELECT equipo_a, equipo_b FROM partidos WHERE id_partido = ?',
         [id],
-        (err, results) => {
+        (err, matchResults) => {
             if (err) {
-                console.error('Error al obtener los goles del partido:', err);
-                return res.status(500).json({ error: 'Error al obtener los goles del partido' });
+                console.error('Error al obtener los detalles del partido:', err);
+                return res.status(500).json({ error: 'Error al obtener los detalles del partido' });
             }
 
-            let ganador = null;
-            if (results.length > 0) {
-                const equipoA = results.find(r => r.id_equipo === partido.equipo_a) || { total_goals: 0 };
-                const equipoB = results.find(r => r.id_equipo === partido.equipo_b) || { total_goals: 0 };
-
-                if (equipoA.total_goals > equipoB.total_goals) {
-                    ganador = partido.equipo_a;
-                } else if (equipoA.total_goals < equipoB.total_goals) {
-                    ganador = partido.equipo_b;
-                } else {
-                    ganador = 0; // It's a tie
-                }
-            } else {
-                ganador = 0; // No goals scored, it's a tie
+            if (matchResults.length === 0) {
+                return res.status(404).json({ error: 'Partido no encontrado' });
             }
 
+            const partido = matchResults[0];
+
+            // Now, fetch the goals for each team
             db.query(
-                'UPDATE partidos SET ganador = ? WHERE id_partido = ?',
-                [ganador, id],
-                (err, result) => {
+                'SELECT id_equipo, COUNT(*) as total_goals FROM puntos WHERE id_partido = ? AND tipo_punto = 1 GROUP BY id_equipo',
+                [id],
+                (err, results) => {
                     if (err) {
-                        console.error('Error al actualizar el ganador del partido:', err);
-                        return res.status(500).json({ error: 'Error al actualizar el ganador del partido' });
+                        console.error('Error al obtener los goles del partido:', err);
+                        return res.status(500).json({ error: 'Error al obtener los goles del partido' });
                     }
 
-                    res.json({ message: 'Ganador determinado exitosamente', ganador });
+                    let ganador = null;
+                    if (results.length > 0) {
+                        const equipoA = results.find(r => r.id_equipo === partido.equipo_a) || { total_goals: 0 };
+                        const equipoB = results.find(r => r.id_equipo === partido.equipo_b) || { total_goals: 0 };
+
+                        if (equipoA.total_goals > equipoB.total_goals) {
+                            ganador = partido.equipo_a;
+                        } else if (equipoA.total_goals < equipoB.total_goals) {
+                            ganador = partido.equipo_b;
+                        } else {
+                            ganador = 0; // It's a tie
+                        }
+                    } else {
+                        ganador = 0; // No goals scored, it's a tie
+                    }
+
+                    db.query(
+                        'UPDATE partidos SET ganador = ? WHERE id_partido = ?',
+                        [ganador, id],
+                        (err, result) => {
+                            if (err) {
+                                console.error('Error al actualizar el ganador del partido:', err);
+                                return res.status(500).json({ error: 'Error al actualizar el ganador del partido' });
+                            }
+
+                            res.json({ message: 'Ganador determinado exitosamente', ganador });
+                        }
+                    );
                 }
             );
         }
     );
 };
+
 
 exports.determineWinnerForAllMatches = (req, res) => {
     db.query(
@@ -358,3 +377,17 @@ exports.clearWinner = (req, res) => {
     );
 };
 
+
+exports.getTotalWinsByTeam = (req, res) => {
+    const { teamId } = req.params;
+    const query = 'SELECT COUNT(*) as total_wins FROM partidos WHERE ganador = ?';
+
+    db.query(query, [teamId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener el total de victorias del equipo:', err);
+            res.status(500).json({ error: 'Error al obtener el total de victorias del equipo' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};

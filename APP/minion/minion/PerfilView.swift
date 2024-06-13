@@ -18,57 +18,72 @@ struct PerfilView: View {
 
     var body: some View {
         if userViewModel.isLoggedIn {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 10) {
-                    if let jugador = jugador, let equipo = equipo {
-                        Spacer(minLength: 20)
-                        
-                        HStack(spacing: 16) {
-                            Image(systemName: "person.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 90, height: 90)
-                                .clipShape(Circle())
-                                .shadow(radius: 5)
+            if userViewModel.userType == 2 {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 10) {
+                        if let jugador = jugador, let equipo = equipo {
+                            Spacer(minLength: 20)
                             
-                            VStack(alignment: .leading) {
-                                Text(jugador.display_name)
-                                    .font(.title2)
-                                    .fontWeight(.bold)
-                                NavigationLink(destination: EquipoDetailView(equipoId: jugador.id_equipo)) {
-                                    Text(equipo.nombre_equipo)
-                                        .font(.subheadline)
-                                        .foregroundColor(.blue) // Set the team name color to blue
+                            HStack(spacing: 16) {
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 90, height: 90)
+                                    .clipShape(Circle())
+                                    .shadow(radius: 5)
+                                
+                                VStack(alignment: .leading) {
+                                    Text(jugador.display_name)
+                                        .font(.title2)
+                                        .fontWeight(.bold)
+                                    NavigationLink(destination: EquipoDetailView(equipoId: jugador.id_equipo)) {
+                                        Text(equipo.nombre_equipo)
+                                            .font(.subheadline)
+                                            .foregroundColor(.blue)
+                                    }
                                 }
                             }
-                        }
 
-                        Divider()
-                        
-                        Group {
-                            StatisticView(label: "Goles", value: String(totalGoals))
-                            StatisticView(label: "Posición", value: jugador.posicion)
-                            StatisticView(label: "Tarjetas Verdes", value: String(greenCards))
-                            if let lastGameInfo = lastGameInfo {
-                                StatisticView(label: "Último Juego", value: formatDate(lastGameInfo.date))
-                                StatisticView(label: "Resultado", value: lastGameInfo.result)
+                            Divider()
+                            
+                            Group {
+                                StatisticView(label: "Goles", value: String(totalGoals))
+                                StatisticView(label: "Posición", value: jugador.posicion)
+                                StatisticView(label: "Tarjetas Verdes", value: String(greenCards))
+                                if let lastGameInfo = lastGameInfo {
+                                    StatisticView(label: "Último Juego", value: formatDate(lastGameInfo.date))
+                                    StatisticView(label: "Resultado", value: lastGameInfo.result)
+                                }
                             }
+                            .padding(.vertical, 2)
+                        } else if !errorMessage.isEmpty {
+                            Text(errorMessage)
+                                .foregroundColor(.red)
+                                .padding()
+                        } else {
+                            ProgressView("Cargando datos...")
+                                .padding()
                         }
-                        .padding(.vertical, 2)
-                    } else if !errorMessage.isEmpty {
-                        Text(errorMessage)
-                            .foregroundColor(.red)
-                            .padding()
-                    } else {
-                        ProgressView("Cargando datos...")
-                            .padding()
                     }
+                    .padding()
                 }
-                .padding()
-            }
-            .navigationBarTitle("Perfil del Jugador", displayMode: .inline)
-            .onAppear {
-                fetchJugadorData()
+                .navigationBarTitle("Perfil del Jugador", displayMode: .inline)
+                .onAppear {
+                    fetchJugadorData()
+                }
+            } else {
+                VStack {
+                    Text("No eres jugador pero puedes buscar otros jugadores.")
+                        .padding()
+                    NavigationLink(destination: BusquedaView()) {
+                        Text("Buscar Jugadores")
+                            .foregroundColor(.white)
+                            .padding()
+                            .background(Color.blue)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                }
             }
         } else {
             VStack {

@@ -38,3 +38,17 @@ button {
 button:hover {
     opacity: 0.8;
 }
+
+.custom-blue-outline .mdl-textfield__label,
+.custom-blue-outline .mdl-textfield__input {
+    color: blue;
+    border-color: blue;
+}
+
+.custom-blue-outline .mdl-textfield__input:focus {
+    border-bottom: 2px solid blue;
+}
+
+.custom-blue-outline.is-dirty .mdl-textfield__label::after {
+    background-color: blue;
+}

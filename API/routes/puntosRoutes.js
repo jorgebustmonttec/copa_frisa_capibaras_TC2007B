@@ -855,11 +855,35 @@ router.get('/players/ordered-by-goals', puntosController.getPlayersOrderedByGoal
  *         description: Error al obtener jugadores ordenados por tarjetas verdes
  */
 router.get('/players/ordered-by-green-cards', puntosController.getPlayersOrderedByGreenCards);
-
-module.exports = router;
-
-
-
-
+/**
+ * @swagger
+ * /puntos/goles/equipo/{teamId}/total:
+ *   get:
+ *     tags:
+ *       - Puntos
+ *     summary: Obtener el total de goles de un equipo por ID
+ *     parameters:
+ *       - in: path
+ *         name: teamId
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Identificador único del equipo
+ *     responses:
+ *       200:
+ *         description: Total de goles del equipo
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 total_goals:
+ *                   type: integer
+ *       404:
+ *         description: Equipo no encontrado
+ *       500:
+ *         description: Error al obtener el total de goles del equipo
+ */
+router.get('/goles/equipo/:teamId/total', puntosController.getTotalGoalsByTeam);
 
 module.exports = router;

@@ -495,3 +495,17 @@ exports.getPlayersOrderedByGreenCards = (req, res) => {
         }
     });
 };
+
+
+// 1. Get total goals by team
+exports.getTotalGoalsByTeam = (req, res) => {
+    const { teamId } = req.params;
+    db.query('SELECT COUNT(*) as total_goals FROM puntos WHERE id_equipo = ? AND tipo_punto = 1', [teamId], (err, result) => {
+        if (err) {
+            console.error('Error al obtener total de goles del equipo:', err);
+            res.status(500).json({ error: 'Error al obtener total de goles del equipo' });
+        } else {
+            res.json(result[0]);
+        }
+    });
+};

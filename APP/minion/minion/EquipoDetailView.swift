@@ -19,6 +19,9 @@ struct EquipoDetailView: View {
     @State private var jugadores: [APIJugadorEquipo] = []
     @State private var teamShield: UIImage?
     @State private var errorMessage: String = ""
+    @State private var totalGoals: Int = 0
+    @State private var totalPoints: Int = 0
+    @State private var totalWins: Int = 0
 
     var equipoId: Int
 
@@ -46,6 +49,14 @@ struct EquipoDetailView: View {
                                 .font(.subheadline)
                         }
                     }
+                    
+                    HStack(spacing: 20) {
+                        StatisticView(label: "Goles", value: String(totalGoals))
+                        StatisticView(label: "Puntos", value: String(totalPoints))
+                        StatisticView(label: "Juegos Ganados", value: String(totalWins))
+                    }
+
+                    Divider()
 
                     Text("Jugadores")
                         .font(.headline)
@@ -82,6 +93,7 @@ struct EquipoDetailView: View {
                 self.equipo = equipo
                 fetchTeamShield(teamId: equipo.id_equipo)
                 fetchJugadores(equipoId: equipoId)
+                fetchTeamStats(equipoId: equipo.id_equipo)
             case .failure(let error):
                 self.errorMessage = error.localizedDescription
             }
@@ -112,7 +124,41 @@ struct EquipoDetailView: View {
             }
         }
     }
+
+    private func fetchTeamStats(equipoId: Int) {
+        let goalsUrl = "https://localhost:3443/puntos/goles/equipo/\(equipoId)/total"
+        APIService.shared.fetchTotalGoalsByTeam(url: goalsUrl) { result in
+            switch result {
+            case .success(let totalGoals):
+                self.totalGoals = totalGoals
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+
+        let pointsUrl = "https://localhost:3443/partidos/points/\(equipoId)"
+        APIService.shared.fetchTotalPointsByTeam(url: pointsUrl) { result in
+            switch result {
+            case .success(let totalPoints):
+                self.totalPoints = totalPoints
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+
+        let winsUrl = "https://localhost:3443/partidos/wins/\(equipoId)"
+        APIService.shared.fetchTotalWinsByTeam(url: winsUrl) { result in
+            switch result {
+            case .success(let totalWins):
+                self.totalWins = totalWins
+            case .failure(let error):
+                self.errorMessage = error.localizedDescription
+            }
+        }
+    }
 }
+
+
 
 struct EquipoDetailView_Previews: PreviewProvider {
     static var previews: some View {

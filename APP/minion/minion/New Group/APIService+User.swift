@@ -75,5 +75,76 @@ extension APIService {
         task.resume()
     }
     
+    func getUsuarioDataById(url: String, completion: @escaping (Result<UsuarioDataFull, APIError>) -> Void) {
+           guard let url = URL(string: url) else {
+               completion(.failure(.invalidURL))
+               return
+           }
+
+           let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+           session.dataTask(with: url) { data, response, error in
+               if let error = error {
+                   completion(.failure(.requestFailed))
+                   print(error.localizedDescription)
+                   return
+               }
+
+               guard let data = data else {
+                   completion(.failure(.requestFailed))
+                   return
+               }
+
+               do {
+                   let userData = try JSONDecoder().decode(UsuarioDataFull.self, from: data)
+                   completion(.success(userData))
+               } catch {
+                   completion(.failure(.decodingFailed(error.localizedDescription)))
+               }
+           }.resume()
+       }
+    
+    
+
+    func updateUsuario(url: String, userData: UsuarioDataFull, completion: @escaping (Result<SignupResponse, APIError>) -> Void) {
+            guard let url = URL(string: url) else {
+                completion(.failure(.invalidURL))
+                return
+            }
+
+            var request = URLRequest(url: url)
+            request.httpMethod = "PUT"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+            do {
+                let jsonData = try JSONEncoder().encode(userData)
+                request.httpBody = jsonData
+            } catch {
+                completion(.failure(.decodingFailed(error.localizedDescription)))
+                return
+            }
+
+            let session = URLSession(configuration: .default, delegate: SelfSignedCertificateDelegate(), delegateQueue: nil)
+            session.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    completion(.failure(.requestFailed))
+                    print(error.localizedDescription)
+                    return
+                }
+
+                guard let data = data else {
+                    completion(.failure(.requestFailed))
+                    return
+                }
+
+                do {
+                    let response = try JSONDecoder().decode(SignupResponse.self, from: data)
+                    completion(.success(response))
+                } catch {
+                    completion(.failure(.decodingFailed(error.localizedDescription)))
+                }
+            }.resume()
+        }
+    
+
     
 }

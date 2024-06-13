@@ -25,20 +25,24 @@ struct PartidoDetailView: View {
                     HStack {
                         VStack {
                             if let equipoALogo = equipoALogo {
-                                equipoALogo
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
+                                NavigationLink(destination: EquipoDetailView(equipoId: equipoA.id_equipo)) {
+                                    equipoALogo
+                                        .resizable()
+                                        .frame(width: 80, height: 80)
+                                }
                             } else {
                                 Image(systemName: "photo")
                                     .resizable()
                                     .frame(width: 80, height: 80)
                             }
-                            Text(equipoA.nombre_equipo)
-                                .font(.headline)
-                                .bold()
-                                .foregroundColor(partido.ganador == equipoA.id_equipo ? .green : .black)
-                                .multilineTextAlignment(.center)
-                                .frame(width: 100)
+                            NavigationLink(destination: EquipoDetailView(equipoId: equipoA.id_equipo)) {
+                                Text(equipoA.nombre_equipo)
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 100)
+                            }
                         }
                         Spacer()
                         VStack {
@@ -49,20 +53,24 @@ struct PartidoDetailView: View {
                         Spacer()
                         VStack {
                             if let equipoBLogo = equipoBLogo {
-                                equipoBLogo
-                                    .resizable()
-                                    .frame(width: 80, height: 80)
+                                NavigationLink(destination: EquipoDetailView(equipoId: equipoB.id_equipo)) {
+                                    equipoBLogo
+                                        .resizable()
+                                        .frame(width: 80, height: 80)
+                                }
                             } else {
                                 Image(systemName: "photo")
                                     .resizable()
                                     .frame(width: 80, height: 80)
                             }
-                            Text(equipoB.nombre_equipo)
-                                .font(.headline)
-                                .bold()
-                                .foregroundColor(partido.ganador == equipoB.id_equipo ? .green : .black)
-                                .multilineTextAlignment(.center)
-                                .frame(width: 100)
+                            NavigationLink(destination: EquipoDetailView(equipoId: equipoB.id_equipo)) {
+                                Text(equipoB.nombre_equipo)
+                                    .font(.headline)
+                                    .bold()
+                                    .foregroundColor(.black)
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: 100)
+                            }
                         }
                     }
                     .padding()
