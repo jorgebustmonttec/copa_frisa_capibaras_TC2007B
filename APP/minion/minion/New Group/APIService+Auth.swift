@@ -6,6 +6,19 @@
 //
 import Foundation
 
+struct UserSignupResponse: Codable {
+    let message: String?
+    let error: String?
+}
+
+enum UserAPIError: Error {
+    case invalidURL
+    case requestFailed
+    case decodingFailed(String)
+    case serverError(String)
+}
+
+
 extension APIService {
     func login(username: String, password: String, completion: @escaping (Result<LoginResponse, APIError>) -> Void) {
         guard let url = URL(string: "https://localhost:3443/usuarios/login") else {
@@ -51,7 +64,7 @@ extension APIService {
         task.resume()
     }
 
-    func signup(username: String, displayName: String, email: String, password: String, completion: @escaping (Result<SignupResponse, APIError>) -> Void) {
+    func signup(username: String, displayName: String, email: String, password: String, completion: @escaping (Result<UserSignupResponse, UserAPIError>) -> Void) {
         guard let url = URL(string: "https://localhost:3443/usuarios/signup") else {
             completion(.failure(.invalidURL))
             return
@@ -72,28 +85,25 @@ extension APIService {
                 return
             }
 
-            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
-                do {
-                    let signupResponse = try JSONDecoder().decode(SignupResponse.self, from: data)
+            do {
+                if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 201 {
+                    let signupResponse = try JSONDecoder().decode(UserSignupResponse.self, from: data)
                     DispatchQueue.main.async {
                         completion(.success(signupResponse))
                     }
-                } catch {
-                    completion(.failure(.decodingFailed("Failed to decode successful signup response.")))
-                }
-            } else {
-                do {
-                    let errorResponse = try JSONDecoder().decode(SignupResponse.self, from: data)
+                } else {
+                    let errorResponse = try JSONDecoder().decode(UserSignupResponse.self, from: data)
                     DispatchQueue.main.async {
-                        completion(.failure(.decodingFailed(errorResponse.error ?? "Unknown error")))
+                        completion(.failure(.serverError(errorResponse.error ?? "Unknown error")))
                     }
-                } catch {
-                    completion(.failure(.decodingFailed("Failed to decode error response.")))
                 }
+            } catch {
+                completion(.failure(.decodingFailed("Failed to decode response.")))
             }
         }
         task.resume()
     }
+
 
     func changePassword(userId: Int, newPassword: String, completion: @escaping (Result<Void, APIError>) -> Void) {
         guard let url = URL(string: "https://localhost:3443/usuarios/changePassword") else {
