@@ -20,11 +20,10 @@ document.getElementById('loadJugadores').addEventListener('click', function() {
                 <td>${jugador.username}</td>
                 <td>${jugador.display_name}</td>
                 <td>
-                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="editJugador(${jugador.id_jugador})">
-                            Editar
-                </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--colored" onclick="editJugador(${jugador.id_jugador})">
+                        Editar
+                    </button>
                 </td>
-                
             `;
             tableBody.appendChild(row);
         });
@@ -49,7 +48,6 @@ function handleFileSelect(event) {
             jsonSheet = XLSX.utils.sheet_to_json(worksheet, {header: 1});
             jsonSheet = removeEmptyRows(jsonSheet);
             displayTable(jsonSheet);
-            printData(jsonSheet);
         };
         reader.readAsArrayBuffer(file);
     }
@@ -69,11 +67,6 @@ function displayTable(data) {
     });
 }
 
-function printData(data) {
-    const output = document.getElementById('output');
-    output.textContent = JSON.stringify(data, null, 2);
-}
-
 function uploadData() {
     if (!jsonSheet) {
         alert('No data to upload');
@@ -91,7 +84,7 @@ function uploadData() {
         if (!rowData['Nombre Display'] || !rowData['Correo'] ||
             !rowData['Fecha de nacimiento'] || !rowData['CURP'] || !rowData['Domicilio'] || !rowData['Telefono'] ||
             !rowData['Nombre'] || !rowData['Apellido Paterno'] || !rowData['Apellido Materno'] || !rowData['Num_IMSS'] ||
-            !rowData['ID Equipo']) {
+            !rowData['ID Equipo'] || !rowData['Posicion']) {
             console.warn(`Skipping row ${rowIndex} due to missing required fields`);
             return;
         }
@@ -109,7 +102,8 @@ function uploadData() {
             apellido_p: rowData['Apellido Paterno'],
             apellido_m: rowData['Apellido Materno'],
             num_imss: rowData['Num_IMSS'],
-            id_equipo: rowData['ID Equipo']
+            id_equipo: rowData['ID Equipo'],
+            posicion: rowData['Posicion']
         };
 
         console.log('Data to send:', dataToSend);
