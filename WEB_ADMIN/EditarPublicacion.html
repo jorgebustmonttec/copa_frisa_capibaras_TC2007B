@@ -291,7 +291,7 @@
         </div>
     </div>
 
-        <main class="mdl-layout__content mdl-color--grey-100">
+       <main class="mdl-layout__content mdl-color--grey-100">
     <div class="mdl-card mdl-shadow--2dp employer-form">
         <div class="mdl-card__title">
             <h2>Editar Publicación</h2>
@@ -302,21 +302,25 @@
                 <div class="form__article">
                     <h3>Detalles de la Publicación</h3>
                     <div class="mdl-grid">
-                        <div class="mdl-cell mdl-cell--6-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <input class="mdl-textfield__input" type="text" id="titulo" name="titulo"/>
+                        <!-- Input de título -->
+                        <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="titulo" name="titulo" required>
                             <label class="mdl-textfield__label" for="titulo">Título</label>
                         </div>
+                        <!-- Textarea de contenido -->
                         <div class="mdl-cell mdl-cell--12-col mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                            <textarea class="mdl-textfield__input" type="text" rows="3" id="contenido" name="contenido"></textarea>
+                            <textarea class="mdl-textfield__input" type="text" rows="3" id="contenido" name="contenido" required></textarea>
                             <label class="mdl-textfield__label" for="contenido">Contenido</label>
                         </div>
+                        <!-- Subida de imagen -->
                         <div class="mdl-cell mdl-cell--12-col">
                             <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
-                            <img id="current-imagen" src="" alt="Current Imagen" style="width: 100%; height: auto;">
-                            <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="removeUploadedImage()">Remove Uploaded Image</button>
+                            <img id="current-imagen" src="" alt="Imagen Actual" style="width: 100%; height: auto;">
+                            <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="removeUploadedImage()">Eliminar Imagen Subida</button>
                         </div>
                     </div>
                 </div>
+                <!-- Botones de acción -->
                 <div class="form__action">
                     <button type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" id="update-button" disabled>Actualizar</button>
                     <button type="button" class="mdl-button mdl-js-button mdl-button--raised" onclick="goBack()">Volver</button>
@@ -325,6 +329,7 @@
         </div>
     </div>
 </main>
+
 
 
     </div>
