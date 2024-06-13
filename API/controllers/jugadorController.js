@@ -201,7 +201,7 @@ exports.getJugadorByUserId = (req, res) => {
 
 exports.updateJugador = async (req, res) => {
   const { id } = req.params;
-  const { username, display_name, correo, password, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, posicion } = req.body;
+  const { username, display_name, correo, fecha_nac, CURP, domicilio, telefono, nombre, apellido_p, apellido_m, num_imss, id_equipo, posicion, password } = req.body;
 
   if (!username || !display_name || !correo || !fecha_nac || !CURP || !domicilio || !telefono || !nombre || !apellido_p || !apellido_m || !num_imss || !id_equipo || !posicion) {
     return res.status(400).json({ error: 'Faltan campos obligatorios' });
@@ -223,14 +223,9 @@ exports.updateJugador = async (req, res) => {
       return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
     }
 
-    let hashedPassword;
-    if (password) {
-      hashedPassword = await bcrypt.hash(password, saltRounds);
-    }
-
     const [userUpdateResult] = await db.promise().query(
-      'UPDATE usuarios SET username = ?, display_name = ?, correo = ?, password = ?, first_login = false WHERE id_usuario = (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)',
-      [username, display_name, correo, hashedPassword || null, id]
+      'UPDATE usuarios SET username = ?, display_name = ?, correo = ?, first_login = false WHERE id_usuario = (SELECT id_usuario FROM jugadores WHERE id_jugador = ?)',
+      [username, display_name, correo, id]
     );
 
     const [playerUpdateResult] = await db.promise().query(
@@ -244,6 +239,7 @@ exports.updateJugador = async (req, res) => {
     res.status(500).json({ error: 'Error al actualizar el jugador' });
   }
 };
+
 
 
 exports.getJugadoresByEquipo = (req, res) => {
