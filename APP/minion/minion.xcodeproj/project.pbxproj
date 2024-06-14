@@ -48,6 +48,8 @@
 		8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C5055332C105A86006F3040 /* UserOptionsView.swift */; };
 		8C92D3D02C1565E100CEB4B7 /* SheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D3CF2C1565E100CEB4B7 /* SheetView.swift */; };
 		8C92D3D22C15679500CEB4B7 /* ChangePasswordSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C92D3D12C15679500CEB4B7 /* ChangePasswordSheetView.swift */; };
+		8C94BDE42C1CD39300571236 /* PDFView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C94BDE32C1CD39300571236 /* PDFView.swift */; };
+		8C94BDE62C1CD3B500571236 /* Reglamento.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 8C94BDE52C1CD3B500571236 /* Reglamento.pdf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +96,8 @@
 		8C5055332C105A86006F3040 /* UserOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserOptionsView.swift; sourceTree = "<group>"; };
 		8C92D3CF2C1565E100CEB4B7 /* SheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetView.swift; sourceTree = "<group>"; };
 		8C92D3D12C15679500CEB4B7 /* ChangePasswordSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordSheetView.swift; sourceTree = "<group>"; };
+		8C94BDE32C1CD39300571236 /* PDFView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFView.swift; sourceTree = "<group>"; };
+		8C94BDE52C1CD3B500571236 /* Reglamento.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = Reglamento.pdf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +156,7 @@
 		8C5055012C103865006F3040 /* minion */ = {
 			isa = PBXGroup;
 			children = (
+				8C94BDE22C1CD37E00571236 /* PDF */,
 				8C5055322C104AE4006F3040 /* Info.plist */,
 				8C5055332C105A86006F3040 /* UserOptionsView.swift */,
 				8C1EF9152C176D8000C5AF52 /* EditUserInfoView.swift */,
@@ -191,9 +196,18 @@
 		8C5055082C103867006F3040 /* Preview Content */ = {
 			isa = PBXGroup;
 			children = (
+				8C94BDE52C1CD3B500571236 /* Reglamento.pdf */,
 				8C5055092C103867006F3040 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		8C94BDE22C1CD37E00571236 /* PDF */ = {
+			isa = PBXGroup;
+			children = (
+				8C94BDE32C1CD39300571236 /* PDFView.swift */,
+			);
+			path = PDF;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -255,6 +269,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C50550A2C103867006F3040 /* Preview Assets.xcassets in Resources */,
+				8C94BDE62C1CD3B500571236 /* Reglamento.pdf in Resources */,
 				8C5055072C103867006F3040 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -279,6 +294,7 @@
 				8C5055342C105A86006F3040 /* UserOptionsView.swift in Sources */,
 				8C5055192C1038CE006F3040 /* AplicacionView.swift in Sources */,
 				8C177AEF2C1660D400653A6F /* APIService+Puntos.swift in Sources */,
+				8C94BDE42C1CD39300571236 /* PDFView.swift in Sources */,
 				8C92D3D22C15679500CEB4B7 /* ChangePasswordSheetView.swift in Sources */,
 				8C50551D2C1038F6006F3040 /* NotaView.swift in Sources */,
 				8C1EF9162C176D8000C5AF52 /* EditUserInfoView.swift in Sources */,

@@ -5,9 +5,11 @@
 //
 
 import SwiftUI
+import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var userViewModel: UserViewModel
+    @State private var showPDFSheet = false  // State variable to control sheet presentation
 
     var body: some View {
         Group {
@@ -58,6 +60,17 @@ struct ContentView: View {
                         }
                         .padding(.horizontal, 30)
                         .padding(.bottom, 50)
+
+                        Button(action: {
+                            showPDFSheet = true
+                        }) {
+                            Text("Reglamento")
+                                .foregroundColor(.blue)
+                        }
+                        .padding(.top, 10)
+                        .sheet(isPresented: $showPDFSheet) {
+                            PDFView()
+                        }
                     }
                     .navigationBarHidden(true)
                 }
@@ -65,5 +78,3 @@ struct ContentView: View {
         }
     }
 }
-
-
