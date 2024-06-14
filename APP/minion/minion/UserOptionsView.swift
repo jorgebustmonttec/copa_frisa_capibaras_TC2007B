@@ -18,12 +18,12 @@ struct UsuarioDataFull: Codable {
     var first_login: Int
 }
 
-
 struct UserOptionsView: View {
     @EnvironmentObject var userViewModel: UserViewModel
     @State private var userData: UsuarioDataFull?
     @State private var errorMessage: String = ""
     @State private var showAlert: Bool = false
+    @State private var showPDFSheet = false  // State variable to control sheet presentation
     @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
@@ -86,6 +86,17 @@ struct UserOptionsView: View {
                         .cornerRadius(10)
                 }
                 .padding()
+            }
+
+            Button(action: {
+                showPDFSheet = true
+            }) {
+                Text("Reglamento")
+                    .foregroundColor(.blue)
+            }
+            .padding(.top, 10)
+            .sheet(isPresented: $showPDFSheet) {
+                PDFView()
             }
         }
         .navigationTitle("Opciones del Usuario")
